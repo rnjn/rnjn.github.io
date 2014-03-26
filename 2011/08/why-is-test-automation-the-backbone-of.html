@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Why is test automation the backbone of Continuous Delivery? - ranjan sakalley</title>
+  <meta name="author" content="rnjn">
+
+  
+  <meta name="description" content="Software testing and verification needs a careful and diligent process of impersonating an end user, trying various usages and input scenarios, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rnjn.github.io/2011/08/why-is-test-automation-the-backbone-of.html">
+  <link href="/favicon.png" rel="icon">
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+  <link href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata:bold' rel='stylesheet' type='text/css'>
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ranjan sakalley" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Why is test automation the backbone of Continuous Delivery?</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-25T00:00:00+05:30" pubdate data-updated="true">Aug 25<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><div class='post'>
+<div dir="ltr" style="text-align: left;" trbidi="on">Software testing and verification needs a careful and diligent process of impersonating an end user, trying various usages and input scenarios, comparing and asserting expected behaviours. Directly, the words &#8220;careful and diligent&#8221; invoke the idea of letting a computer program do the job. Automating certain programmable aspects of your test suite thus can help software delivery massively. In most of the projects that I have worked on, there were aspects of testing which could be automated, and then there were some that couldn&#8217;t. Nonetheless, my teams could rely heavily on our automation suite when we had one, and spend our energies testing aspects of the application we could not cover with automated functional tests. Also, automating tests helped us immensely to meet customer demands for quick changes, and subsequently reaching a stage where every build, even ones with very small changes went out tested and verified from our stable. As Jez rightly says in his excellent text about <a href="http://continuousdelivery.com/">Continuous Delivery</a>, automated tests &#8220;take delivery teams beyond basic continuous integration&#8221; and on to the path of continuous delivery. In fact, I believe they are of such paramount importance, that to prepare yourself for continuous delivery, you must invest in automation. In this text, I explain why I believe so.<br /><br /><b>How much does it cost to take one small change to production?</b><br /><br />As the complexity of software grows, the amount of effort verifying changes as well as features already built grows, at least linearly. This means that testing time is directly proportional to the number of test cases needed to verify correctness. Thus, adding new features means that testing either increases the time it takes a team to deliver software from the time development is complete, or it adds cost of delivery if the team adds more testers to cover the increased work (assuming all testing tasks are independent of each other). A lot of teams, and I have worked with some, tackle this by keeping a pool of testers working on &#8220;regression&#8221; suites throughout the length of a release verifying if new changes break already built functionality. This is not only costly, its ineffective, slow and error prone. <br /><br />Automating test scenarios where you can lets you cut this time/money it takes to verify if a user&#8217;s interaction with the application works as designed. At this point, let us assume that a reasonable number of your test scenarios can be automated, say 50%, as this is often the least bound in software projects.If your team can and does automate this set to a certain number of repeatable tests, it frees up people to concentrate more on immediate changes. Also, lets suppose that it takes as much as 3 hours to run your tests (it should take as less as possible, less than 20 minutes even). This directly impacts the amount of time it takes to push a build out to customers. Increasing the number of automated tests, and also investing in getting the test-run time down, your agility and ability to respond increases massively, while also reducing the cost. I explain this with some very simple numbers (taking an average case) below -<br /><br /><u>Team A</u> -<br />1. Number of scenarios to test - 500 and growing.<br />2. Number of minutes to setup environment for a build - 10 minutes.<br />3. Number of minutes to test one scenario - 10 minutes.<br />4. Number of testers in your team &nbsp;- 5. <br />5. Assume that there are no blockers.<br /><br />If you were to have no automated tests, the amount of time it would take to test one single check-in (in minutes) -&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10 + (500*10)/5 = 1010 minutes. <br /><br />This is close to 2 working days (standard 8 hours each). Not only is this costly, it means that if developers get feedback 2 days later. This kind of a setup further encourages mini-waterfalls in your iteration.<br /><br /><u>Team B</u> -<br />Same as Team A, but we&#8217;ve automated 50% (250 test cases) of our suite. Also, assume that running these 250 test cases take a whopping 3 hours to complete.<br />Now, the amount of time it would take to test one single check-in (in minutes) -<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; task 1 (manual) - &nbsp;&nbsp;10 + (250*10)/5 = 510 minutes.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; task 2 (automated) - 10 + 180 minutes.<br /><br />This is close to 1 working day. This is not ideal, but just to prove the fact about reduced cost, we turned around the build one day before. We halved the cost of testing. We also covered 50% of our cases in 3 hours, and that &nbsp;Now to a more ideal and achievable case -<br /><br /><u>Team C</u> - <br />Same as Team B, but we threw in some good hardware to run the tests faster (say 20 minutes), and automated a good 80% of our tests (10% cannot be automated and 10% is new functionality).<br />Now, the amount of time it would take to test one single check-in (in minutes) -<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;task 1 (manual) - 10 + (100*10)/5 = 210 minutes.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;task 2 (automated) - 10 + 20 minutes = 30 minutes.<br /><br />So in effect, we cover 80% of our tests in 30 minutes, and overall take 3.5 hours to turn around a build. Moreover, the probability of finding a blocker earlier, by covering 80% of our cases in 30 minutes, means that we can suspend further manual testing if we need to. Our costs are lower, we get feedback faster. This changes the game a bit, doesn&#8217;t it.<br /><br /><b>Impossibility of verification on time</b><br /><br />Team A that I mentioned above would need 50 testers to certify a build in less than 2 hours. That cost is not surprisingly unattractive to customers. In most cases, it is almost impossible to turn around a build from development to delivery within a day, without automation. I say almost impossible as this would prove to be extremely costly in cases where it is. So, if assuming that my team doesn&#8217;t automate and hasn&#8217;t got an infinite amount of money, every time a developer on the team checks-in one line of code, our time to verify a build completely increases by hours and days. This discourages a manager to schedule running these tests every time on every build, which consequently decreases the quality coverage for builds, and the amount of time bugs stay in the system. It also, in some cases I have experienced, dis-incentivizes frequent checking in of code, which is not <a href="http://www.martinfowler.com/bliki/FrequencyReducesDifficulty.html">healthy</a>.<br /><b><br />Early and often feedback</b><br /><br />One of the most important aspects of automation is the quick feedback that a team gets from a build process. Every check-in is tested without prejudice, and the team gets a report card as soon as it can. Getting quicker feedback means that less code gets built on top of buggy code, which in turn increases the credibility of software. To extend the example of teams A, B and C above - <br /><br />For Team A - the probability of finding a blocker on day one is 1/2. Which basically means that there is a good risk of finding a bug on the second day of testing, which completely lays the first days of work to waste. That blocker would need to be fixed, and all the tests need to be re-verified. The worst case is that a bug is found after 2 days of an inclement line of code getting checked-in.<br /><br />For Team B - the worst case is that you find a blocker during the last few hours of the day. This is still much better than for Team A. Better still, as 50% of test cases are automated, the chance of finding a blocker within 3 hours is very high (50%). This quick feedback lets you find and fix issues faster, and therefore respond to customer requests very quickly.<br /><br />For Team C - the best case of all 3. The worst scenario is that Team C will know after 3 hours if they checked-in a blocker. As 80% of test cases are automated, by 20 minutes, they would know that they made a mistake. They have come a long way from where Team A is, 20 minutes is way better than 2 days. <br /><br /><br /><b>Opportunity cost</b><br /><br />Economists use an apt term - <a href="http://en.wikipedia.org/wiki/Opportunity_cost">opportunity cost</a> to define what is lost if one choice amongst many is taken. The opportunity cost of re-verifying tedious test cases build after build is the loss of time spent on exploratory testing. More often than not a bug leads to many, but by concentrating on manual scenarios, and while catching up to do so, testers hardly find any time to create new scenarios and follow up on issues. Not only this, it is imperative that by concentrating on regression tests all the time, testers spend proportionately less time on newer features, where there is a higher probability of bugs to be found. By automating as much as possible, a team can free up testers to be more creative and explore an application from the &#8220;human angle&#8221; and thus increase the depth of coverage and quality. On projects I have worked on, whenever we have had automated tests aiding manual testing I have noticed better and in-depth testing which has results in better quality.<br /><br />Another disadvantage is that manual testing involved tedious re-verification of the same cases day after day. Even if they are creative to distribute tests to different people every day, the cycle would inadvertently repeat after a short period of time. Testers have less time to be creative, and therefore their jobs less gratifying. Testers are creative beings and their forte is to act as end-users and find new ways to test and break an application, not in repeating a set process time after time. The opportunity cost in terms of keeping and satisfying the best testers around is enormous without automation.<br /><br /><b>Error prone human behaviour</b><br /><br />Believe it or not, even the best of us are prone to making mistakes doing our day to day jobs. Given how good or bad we are it, the probability of making a mistake while working is higher or lower, but mostly a number greater than 0. It is important to keep this risk in mind while ascertaining the quality of a build. Indeed, human errors are generally behind most bugs that we see in software applications that we see, error during development and testing. Computers are extremely efficient doing repetitive tasks - they are diligent and careful, which makes automation a risk mitigation strategy.<br /><br /><b>Tests as executable documentation</b><br /><br />Test scenarios provide an excellent source of knowledge about the state of an application. Manual test results provide a good view of what an application can do for an end user, and also tell the development team about quirky components in their code. There are two components to documenting test results - showing what an application can do, and upon failures, documenting what fails and how, so its easy to manage application abnormalities. If testers are diligent and make sure they keep their documentation up to date (another overhead for them), it is possible to know the state of play through a glance at test results. The amount of work increases drastically with failures, as testers then need to document each step, take screenshots, maybe even videos of crash situations. Adding the time spent on these increase the cost of making changes, in fact in a way the added cost dis-incentivizes documenting the state with every release. <br /><br />With automated tests, and by choosing the right tools, the process of documenting the state of an application becomes a very low cost affair. Automation testing tools provide a very good way of executing tests, collating results in categories, publishing results to a web page, and also let you visualize test result data to monitor progress and get relevant feedback from test result data. With tools like Twist, Concordian, Cucumber and the lot, it becomes really easy to show your test results, even authoring, to your customers and this reduces the losses in translation with the added benefit of customer getting more involved in application development. Upon failures, a multitude of testing tools automate the process of taking screenshots, even videos, to document failures and errors in a more meaningful way. Results could be mailed to people, much better served as RSS feeds per build to people who are interested. <br /><br /><b>Technology facing tests</b><br /><br />Testing non-functional aspects of an application - like testing application performance upon a user action, testing latency over a network and its effect on an end-users interaction with the application etc. have traditionally been partially automated (although very early during my work life I have sat with a stop watch in my hand to test performance, low-fi but effective). It is easy to take advantage of automated tests and reuse them to tests such non-functional tests. For example, running an automated functional test over a number of times can tell you average performance of an action on your web-page. The model is easy to set up, put a number of your automated functional tests inside a chosen framework that lets you setup and probe non-functional properties while the tests are run. Testing and monitoring aspects like role-based security, effects of latency, query performance etc. can all be automated by re-using an existing set of automated tests, an added benefit. <br /><br /><b>Conclusion</b><br /><br />On your journey to Continuous Delivery, small and big, you would have to take many steps. My understanding and suggestion would be to start small with a good investment on a robust automation suite, give it your best people, cultivate habits in your team that respect tests and results, build this backbone first, and then off you would be. Have a smooth ride. <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></div></div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">rnjn</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-25T00:00:00+05:30" pubdate data-updated="true">Aug 25<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://rnjn.github.io/2011/08/why-is-test-automation-the-backbone-of.html" data-via="rnjn" data-counturl="http://rnjn.github.io/2011/08/why-is-test-automation-the-backbone-of.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2011/01/who-should-write-functional-tests.html" title="Previous Post: Who should write functional tests?">&laquo; Who should write functional tests?</a>
+      
+      
+        <a class="basic-alignment right" href="/2011/10/introducing-automation-to-existing.html" title="Next Post: Introducing automation to an existing large team">Introducing automation to an existing large team &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/02/simpler-emacs-setup.html">Simpler emacs setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/10/introducing-automation-to-existing.html">Introducing automation to an existing large team</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/why-is-test-automation-the-backbone-of.html">Why is test automation the backbone of Continuous Delivery?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/01/who-should-write-functional-tests.html">Who should write functional tests?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/12/why-teams-lose-faith-in-their.html">Why teams lose faith in their functional test suite</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/02/is-your-functional-suite-done-right.html">Is your Functional suite done right?</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  <!-- Copyright &copy; 2014 - rnjn <br/> -->
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

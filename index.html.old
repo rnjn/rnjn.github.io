@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - ranjan sakalley</title>
+  <title>ranjan sakalley</title>
   <meta name="author" content="rnjn">
 
   
-  <meta name="description" content="Blog Archive 2014 Simpler emacs setup
-Feb 25 2014 2011 Introducing automation to an existing large team
-Oct 24 2011 Why is test automation the &hellip;">
+  <meta name="description" content="Blog Archives Recent Posts Simpler emacs setup Introducing automation to an existing large team Why is test automation the backbone of Continuous &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ Oct 24 2011 Why is test automation the &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://rnjn.github.io/index.html">
+  <link rel="canonical" href="http://rnjn.github.io/index.html.old">
   <link href="/favicon.png" rel="icon">
   <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
   <link href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
@@ -58,89 +56,15 @@ Oct 24 2011 Why is test automation the &hellip;">
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <div class="blog-index">
   
-  <header>
-    <h1 class="entry-title">Blog Archive</h1>
+  
+  <div class="pagination">
     
-  </header>
-  
-  <div id="blog-archives">
-
-
-
-  
-  <h2>2014</h2>
-
-<article>
-  
-<h1><a href="/2014/02/simpler-emacs-setup.html">Simpler emacs setup</a></h1>
-<time datetime="2014-02-25T16:42:40+05:30" pubdate><span class='month'>Feb</span> <span class='day'>25</span> <span class='year'>2014</span></time>
-
-</article>
-
-
-
-  
-  <h2>2011</h2>
-
-<article>
-  
-<h1><a href="/2011/10/introducing-automation-to-existing.html">Introducing automation to an existing large team</a></h1>
-<time datetime="2011-10-24T00:00:00+05:30" pubdate><span class='month'>Oct</span> <span class='day'>24</span> <span class='year'>2011</span></time>
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/2011/08/why-is-test-automation-the-backbone-of.html">Why is test automation the backbone of Continuous Delivery?</a></h1>
-<time datetime="2011-08-25T00:00:00+05:30" pubdate><span class='month'>Aug</span> <span class='day'>25</span> <span class='year'>2011</span></time>
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/2011/01/who-should-write-functional-tests.html">Who should write functional tests?</a></h1>
-<time datetime="2011-01-03T00:00:00+05:30" pubdate><span class='month'>Jan</span> <span class='day'>03</span> <span class='year'>2011</span></time>
-
-</article>
-
-
-
-  
-  <h2>2010</h2>
-
-<article>
-  
-<h1><a href="/2010/12/why-teams-lose-faith-in-their.html">Why teams lose faith in their functional test suite</a></h1>
-<time datetime="2010-12-06T00:00:00+05:30" pubdate><span class='month'>Dec</span> <span class='day'>06</span> <span class='year'>2010</span></time>
-
-</article>
-
-
-
-  
-  <h2>2009</h2>
-
-<article>
-  
-<h1><a href="/2009/02/is-your-functional-suite-done-right.html">Is your Functional suite done right?</a></h1>
-<time datetime="2009-02-10T00:00:00+05:30" pubdate><span class='month'>Feb</span> <span class='day'>10</span> <span class='year'>2009</span></time>
-
-</article>
-
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
 </div>
-
-  
-</article>
-
-</div>
-
 <aside class="sidebar">
   
     <section>
@@ -176,7 +100,6 @@ Oct 24 2011 Why is test automation the &hellip;">
 
   
 </aside>
-
 
     </div>
   </div>

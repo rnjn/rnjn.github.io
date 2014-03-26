@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Introducing automation to an existing large team - ranjan sakalley</title>
+  <meta name="author" content="rnjn">
+
+  
+  <meta name="description" content="A reader on my article at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rnjn.github.io/2011/10/introducing-automation-to-existing.html">
+  <link href="/favicon.png" rel="icon">
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+  <link href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata:bold' rel='stylesheet' type='text/css'>
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ranjan sakalley" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Introducing automation to an existing large team</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-24T00:00:00+05:30" pubdate data-updated="true">Oct 24<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><div class='post'>
+    <div dir="ltr" style="text-align: left;">
+        <span style="font-size: x-small;"><i><span style="font-size: small;">A reader on my <a href="http://www.infoq.com/articles/test-automation-continuous-delivery">article</a> at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. <span id="quote_77221">I plan to write more posts on this topic, have a lot of thoughts, but </span>here&#8217;s my immediate answer -</span> </i>
+        </span>
+        <br />
+        <br />
+        <span id="quote_77221">A very strong actionable technique that I have seen work well is that you create a small/minimal <a href="http://en.wikipedia.org/wiki/Smoke_testing#Software_development">smoke test suite</a> for you larger app. You can decide on what comprises a suite of smoke test -</span>
+        <br />
+        <ul style="text-align: left;">
+            <li>
+                <span id="quote_77221">Basic user actions - some 4-5 use cases without which a user cannot use your application. (for e.g. on an eCommerce site, my smoke tests would comprise of login, user registration, search, end-to-end purchase and payment).</span>
+            </li>
+        </ul>
+        <ul style="text-align: left;">
+            <li>
+                <span id="quote_77221">Integration points - choose must-have integrations - like payment gateway (same eCommerce motif), oauth for authentication against Facebook or some such. Write smoke tests that touch these integrations to know if every build that you process is verified for these.</span>
+            </li>
+        </ul>
+        <ul style="text-align: left;">
+            <li>
+                <span id="quote_77221">Attack a small part/feature of the application. You can choose the most important, the most buggy etc. Write tests only for this part.</span>
+            </li>
+        </ul>
+        <ul style="text-align: left;">
+            <li>
+                <span id="quote_77221">&nbsp;Concentrate on the currently &#8220;under-development&#8221; work, which will give the team immediate value in terms of coverage. This is a bit counter-intuitive as there would be a lot of changes while you work. But I have seen this work wonders at times, and your team starts worrying about test maintenance from the first step on.</span>
+            </li>
+        </ul>
+        <span id="quote_77221">You can choose more ways according to your project, better still, mix and match. But make sure you choose the most important 5-10 and not 50-100 test cases for your smoke suite. Your smoke suite shouldn&#8217;t take much time to run aim for &lt; 5 minutes. The correct way to work with these would be to make these smoke tests as part of your CI process so that the team get immediate benefits out of the smoke tests.
+            <br />&nbsp;</span>
+        <br />
+        <span id="quote_77221">Your team will start seeing value in automating regression scenarios</span>
+        <span id="quote_77221">with this smoke suite in</span>
+        <span id="quote_77221">place. From then on, you can expand your suite from smoke upwards, adding more complex or more detailed scenarios. Another thing to note on big complex applications - aim for small tests, get quick wins. Then combine to make bigger ones. This will keep your team involved and constantly working towards covering every possible nook and keep being excited about it. But do make sure everything is part of CI, because if its not, then people lose faith.
+            <br />
+            <br />Finally, as ever, keep showing value, make sure the stakeholders understand the importance, you can do this by sending them reports, and talk about gains etc. If your team buys in with the idea, there&#8217;s no stopping.</span>
+    </div>
+</div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">rnjn</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-24T00:00:00+05:30" pubdate data-updated="true">Oct 24<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://rnjn.github.io/2011/10/introducing-automation-to-existing.html" data-via="rnjn" data-counturl="http://rnjn.github.io/2011/10/introducing-automation-to-existing.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2011/08/why-is-test-automation-the-backbone-of.html" title="Previous Post: Why is test automation the backbone of Continuous Delivery?">&laquo; Why is test automation the backbone of Continuous Delivery?</a>
+      
+      
+        <a class="basic-alignment right" href="/2014/02/simpler-emacs-setup.html" title="Next Post: Simpler emacs setup">Simpler emacs setup &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/02/simpler-emacs-setup.html">Simpler emacs setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/10/introducing-automation-to-existing.html">Introducing automation to an existing large team</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/why-is-test-automation-the-backbone-of.html">Why is test automation the backbone of Continuous Delivery?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/01/who-should-write-functional-tests.html">Who should write functional tests?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/12/why-teams-lose-faith-in-their.html">Why teams lose faith in their functional test suite</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/02/is-your-functional-suite-done-right.html">Is your Functional suite done right?</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  <!-- Copyright &copy; 2014 - rnjn <br/> -->
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
