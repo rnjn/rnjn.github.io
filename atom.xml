@@ -4,7 +4,7 @@
   <title><![CDATA[ranjan sakalley]]></title>
   <link href="http://rnjn.github.io/atom.xml" rel="self"/>
   <link href="http://rnjn.github.io/"/>
-  <updated>2014-03-26T18:49:52+05:30</updated>
+  <updated>2014-04-22T11:23:16+05:30</updated>
   <id>http://rnjn.github.io/</id>
   <author>
     <name><![CDATA[rnjn]]></name>
@@ -12,6 +12,625 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Building a positional model]]></title>
+    <link href="http://rnjn.github.io/2014/04/building-a-positional-model.html"/>
+    
+    <updated>2014-04-03T12:38:28+05:30</updated>
+    <id>http://rnjn.github.io/2014/04/building-a-positional-model</id>
+    
+    <content type="html"><![CDATA[<h1>Building a positional model</h1>
+
+<h2>Introduction</h2>
+
+<p>Blocking and labelling using known words stored in a knowledge base lets us extract known information from a document. However, for words that are new to the knowledge base, like a new car brand or model in the example domain, blocking and labelling fails. To be able to categorise or label new words, we take a probabilistic approach. Given a sizeable number of documents, we build a positional model, that helps us find an appropriate label for a new word given its position in the document.</p>
+
+<h2>Preparing data</h2>
+
+<p>Before we start calculating probabilities, we aggregate a sizeable corpus of documents, lets say 50000 or more, and run our blocking and labelling step. We then search for documents which have &ldquo;unknown&rdquo; blocks and remove them from our set. We do this assuming these are &lt; 10% of the corpus. If this is not true, the quality of the knowledge base needs to be improved, and we keep iterating the cycle below</p>
+
+<blockquote><p>improve KB &ndash;> Block and Label > % of documents not labelled completely > improve KB&hellip;</p></blockquote>
+
+<p>till we reach this goal.</p>
+
+<p>Once we pass this step, we move on to building a representative matrix of documents with each cell denoting the position of a label. For a labelled document like below &ndash;</p>
+
+<blockquote><p>[&ldquo;sell&rdquo;, &ldquo;hyundai&rdquo;, &ldquo;santro&rdquo;, &ldquo;2007&rdquo;, &ldquo;green&rdquo;, &ldquo;tyres&rdquo;,  &ldquo;leather&rdquo;, &ldquo;seats&rdquo;, &ldquo;price&rdquo;, &ldquo;300000&rdquo;, &ldquo;contact&rdquo;, &ldquo;91xxxxxxx&rdquo;]</p></blockquote>
+
+<p>the row vector (of labels by position) in the matrix that denotes this document looks like</p>
+
+<blockquote><p>[&ldquo;ad_type&rdquo;, &ldquo;brand&rdquo;, &ldquo;model&rdquo;, &ldquo;year&rdquo;, &ldquo;colour&rdquo;, &ldquo;features&rdquo;, &ldquo;price&rdquo;, &ldquo;contact&rdquo;]</p></blockquote>
+
+<p>Now, to reduce the size of the matrix in memory, we may represent each label by a unique number. and so our representative row vector looks like</p>
+
+<blockquote><p>[2,3,4,5,6,7,8,9]</p></blockquote>
+
+<p>(we reserve 1 for &ldquo;unknown&rdquo;)</p>
+
+<p>The length of each document may differ, so we find the longest document, and we pad all documents with 0&rsquo;s to fit the matrix width. An example matrix of 10 documents across 10 labels may look like &ndash;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">[[</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">6</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">6</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">6</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">7</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">4</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">9</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">10</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">6</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">7</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">3</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">6</span><span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>where each row represents a document and each column represents a position in the document, and numbers denote a label.</p>
+
+<h2>Positional Model</h2>
+
+<p>To build a vector for positional probabilities for a label we follow</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">each</span> <span class="n">label</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">each</span> <span class="n">position</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">probability</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">occurence</span> <span class="n">of</span> <span class="n">this</span> <span class="n">label</span><span class="p">)</span><span class="o">/</span><span class="n">number</span> <span class="n">of</span> <span class="n">documents</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Over 50000 documents and 12 labels, with a maximum size of 150 tokens, traditional looping does not perform well. We turn to the <a href="http://www.numpy.org">numpy</a> python library to help us crunch these numbers faster for us.</p>
+
+<p>First, we derive a matrix for each label, which represents the position of this label only across documents. We call this matrix the label sieve. For the matrix above, choosing label 5, the sieve should look like &ndash;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>where 1 denotes the presence of label 5 in a document, and 0 denotes absence.</p>
+
+<p>The following code does this for us</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">label_sieves</span> <span class="o">=</span> <span class="p">[(</span><span class="n">matrix</span> <span class="o">==</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>numpy matrices can be queried like &ndash;> matrix == n to result in a boolean matrix for the presence of n. the result * 1 just converts this to the above.</p></blockquote>
+
+<p>Now its easy for us to sum all column vectors in the matrix above, where each column represents a position in the document. Again, numpy provides faster calculations, as below</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">label_position_totals</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">label_sieve</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                             <span class="k">for</span> <span class="n">label_sieve</span> <span class="ow">in</span> <span class="n">label_sieves</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and then we just divide by the count of documents.</p>
+
+<p>Our final positional matrix may look like &ndash;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'> <span class="p">[[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.3</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.3</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.4</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.3</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Extras</h2>
+
+<p>We may derive a different model if we calculate the probability as &ndash;</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">each</span> <span class="n">label</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">each</span> <span class="n">position</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">probability</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">occurence</span> <span class="n">of</span> <span class="n">this</span> <span class="n">label</span><span class="p">)</span><span class="o">/**</span><span class="nb">sum</span><span class="p">(</span><span class="n">occurance</span> <span class="n">of</span> <span class="nb">any</span> <span class="n">label</span> <span class="n">other</span> <span class="n">than</span> <span class="mi">0</span><span class="p">)</span><span class="o">**</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To make this change, we first build a sieve which denotes the presence of all labels, and then sum column-wise to get a denominator vector by position.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">sieve</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span>
+</span><span class='line'>    <span class="n">denominators</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sieve</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our final probability calculation looks like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">probabilities</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">label_totals</span><span class="p">,</span> <span class="n">denominators</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">label_totals</span> <span class="ow">in</span> <span class="n">label_position_totals</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>where numpy.divide does an item-wise division.</p>
+
+<p>This calculation produces skewed numbers for a column where the presence labels in the column is very low. To normalise the probabilities in this case, the previous method is better.</p>
+
+<h2>Performance</h2>
+
+<p>Traditional looping method to build this model for around 50000 documents, 14 labels and a maximum size of 144 words (50000 X 144 size matrix), takes around 2 seconds with our modest python skills. Using numpy, as coded above, we could do this in milli-seconds. The added advantage being expressive code.</p>
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Blocking and labelling]]></title>
+    <link href="http://rnjn.github.io/2014/04/blocking-and-labelling.html"/>
+    
+    <updated>2014-04-01T16:25:56+05:30</updated>
+    <id>http://rnjn.github.io/2014/04/blocking-and-labelling</id>
+    
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>With a knowledge base of known terms built, we now move to identifying labels in a test corpus that can be assigned to a sub-sequence of strings. Given an accurate KB, this step can extract all information, given all sub-sequences in a document are known. We follow a simple sequential algorithm to identify blocks and label them into categories. We mark sub-sequences that we cannot categorise as &ldquo;unknown&rdquo;. We leave identification of &ldquo;unknown&rdquo; sub-sequences to later steps.</p>
+
+<h2>Alogrithm</h2>
+
+<p>Assuming that a document (an advertisement in the example domain) has already been tokenised, we follow the steps below.</p>
+
+<blockquote><ol>
+<li>pick the first token, find it in the KB</li>
+<li>if found, create a tuple of label:[list of words] and insert word in the list</li>
+<li>get the next token, find the label. if it belongs to the same label, append the word to the list.</li>
+<li>if the token doesn&rsquo;t belong to the same label, go back to 2.</li>
+<li>if no label is found, mark it as &lsquo;unknown&rsquo;. do not append &lsquo;unknown&rsquo; tuples together.</li>
+<li>for each new token, either append to the previous token&rsquo;s tuple, or create a new tuple.</li>
+</ol>
+</blockquote>
+
+<p>The result is a sequencial list of tuples (blocks) which together represent the document.</p>
+
+<h2>Improvements</h2>
+
+<p>The simple algorithm above works well when there is no ambiguity in finding labels for a word. There are 2 cases which add complexity &ndash;
+* A token is not in the KB. We leave the probabilistic models to help us assign a label to such word/sequence
+* A token is can be categorised under 2 labels.</p>
+
+<p>To help fix a label to the latter, we assign it an intermediate label, look for the next or previous token&rsquo;s label and see if this token can be continuance. For instance, in our example domain, a 5-6 digit numeric string can represent a price or kilometers driven for a vehicle. We assign it a token called &lsquo;number&rsquo;. We then analyse the previous and next tokens to see if this &lsquo;number&rsquo; can be merged with the previous or next tokens&#8217; labels. If this &lsquo;number&rsquo; comes after &lsquo;price&rsquo;, we assume that the token under analysis can be categorised as &lsquo;price&rsquo;. If this &lsquo;number&rsquo; has no neighbours that can logically follow, we revert to marking it as &lsquo;unknown&rsquo;.</p>
+
+<p>The following code explains this process.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'>    <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'>    <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_block</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">token_index</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">while</span><span class="p">(</span><span class="n">token_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)):</span>
+</span><span class='line'>        <span class="n">next_block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_block</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">token_index</span><span class="p">])</span>
+</span><span class='line'>        <span class="n">merged_block</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">next_block</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="n">merged_block</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">block</span> <span class="o">=</span> <span class="n">next_block</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">block</span> <span class="o">=</span> <span class="n">merged_block</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">token_index</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The merge method in the block object takes care of combining intermediate states to known labels or discarding them as &ldquo;unknown&rdquo;</p>
+
+<p>For an advertisement tokenised as</p>
+
+<blockquote><p>[&ldquo;sell&rdquo;, &ldquo;hyundai&rdquo;, &ldquo;santro&rdquo;, &ldquo;2007&rdquo;, &ldquo;green&rdquo;, &ldquo;tyres&rdquo;,  &ldquo;leather&rdquo;, &ldquo;seats&rdquo;, &ldquo;price&rdquo;, &ldquo;300000&rdquo;, &ldquo;contact&rdquo;, &ldquo;91xxxxxxx&rdquo;]</p></blockquote>
+
+<p>blocking and labelling output may be</p>
+
+<p>[[insert image blocking.png]]</p>
+
+<h2>Results</h2>
+
+<p>We have seen that blocking and labelling has been able to extract information from a document to the accuracy of close to 97%. This is true for documents which have known text strings. The 3% can be marked down to new strings which we do not know about. For numerical sequences we have seen our accuracy numbers change depending on the way numbers are mentioned in the document.</p>
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Building a knowledge base for text segmentation]]></title>
+    <link href="http://rnjn.github.io/2014/04/building-a-knowledge-base-for-text-segmentation.html"/>
+    
+    <updated>2014-04-01T01:02:30+05:30</updated>
+    <id>http://rnjn.github.io/2014/04/building-a-knowledge-base-for-text-segmentation</id>
+    
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>A tedious yet crucial step in the text segmentation approach is building a knowledge base(KB) of known terms and their labels. Labelling (grouping and naming) words is also domain specific, for instance labelling words/phrases for analysis of car sales classified advertisements may be quite different from real estate classified advertisements. Its a cost that is incurred repeatedly as and when new domains are acquired. I present an improvement on the completely manual process below, but first, lets talk about the basic work. As before, examples are from a car buying/selling classified ad corpus.</p>
+
+<h2>KB for text labels</h2>
+
+<p>A knowledge base is a dictionary of tokens grouped by labels they fall under. We use the term &lsquo;label&rsquo; to define the type of a sub-sequence of tokens, which together join to form a sentence. For instance in the following advertisement</p>
+
+<blockquote><p>I want to sell Hundai Santro 2007 model green coloured car in mint condisan. New tyres, regular servicing, good AC and leatherseats. Price Rs 3Lakhs negotiable Contact +91xxxxxxxxxx</p></blockquote>
+
+<p>the sub-sequence &ldquo;Hyundai&rdquo; is actually the &ldquo;brand&rdquo; of a vehicle. A KB for domain might therefore look like &ndash;</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">knowledge_base</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;brand&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hyundai&quot;</span><span class="p">,</span> <span class="s">&quot;maruti&quot;</span><span class="p">,</span> <span class="s">&quot;suzuki&quot;</span><span class="p">,</span> <span class="s">&quot;ford&quot;</span><span class="o">......</span><span class="p">]</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(obviously, there are better data structures to store a KB, this is just conceptual)</p>
+
+<p>Similarly, add words to the KB under &ldquo;model&rdquo;, &ldquo;fuel type&rdquo; and other text labels. Words can belong to more than one label.</p>
+
+<h2>KB of numbers</h2>
+
+<p>While words can be compared and classified using a simple dictionary as above, numbers are a completely different story. For instance, to build a KB as above for the label &ldquo;Price&rdquo;, an infinite number of numbers need to be listed. A Regex might be a better respresentation for the class of numbers. Moreover, a corpus might have a limited number of classes of numeric sequences in tokens and hence we may build a dictionary of Regexes which addresses a class each. In the example domain, the 4 different classes we encounter are</p>
+
+<blockquote><ul>
+<li>price &ndash; 5-7 digits</li>
+<li>year &ndash; 4 digits</li>
+<li>phone numbers &ndash; 10 digits</li>
+<li>miles/kms driven &ndash; 5-7 digits</li>
+</ul>
+</blockquote>
+
+<p>Writing Regex matchers for these classes is easy &ndash;</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">number_matcher</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^\d{5,9}$&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">phone_number</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^\d{10}$&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">year</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^(19|20)\d{2}$&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We encounter complexity in mapping numbers to labels when 2 classes of numeric strings overlap. In the example above, &ldquo;price&rdquo; and &ldquo;kms driven&rdquo; are overlapping classes. To overcome this, we add these steps &ndash;</p>
+
+<blockquote><ul>
+<li>include words like [&lsquo;kms&rsquo;, &lsquo;miles&rsquo;, &lsquo;kilometers&rsquo;&hellip;.] and [&lsquo;price&rsquo;, &lsquo;cost&rsquo;, &lsquo;Rs&rsquo;&hellip;.] etc. in the knowledgebases for the two labels.</li>
+<li>create an intermediate label, lets say &ldquo;number&rdquo;</li>
+<li>categorise a &ldquo;number&rdquo; depending on surrounding words (from the first step)</li>
+</ul>
+</blockquote>
+
+<h2>Improvements</h2>
+
+<p>Although the process of building a KB seems simple, it really is not. At the least its time consuming and is a repeated cost everytime a new domain is acquired. Reading and labelling a large corpus of text is also error prone. To this end, an improvement can be to compute vector respresentation of tokens using word2vec<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> &ndash; an unsupervised learning tool.</p>
+
+<p>word2vec (python interface <a href="http://radimrehurek.com/gensim/models/word2vec.html">gensim</a>) builds a vocabulary from a corpus and then learns vector representations of words. Vector respresentation is very useful in calculating distance between words, for instance to allow the following (given a lot of relevant text)&ndash;</p>
+
+<blockquote><p>vec(&lsquo;Madrid&rsquo;) &ndash; vec(&lsquo;Spain&rsquo;) + vec(&lsquo;France&rsquo;) is closer to vec(&lsquo;Paris&rsquo;) than to any other word vector.</p></blockquote>
+
+<p>We take their vector representations and use a Eucledian clustering technique like
+<a href="https://en.wikipedia.org/wiki/K-means_clustering">k-means clustering</a> to identify groups of similar words. Scipy provides a variety of clustering algorithms that might be useful, we choose <a href="http://docs.scipy.org/doc/scipy/reference/cluster.vq.html">k-means</a> for simplicity and then change depending on feedback.</p>
+
+<blockquote><p>word2vec has immense potential and is a tool (and approach) to watch for text analysis solutions.</p></blockquote>
+
+<p>The number of dimensions and clusters created are customisable parameters. The resulting output may contain a bunch of clusters which are very similar to the text-only knowledge bases as mentioned above. As an example, with a corpus of around 57000 car buying/selling classified advertisements, with word2vec calculating vector representations in a 100 dimensional space and k-means clustering configured to find out 50 clusters, we were able to find 12 clear clusters for brand names, models, colours, car feature, location of seller etc. These clusters provide an excellent start to builing a knowledge base and cut short the time taken to &lsquo;learn&rsquo; a domain. A larger corpus might help to identify words with high cohesiveness with higher accuracy.</p>
+
+<p>Since a number of clusters identified might not be of value while building our KBs, it would be difficult to automate this approach to remove all manual intervention. Its also important to note that the parameters mentioned above need to tuned and clustering tested using statistical tools to find the best possible combination. Automating this process is not trivial, and is an area of interest and improvement for future.</p>
+
+<h2>Summary</h2>
+
+<p>Building a KB for a domain involves indentifying and classifying different classes of strings in a corpus of text from said domain. This is a very tedious exercise which requires manual analysis of large volumes of text. Different data structures might be needed to store the KBs, a simple dictionary would do for text, but it needs to be modified to include numbers efficiently, Regex matchers are invaluable. Finally, word2vec provides a definite boost in productivity when &lsquo;learning&rsquo; and new domain and building a KB for it.</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://code.google.com/p/word2vec/">word2vec</a> : Tool for computing continuous distributes representations of words. A tool to watch.<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Tokenisation++]]></title>
+    <link href="http://rnjn.github.io/2014/03/tokenisation-plus-plus.html"/>
+    
+    <updated>2014-03-31T18:16:59+05:30</updated>
+    <id>http://rnjn.github.io/2014/03/tokenisation-plus-plus</id>
+    
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<blockquote><p>corpus &ndash; a collection of written texts, especially the entire works of a particular author or a body of writing on a particular subject.</p></blockquote>
+
+<p>Given a corpus of text, the first step is to <a href="https://en.wikipedia.org/wiki/Tokenize">tokenise</a> it. To elaborate, I would take an example of a corpus of classified advertisements for selling and buying cars. The added work on top of regular tokenisation addresses wayward spellings and sentence formations common in the Indian web-based classified ads corpora. Subsequent work in analysing the text would work on the tokens we obtain. I assume that you have a list of strings, each an advertisement. I used python to code this, you will see references to python libraries that have been helpful.</p>
+
+<p>A typical classified advertisement selling a car follows</p>
+
+<blockquote><p>I want to sell Hundai Santro 2007 model green coloured car in mint condisan. New tyres, regular servicing, good AC and leatherseats. Price Rs 3Lakhs negotiable Contact +91xxxxxxxxxx</p></blockquote>
+
+<p>The ordering of steps below help me explain the approach. The code shouldn&rsquo;t follow logical order, it wouldn&rsquo;t be performant.</p>
+
+<h2>Regular tokenisation</h2>
+
+<p>We start with breaking the advertisement down into a list of sentences. Then we break each sentence down into a list of words. A typical approach for English would be break sentences down by finding one of {&lsquo;;&rsquo;, &lsquo;:&rsquo;, &lsquo;,&rsquo;, &lsquo;.&rsquo;, &lsquo;!&rsquo;, &lsquo;?&rsquo;} and then break them down further by using spaces. However, different languages have different ways of ending a sentence or separation between words. There&rsquo;s further complexity if we include local flavour or contexts for e.g. a period between two numbers is not a full-stop. Instead of mulling through different variations, we can delegate this work to the nltk <a href="http://www.nltk.org/api/nltk.tokenize.html#nltk.tokenize.punkt.PunktSentenceTokenizer">PunktSentenceTokeniser</a>, which is trained on a collection of English text. Our task it then reduced to the following</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>            <span class="k">for</span> <span class="n">ad</span> <span class="ow">in</span> <span class="n">ads</span><span class="p">:</span>
+</span><span class='line'>                <span class="n">sentences</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+</span><span class='line'>              <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+</span><span class='line'>                  <span class="n">tokens</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The ++</h2>
+
+<p>Now, it makes sense to look at the corpus in general and create some general rules about tokens, which boost accuracy of subsequent analysis. This step might also be called a data cleaning step. Here are a few that come in handy for the example domain &ndash;</p>
+
+<p>for text input</p>
+
+<blockquote><ul>
+<li>all tokens should be in lower case</li>
+<li>all tokens would represent individual words, not combinations</li>
+<li>all tokens would contain human readable unicode</li>
+<li>no periods in between a word, unless its numeric</li>
+</ul>
+</blockquote>
+
+<p>for numerical input</p>
+
+<blockquote><ul>
+<li>all numerical input will be in numeric characters (e.g. convert 3Lakhs to 300000)</li>
+<li>no commas in numerical input</li>
+<li>no special characters in a phone number string</li>
+</ul>
+</blockquote>
+
+<p>We logically craft these in {before/during/after} the sentence and word tokenisation. Many of the above, like the numerical token rules can be performed easily using Regex matches and substitutions. These rules may not be premeditated. Indeed, we depend on the subsequent analysis process to for feedback on the tokenisation process to update the rules. For instance, if we encounter a situation where spelling variations and mistakes lower accruacy of analysis, we might add the following &ndash;</p>
+
+<blockquote><ul>
+<li>use only one way to spell a word</li>
+<li>try best to correct spellings</li>
+</ul>
+</blockquote>
+
+<p>Now, there are different ways to spell correct. A very simple approach is to use a language dictionary in conjunction with following process for domain specific words &ndash;</p>
+
+<blockquote><ul>
+<li><p>create a <a href="https://en.wikipedia.org/wiki/Histogram">histogram</a> of all words. The Counter class in python <a href="https://docs.python.org/2/library/collections.html">collections</a> is a fast and easy way to do this.</p>
+
+<p>  <code>
+      word_histogram = Counter(tokens)
+ </code></p></li>
+<li>if a word exists in the dictionary, don&rsquo;t do anything.</li>
+<li>for each word not in the dictionary, iterate over the histogram and find words which are closest in terms of <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a>. Use a threshold number for choosing the list of candidates, to improve accuracy.</li>
+<li>find the most frequently used word in the above list and replace the less frequently used one.</li>
+<li>insert this into a secondary dictionary for future use.</li>
+</ul>
+</blockquote>
+
+<p>The Enchant library (<a href="http://pythonhosted.org/pyenchant/">pyenchant</a> interface for python) provides a great interface to an English dictionary. Notably, it allows for new words to be added and it suggests words given an incorrect one.</p>
+
+<p>This approach depends on the assumption that there are more correctly spelled words than not. Unfortunately, sometimes this is not correct and analysis algorithms may have to address this problem, or as a final solution manual correction may be required. There are other customisations that might help, like choosing a different distance measure to fit the domain of words and errors. In a non-English locale a phonetic similarity measure might help, for instance to figure that &lsquo;condisan&rsquo; above is &lsquo;condition&rsquo;.</p>
+
+<p>The example advertisement copied above showcases two more issues &ndash; misspelling a proper noun (Hyundai v/s Hundai) and joined word (leather seats v/s leatherseats). For the former, when using Enchant, its advisable to add a list of proper nouns to the enchant dictionary, so as to improve suggestions. We also add another step of checking distance from this list of proper nouns (which might contain brand names etc.). The latter however, involves a performance intensive solution of creating smaller sets of words from a bigger word (if its not found in our customised dictionary) and then checking if in a particular combination of these sets, a high number of smaller words are found in our customised dictionary. In the case above, we might want to limit our sets to <a href="https://en.wikipedia.org/wiki/Ngram">bigrams</a> first-</p>
+
+<blockquote><p>[{lea, therseats}, {leat, herseats}, {leath, erseats}, {leathe, rseats}, {leather, seats}&hellip;..]</p></blockquote>
+
+<p>and clearly the set {leather, seats} is a strong contender. In case we don&rsquo;t find a meaningful set from bigrams, we create trigrams and so on.</p>
+
+<h2>Stop words and other measures</h2>
+
+<p>As a penultimate step, we remove from our list of tokens, words which have negative or no significant effect on the final outcome of text analysis. We keep a list of such <a href="https://en.wikipedia.org/wiki/Stop_words">stop words</a> and when we encounter them, we remove them from our token list. An example of such a list can be &ndash;</p>
+
+<blockquote><p>a,able,about,across,after,all,almost,also,am,among,an,and,
+any,are,as,at,be,because,been,but,by,can,cannot,could,dear,
+did,do,does,either,else,ever,every,for,from,get,got,had,has,
+have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,
+just,least,let,like,likely,may,me,might,most,must,my,neither,
+no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,
+say,says,she,should,since,so,some,than,that,the,their,them,then,
+there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,
+when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote>
+
+<p>Each problem domain has its own set of stop words, once again results of our next steps in analysis will help building a better list. For e.g., viz. the automobile related classified advertisements, the following may be considered stop words</p>
+
+<blockquote><p>model,showroom,fast,comfort,trend&hellip;</p></blockquote>
+
+<p>Finally, we choose a threshold token size/word length, below which a token doesn&rsquo;t qualify to be part of the analysis steps. For the example domain, upto 2 letter words are not significant, and either hurt performance or accuracy. We also remove all remaining letters that are not numeric/alphabetic.</p>
+
+<h2>Output</h2>
+
+<p>Example output for the example advertisement may be &ndash;</p>
+
+<blockquote><p>[&ldquo;sell&rdquo;, &ldquo;hyundai&rdquo;, &ldquo;santro&rdquo;, &ldquo;2007&rdquo;, &ldquo;green&rdquo;, &ldquo;mint&rdquo;, &ldquo;condition&rdquo;, &ldquo;new&rdquo;, &ldquo;tyres&rdquo;, regular&#8221;, &ldquo;servicing&rdquo;, &ldquo;good&rdquo;, &ldquo;leather&rdquo;, &ldquo;seats&rdquo;, &ldquo;price&rdquo;, &ldquo;300000&rdquo;, &ldquo;negotiable&rdquo;, &ldquo;contact&rdquo;, &ldquo;91xxxxxxx&rdquo;]</p></blockquote>
+
+<h2>Summary</h2>
+
+<p>As part of the tokenisation and cleaning process, we break text into a list sentences each of which is a list of words (called tokens). We remove stop/insignificant words, and we code in a bunch of rules that help our analysis process, for instance &ndash; dealing with numbers etc. We craft this tokenisation process based on experience, then fit it into a solution and gather feedback, and then use this feedback to update the process. Rinse, repeat.</p>
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Analysing semi-structured text and extracting features]]></title>
+    <link href="http://rnjn.github.io/2014/03/analysing-semi-structured-text-and-extracting-features.html"/>
+    
+    <updated>2014-03-31T18:02:28+05:30</updated>
+    <id>http://rnjn.github.io/2014/03/analysing-semi-structured-text-and-extracting-features</id>
+    
+    <content type="html"><![CDATA[<h2>Abstract / tl;dr;</h2>
+
+<p>There is significant interest in the industry around analysing and extracting information from text.  We have seen some demand in this area, specifically around analysing and extracting features out of classified advertisements (or semi-structured text in general). The technical term for this process is <a href="https://en.wikipedia.org/wiki/Entity_extraction">Entity Extraction</a>. The reasons for this interest may range from user experience (to let a user type in free text as against a set of mandatory fields) to monetising web content (better ad placements on a web page). For the past 2 months, we have been working on a specific problem for a big classified ads site in India.</p>
+
+<h2>Introduction</h2>
+
+<p>There is significant interest in extracting information in classified advertisements, so it can be stored in a query-able form for further analysis. This can have a variety of applications, from improving user experience, better placements, to creating price prediction tools using machine learning techniques. A classified advertisment can be called a semi-structured document as it generally has the following parts &ndash;</p>
+
+<blockquote><ul>
+<li>someone is [Contact]</li>
+<li>selling/buying [Type of Ad]</li>
+<li>something [Brand, Model]</li>
+<li>used/new [Year of manufacture]</li>
+<li>features [Color, Condition etc.]</li>
+<li>domain specific features like AC/non-AC, stereo system, seat types etc. [Features]</li>
+</ul>
+</blockquote>
+
+<p>More often than not, these parts are not placed neatly in order, and advertisements may differ significantly so as to make it harder to model them using a set of Regex parsers. In a test corpus for around 57,000 car selling/buying classified ads, rarely have we seen a set structure been followed. But there is a (or a limited number of) abstract semi-structure(s) that can be seen. We exploit these to extract information by text segmentation. We follow an unsupervised probabilistic approach called ONDUX<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> that helps us build a probabilistic model for classified ads for a domain given enough data. This approach is well suited for semi-structured smaller documents like classified advertisements &ndash; we identify known segments in a document using a knowledge base and we use a probabilistic model to identify unknown segments. This probabilistic model is built using a sizeable test corpus.</p>
+
+<p>The following diagram explains the end-to-end process &ndash;</p>
+
+<p>The details are introduced under the following heads, and each has a more explanatory document.</p>
+
+<blockquote><ul>
+<li>Tokenisation</li>
+<li>Building a knowledge base</li>
+<li>Blocking and labelling</li>
+<li>Building a Positional model</li>
+<li>Building a Sequencial model</li>
+<li>Inference</li>
+</ul>
+</blockquote>
+
+<h2>Tokenisation</h2>
+
+<p>Tokenisation is the process of converting a corpus to a list of advertisements, with each advertisement being a list of <em>significant words</em>. Word significance can be defined in terms of how our analysis can be affected by a word in terms of accuracy of output as well as the performance of our program. For example, we remove language and domain stop words, as well as words which are below a certain length because these words have either negative or zero effect on accuracy and performance. We also perform some data clean up like spell checking, which are detailed here.</p>
+
+<h2>Building a knowledge base</h2>
+
+<p>The approach we follow to label segments in a sentence is heavily dependent on an existing knowledge base or a dictionary of {label : [words]}. For the example domain, the following dictionary is a simple KB for the &ldquo;brand&rdquo; label:</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">knowledge_base</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;brand&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hyundai&quot;</span><span class="p">,</span> <span class="s">&quot;maruti&quot;</span><span class="p">,</span> <span class="s">&quot;suzuki&quot;</span><span class="p">,</span> <span class="s">&quot;ford&quot;</span><span class="o">......</span><span class="p">]</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This step takes a significant amount of time, in an otherwise unsupervised model building approach. More on this detailed here.</p>
+
+<h2>Blocking and labelling</h2>
+
+<p>Once the knowledge base is built, we start our unsupervised modelling process. The first step is to identify labels in a test corpus that can be assigned to a sub-sequence of strings. Given an accurate KB which contains a comprehensive list of words, this step helps extracting all known information from a new document. The algorithm and some customisations are listed here.</p>
+
+<h2>Building a positional model</h2>
+
+<p>While blocking and labelling helps us extract known information from a document (an advertisement in this case), it is unable to categorise words that are new. For instance, when our program encounters an advertisement which addresses a new car brand, it may not be able to categorise and extract the right &ldquo;brand&rdquo; information. To improve accuracy in such cases, we build a probabilistic model that addresses the position of labels in a typical advertisement. First, we build what we call the positional model for our labels. The positional model is a simple data structure that stores the probability of each label occuring at a certain position in an advertisement, and we learn this by blocking and labelling a sizeable corpus of advertisements.</p>
+
+<h2>Buiding the sequential model</h2>
+
+<p>The positional model gives us a general idea of where labels are placed in a document. But this model is not enough to identify/label unknown segments, as the observations are general and individual documents may not follow observed patterns. To strengthen our approach, we add another probabilistic model which addresses the sequencing of labels, namely the probability of a label occuring before or after another label, irrespective of the position of the labels. Combined together, these three probabilities would help us corner the right label for an unknown sub-sequence.</p>
+
+<h2>Inference</h2>
+
+<p>Once our probabilistic models are built, we are ready to extract information from a document. For our example domain, this program takes in an advertisement and gives back a simple object which stores all the information that we can extract from it. We call this process our inference step. We follow the step below to infer.</p>
+
+<ul>
+<li>all known information can be extracted by blocking and labelling the document</li>
+<li>we mark things we cannot label as &ldquo;unknown&rdquo;</li>
+<li>since the positional and sequential probabilities of an &ldquo;unknown&rdquo; sub-sequence or string are mutually exclusive, we can calculate its probable category using a logical disjunctive formula to find a label to be in that position surrounded by known labels. Specifics here.</li>
+</ul>
+
+
+<h2>Results</h2>
+
+<p>We see significant accuracy of extracted information out of classified documents from our blocking and labelling step. As of today, an average of 80% labels in an advertisement are correctly identified. We see further improvements when our probabilistic model kicks in to identify labels that our first step could not identify.</p>
+
+<h2>Future work</h2>
+
+<ul>
+<li>explore opportunities to automate KB creation using tools like word2vec</li>
+<li>implement improvements to the current probabilistic models.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup></li>
+<li>test our approach acrross different domains in a similar setup and verify our assumptions.</li>
+<li>explore other algorithms for this work</li>
+<li>scaling up to build a model over a sizeable corpus</li>
+</ul>
+
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="http://link.springer.com/chapter/10.1007/978-3-319-02597-1_4#page-1">ONDUX</a>: On demand unsupervised learning for information extraction- Eli Cortez et al. (2010)<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p><a href="http://crpit.com/confpapers/CRPITV137Huynh.pdf">Proximity based positional model</a> &ndash; Hyunh and Zhou (ADC 2013)<a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+]]></content>
+    
+  </entry>
   
   <entry>
     

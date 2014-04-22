@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Analysing semi-structured text and extracting features - ranjan sakalley</title>
+  <meta name="author" content="rnjn">
+
+  
+  <meta name="description" content="Abstract / tl;dr; There is significant interest in the industry around analysing and extracting information from text. We have seen some demand in &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rnjn.github.io/2014/03/analysing-semi-structured-text-and-extracting-features.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ranjan sakalley" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Inconsolata:bold' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/archives">Thoughts</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Analysing semi-structured text and extracting features</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-31T18:02:28+05:30" pubdate data-updated="true">Mar 31<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Abstract / tl;dr;</h2>
+
+<p>There is significant interest in the industry around analysing and extracting information from text.  We have seen some demand in this area, specifically around analysing and extracting features out of classified advertisements (or semi-structured text in general). The technical term for this process is <a href="https://en.wikipedia.org/wiki/Entity_extraction">Entity Extraction</a>. The reasons for this interest may range from user experience (to let a user type in free text as against a set of mandatory fields) to monetising web content (better ad placements on a web page). For the past 2 months, we have been working on a specific problem for a big classified ads site in India.</p>
+
+<h2>Introduction</h2>
+
+<p>There is significant interest in extracting information in classified advertisements, so it can be stored in a query-able form for further analysis. This can have a variety of applications, from improving user experience, better placements, to creating price prediction tools using machine learning techniques. A classified advertisment can be called a semi-structured document as it generally has the following parts &ndash;</p>
+
+<blockquote><ul>
+<li>someone is [Contact]</li>
+<li>selling/buying [Type of Ad]</li>
+<li>something [Brand, Model]</li>
+<li>used/new [Year of manufacture]</li>
+<li>features [Color, Condition etc.]</li>
+<li>domain specific features like AC/non-AC, stereo system, seat types etc. [Features]</li>
+</ul>
+</blockquote>
+
+<p>More often than not, these parts are not placed neatly in order, and advertisements may differ significantly so as to make it harder to model them using a set of Regex parsers. In a test corpus for around 57,000 car selling/buying classified ads, rarely have we seen a set structure been followed. But there is a (or a limited number of) abstract semi-structure(s) that can be seen. We exploit these to extract information by text segmentation. We follow an unsupervised probabilistic approach called ONDUX<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> that helps us build a probabilistic model for classified ads for a domain given enough data. This approach is well suited for semi-structured smaller documents like classified advertisements &ndash; we identify known segments in a document using a knowledge base and we use a probabilistic model to identify unknown segments. This probabilistic model is built using a sizeable test corpus.</p>
+
+<p>The following diagram explains the end-to-end process &ndash;</p>
+
+<p>The details are introduced under the following heads, and each has a more explanatory document.</p>
+
+<blockquote><ul>
+<li>Tokenisation</li>
+<li>Building a knowledge base</li>
+<li>Blocking and labelling</li>
+<li>Building a Positional model</li>
+<li>Building a Sequencial model</li>
+<li>Inference</li>
+</ul>
+</blockquote>
+
+<h2>Tokenisation</h2>
+
+<p>Tokenisation is the process of converting a corpus to a list of advertisements, with each advertisement being a list of <em>significant words</em>. Word significance can be defined in terms of how our analysis can be affected by a word in terms of accuracy of output as well as the performance of our program. For example, we remove language and domain stop words, as well as words which are below a certain length because these words have either negative or zero effect on accuracy and performance. We also perform some data clean up like spell checking, which are detailed here.</p>
+
+<h2>Building a knowledge base</h2>
+
+<p>The approach we follow to label segments in a sentence is heavily dependent on an existing knowledge base or a dictionary of {label : [words]}. For the example domain, the following dictionary is a simple KB for the &ldquo;brand&rdquo; label:</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">knowledge_base</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;brand&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hyundai&quot;</span><span class="p">,</span> <span class="s">&quot;maruti&quot;</span><span class="p">,</span> <span class="s">&quot;suzuki&quot;</span><span class="p">,</span> <span class="s">&quot;ford&quot;</span><span class="o">......</span><span class="p">]</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This step takes a significant amount of time, in an otherwise unsupervised model building approach. More on this detailed here.</p>
+
+<h2>Blocking and labelling</h2>
+
+<p>Once the knowledge base is built, we start our unsupervised modelling process. The first step is to identify labels in a test corpus that can be assigned to a sub-sequence of strings. Given an accurate KB which contains a comprehensive list of words, this step helps extracting all known information from a new document. The algorithm and some customisations are listed here.</p>
+
+<h2>Building a positional model</h2>
+
+<p>While blocking and labelling helps us extract known information from a document (an advertisement in this case), it is unable to categorise words that are new. For instance, when our program encounters an advertisement which addresses a new car brand, it may not be able to categorise and extract the right &ldquo;brand&rdquo; information. To improve accuracy in such cases, we build a probabilistic model that addresses the position of labels in a typical advertisement. First, we build what we call the positional model for our labels. The positional model is a simple data structure that stores the probability of each label occuring at a certain position in an advertisement, and we learn this by blocking and labelling a sizeable corpus of advertisements.</p>
+
+<h2>Buiding the sequential model</h2>
+
+<p>The positional model gives us a general idea of where labels are placed in a document. But this model is not enough to identify/label unknown segments, as the observations are general and individual documents may not follow observed patterns. To strengthen our approach, we add another probabilistic model which addresses the sequencing of labels, namely the probability of a label occuring before or after another label, irrespective of the position of the labels. Combined together, these three probabilities would help us corner the right label for an unknown sub-sequence.</p>
+
+<h2>Inference</h2>
+
+<p>Once our probabilistic models are built, we are ready to extract information from a document. For our example domain, this program takes in an advertisement and gives back a simple object which stores all the information that we can extract from it. We call this process our inference step. We follow the step below to infer.</p>
+
+<ul>
+<li>all known information can be extracted by blocking and labelling the document</li>
+<li>we mark things we cannot label as &ldquo;unknown&rdquo;</li>
+<li>since the positional and sequential probabilities of an &ldquo;unknown&rdquo; sub-sequence or string are mutually exclusive, we can calculate its probable category using a logical disjunctive formula to find a label to be in that position surrounded by known labels. Specifics here.</li>
+</ul>
+
+
+<h2>Results</h2>
+
+<p>We see significant accuracy of extracted information out of classified documents from our blocking and labelling step. As of today, an average of 80% labels in an advertisement are correctly identified. We see further improvements when our probabilistic model kicks in to identify labels that our first step could not identify.</p>
+
+<h2>Future work</h2>
+
+<ul>
+<li>explore opportunities to automate KB creation using tools like word2vec</li>
+<li>implement improvements to the current probabilistic models.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup></li>
+<li>test our approach acrross different domains in a similar setup and verify our assumptions.</li>
+<li>explore other algorithms for this work</li>
+<li>scaling up to build a model over a sizeable corpus</li>
+</ul>
+
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="http://link.springer.com/chapter/10.1007/978-3-319-02597-1_4#page-1">ONDUX</a>: On demand unsupervised learning for information extraction- Eli Cortez et al. (2010)<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p><a href="http://crpit.com/confpapers/CRPITV137Huynh.pdf">Proximity based positional model</a> &ndash; Hyunh and Zhou (ADC 2013)<a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">rnjn</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-31T18:02:28+05:30" pubdate data-updated="true">Mar 31<span>st</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://rnjn.github.io/2014/03/analysing-semi-structured-text-and-extracting-features.html" data-via="rnjn" data-counturl="http://rnjn.github.io/2014/03/analysing-semi-structured-text-and-extracting-features.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2014/02/simpler-emacs-setup.html" title="Previous Post: Simpler emacs setup">&laquo; Simpler emacs setup</a>
+      
+      
+        <a class="basic-alignment right" href="/2014/03/tokenisation-plus-plus.html" title="Next Post: Tokenisation++">Tokenisation++ &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/04/building-a-positional-model.html">Building a positional model</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/blocking-and-labelling.html">Blocking and labelling</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/building-a-knowledge-base-for-text-segmentation.html">Building a knowledge base for text segmentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/tokenisation-plus-plus.html">Tokenisation++</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/analysing-semi-structured-text-and-extracting-features.html">Analysing semi-structured text and extracting features</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/02/simpler-emacs-setup.html">Simpler emacs setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/10/introducing-automation-to-existing.html">Introducing automation to an existing large team</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/why-is-test-automation-the-backbone-of.html">Why is test automation the backbone of Continuous Delivery?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/01/who-should-write-functional-tests.html">Who should write functional tests?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/12/why-teams-lose-faith-in-their.html">Why teams lose faith in their functional test suite</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  <!-- Copyright &copy; 2014 - rnjn <br/> -->
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
