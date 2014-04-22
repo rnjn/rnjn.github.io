@@ -4,7 +4,7 @@
   <title><![CDATA[ranjan sakalley]]></title>
   <link href="http://rnjn.github.io/atom.xml" rel="self"/>
   <link href="http://rnjn.github.io/"/>
-  <updated>2014-04-22T11:33:36+05:30</updated>
+  <updated>2014-04-22T11:35:35+05:30</updated>
   <id>http://rnjn.github.io/</id>
   <author>
     <name><![CDATA[rnjn]]></name>
@@ -528,7 +528,9 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
     <updated>2014-03-31T18:02:28+05:30</updated>
     <id>http://rnjn.github.io/2014/03/analysing-semi-structured-text-and-extracting-features</id>
     
-    <content type="html"><![CDATA[<h2>Introduction</h2>
+    <content type="html"><![CDATA[<p>&lt;&lt; work in progress. TODO: sequential model, inference and future work >></p>
+
+<h2>Introduction</h2>
 
 <p>There is significant interest in extracting information from unstructured or semi-structured text like classified advertisements, so it can be stored in a query-able form for further analysis. This can have a variety of applications, from improving user experience, better placements, to creating price prediction tools using machine learning techniques. A classified advertisment can be called a semi-structured document as it generally has the following parts &ndash;</p>
 
