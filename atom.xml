@@ -4,7 +4,7 @@
   <title><![CDATA[ranjan sakalley]]></title>
   <link href="http://rnjn.github.io/atom.xml" rel="self"/>
   <link href="http://rnjn.github.io/"/>
-  <updated>2014-04-22T14:00:27+05:30</updated>
+  <updated>2014-04-22T14:04:47+05:30</updated>
   <id>http://rnjn.github.io/</id>
   <author>
     <name><![CDATA[rnjn]]></name>
@@ -290,11 +290,11 @@
 
 <p>blocking and labelling output may be</p>
 
-<p>[[insert image blocking.png]]</p>
+<p><img class="center" src="../../images/blocking.png"></p>
 
 <h2>Results</h2>
 
-<p>We have seen that blocking and labelling has been able to extract information from a document to the accuracy of close to 97%. This is true for documents which have known text strings. The 3% can be marked down to new strings which we do not know about. For numerical sequences we have seen our accuracy numbers change depending on the way numbers are mentioned in the document.</p>
+<p>We have seen that blocking and labelling has been able to extract information from a document to the accuracy of close to 85%. This is true for documents which have known text strings. The rest can be marked down to new strings which we do not know about. For numerical sequences we have seen our accuracy numbers change depending on the way numbers are mentioned in the document.</p>
 ]]></content>
     
   </entry>
