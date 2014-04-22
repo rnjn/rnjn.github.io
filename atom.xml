@@ -4,7 +4,7 @@
   <title><![CDATA[ranjan sakalley]]></title>
   <link href="http://rnjn.github.io/atom.xml" rel="self"/>
   <link href="http://rnjn.github.io/"/>
-  <updated>2014-04-22T11:25:13+05:30</updated>
+  <updated>2014-04-22T11:33:36+05:30</updated>
   <id>http://rnjn.github.io/</id>
   <author>
     <name><![CDATA[rnjn]]></name>
@@ -21,9 +21,7 @@
     <updated>2014-04-03T12:38:28+05:30</updated>
     <id>http://rnjn.github.io/2014/04/building-a-positional-model</id>
     
-    <content type="html"><![CDATA[<h1>Building a positional model</h1>
-
-<h2>Introduction</h2>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>Blocking and labelling using known words stored in a knowledge base lets us extract known information from a document. However, for words that are new to the knowledge base, like a new car brand or model in the example domain, blocking and labelling fails. To be able to categorise or label new words, we take a probabilistic approach. Given a sizeable number of documents, we build a positional model, that helps us find an appropriate label for a new word given its position in the document.</p>
 
@@ -562,7 +560,7 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
 
 <h2>Tokenisation</h2>
 
-<p>Tokenisation is the process of converting a corpus to a list of advertisements, with each advertisement being a list of <em>significant words</em>. Word significance can be defined in terms of how our analysis can be affected by a word in terms of accuracy of output as well as the performance of our program. For example, we remove language and domain stop words, as well as words which are below a certain length because these words have either negative or zero effect on accuracy and performance. We also perform some data clean up like spell checking, which are detailed here.</p>
+<p>Tokenisation is the process of converting a corpus to a list of advertisements, with each advertisement being a list of <em>significant words</em>. Word significance can be defined in terms of how our analysis can be affected by a word in terms of accuracy of output as well as the performance of our program. For example, we remove language and domain stop words, as well as words which are below a certain length because these words have either negative or zero effect on accuracy and performance. We also perform some data clean up like spell checking, which are detailed <a href="./tokenisation-plus-plus.html">here</a>.</p>
 
 <h2>Building a knowledge base</h2>
 
@@ -575,15 +573,15 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This step takes a significant amount of time, in an otherwise unsupervised model building approach. More on this detailed here.</p>
+<p>This step takes a significant amount of time, in an otherwise unsupervised model building approach. More on this detailed <a href="../04/building-a-knowledge-base-for-text-segmentation.html">here</a>.</p>
 
 <h2>Blocking and labelling</h2>
 
-<p>Once the knowledge base is built, we start our unsupervised modelling process. The first step is to identify labels in a test corpus that can be assigned to a sub-sequence of strings. Given an accurate KB which contains a comprehensive list of words, this step helps extracting all known information from a new document. The algorithm and some customisations are listed here.</p>
+<p>Once the knowledge base is built, we start our unsupervised modelling process. The first step is to identify labels in a test corpus that can be assigned to a sub-sequence of strings. Given an accurate KB which contains a comprehensive list of words, this step helps extracting all known information from a new document. The algorithm and some customisations are listed <a href="../04/blocking-and-labelling.html">here</a>.</p>
 
 <h2>Building a positional model</h2>
 
-<p>While blocking and labelling helps us extract known information from a document (an advertisement in this case), it is unable to categorise words that are new. For instance, when our program encounters an advertisement which addresses a new car brand, it may not be able to categorise and extract the right &ldquo;brand&rdquo; information. To improve accuracy in such cases, we build a probabilistic model that addresses the position of labels in a typical advertisement. First, we build what we call the positional model for our labels. The positional model is a simple data structure that stores the probability of each label occuring at a certain position in an advertisement, and we learn this by blocking and labelling a sizeable corpus of advertisements.</p>
+<p>While blocking and labelling helps us extract known information from a document (an advertisement in this case), it is unable to categorise words that are new. For instance, when our program encounters an advertisement which addresses a new car brand, it may not be able to categorise and extract the right &ldquo;brand&rdquo; information. To improve accuracy in such cases, we build a probabilistic model that addresses the position of labels in a typical advertisement. First, we build what we call the positional model for our labels. The positional model is a simple data structure that stores the probability of each label occuring at a certain position in an advertisement, and we learn this by blocking and labelling a sizeable corpus of advertisements. More <a href="../04/building-a-positional-model.html">here</a>.</p>
 
 <h2>Buiding the sequential model</h2>
 
