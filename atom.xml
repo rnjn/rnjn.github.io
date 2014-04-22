@@ -4,7 +4,7 @@
   <title><![CDATA[ranjan sakalley]]></title>
   <link href="http://rnjn.github.io/atom.xml" rel="self"/>
   <link href="http://rnjn.github.io/"/>
-  <updated>2014-04-22T11:52:45+05:30</updated>
+  <updated>2014-04-22T14:00:27+05:30</updated>
   <id>http://rnjn.github.io/</id>
   <author>
     <name><![CDATA[rnjn]]></name>
@@ -532,7 +532,7 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
 
 <h2>Introduction</h2>
 
-<p>There is significant interest in extracting information from unstructured or semi-structured text like classified advertisements, so it can be stored in a query-able form for further analysis. This can have a variety of applications, from improving user experience, better placements, to creating price prediction tools using machine learning techniques. A classified advertisment can be called a semi-structured document as it generally has the following parts &ndash;</p>
+<p>There is significant interest in extracting information from unstructured or semi-structured text like classified advertisements, so it can be stored in a query-able form for further analysis. In the specific example case of classified advertisements, used through this set of pages, this can have a variety of applications, from improving user experience, better placements, to creating price prediction tools using machine learning techniques. A classified advertisment can be called a semi-structured document as it generally has the following parts &ndash;</p>
 
 <blockquote><ul>
 <li>someone is [Contact]</li>
@@ -544,9 +544,10 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
 </ul>
 </blockquote>
 
-<p>More often than not, these parts are not placed neatly in order, and advertisements may differ significantly so as to make it harder to model them using a set of Regex parsers. In a test corpus for around 57,000 car selling/buying classified ads, rarely have we seen a set structure been followed. But there is a (or a limited number of) abstract semi-structure(s) that can be seen. We exploit these to extract information by text segmentation. We follow an unsupervised probabilistic approach called ONDUX<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> that helps us build a probabilistic model for classified ads for a domain given enough data. This approach is well suited for semi-structured smaller documents like classified advertisements &ndash; we identify known segments in a document using a knowledge base and we use a probabilistic model to identify unknown segments. This probabilistic model is built using a sizeable test corpus.</p>
+<p>More often than not, these parts are not placed neatly in order, and advertisements may differ significantly so as to make it harder to model them using a set of Regex parsers. In a test corpus for around 57,000 car selling/buying classified ads, rarely a case where a set structure been followed existed. But there is a (or a limited number of) abstract semi-structure(s) that could be seen. We exploit these to extract information by text segmentation. We follow an unsupervised probabilistic approach called ONDUX<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> that helps us build a probabilistic model for classified ads for a domain given enough data. This approach is well suited for semi-structured smaller documents like classified advertisements &ndash; we identify known segments in a document using a knowledge base and we use a probabilistic model to identify unknown segments. This probabilistic model is built using a sizeable test corpus.</p>
 
-<p>The following diagram explains the end-to-end process &ndash;</p>
+<p>The following diagram explains the end-to-end process &ndash;
+<img class="center" src="../../images/process.png"></p>
 
 <p>The details are introduced under the following heads, and each has a more explanatory document.</p>
 
