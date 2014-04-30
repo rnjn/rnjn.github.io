@@ -1,0 +1,31 @@
+---
+layout: post
+title: Simpler emacs setup
+date: 2014-02-25 11:12:40 UTC
+updated: 2014-02-25 11:12:40 UTC
+comments: false
+categories: 
+---
+
+<div dir="ltr" style="text-align: left;" trbidi="on">
+  <div dir="ltr" style="text-align: left;" trbidi="on">I moved from my older, cumbersome emacs setup to a package.el based one. I currently use an Emacs 24.3&nbsp;
+    <a href="http://emacsformacosx.com/">build
+    </a> for Mac OS X (which comes with package.el). Its cleaner -
+    <br />
+    <br />
+    <ol style="text-align: left;">
+      <li>I just list the packages I need in my init file - no submodules business
+      </li>
+      <li>Run through the list to find if a package is installed or not. If not, download and install package from elpa/melpa/marmalade
+      </li>
+      <li>For now, an added manual step when removing a package is to delete related folder from the /elpa/ directory
+      </li>
+    </ol>
+    <div>Here's a gist which explains (I maintain this setup at <a href="https://github.com/rnjn/dotemacs/">github</a>)
+    </div>
+    {% gist 9205481 %}    
+    <div>
+      <br />
+    </div>
+  </div>
+</div>
