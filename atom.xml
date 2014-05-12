@@ -4,7 +4,7 @@
   <title><![CDATA[ranjan sakalley]]></title>
   <link href="http://rnjn.github.io/atom.xml" rel="self"/>
   <link href="http://rnjn.github.io/"/>
-  <updated>2014-04-30T14:41:57+05:30</updated>
+  <updated>2014-05-12T11:53:01+05:30</updated>
   <id>http://rnjn.github.io/</id>
   <author>
     <name><![CDATA[rnjn]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Pretty Python list comprehensions]]></title>
+    <link href="http://rnjn.github.io/2014/05/pretty-python-list-comprehensions.html"/>
+    
+    <updated>2014-05-12T11:40:23+05:30</updated>
+    <id>http://rnjn.github.io/2014/05/pretty-python-list-comprehensions</id>
+    
+    <content type="html"><![CDATA[<p>Python list comprehensions are by far the simplest and most readable loop expressions that I have worked with. Here&rsquo;s an example where I have a list of lists of lists (corpus &ndash;> documents &ndash;> sentences) where I need to remove some items (called stop_words here) from the sentences.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">corpus</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">word</span>
+</span><span class='line'>            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sentence</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_words</span><span class="p">]</span>
+</span><span class='line'>         <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">document</span><span class="p">]</span>
+</span><span class='line'>       <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">]</span>
+</span><span class='line'>                                                      
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice the array brackets added after each for expression so the program retains the same structure.</p>
+
+<p>Another example, if I have to flatten such a deep list-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">word</span>
+</span><span class='line'>          <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_corpus</span>
+</span><span class='line'>         <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">document</span>
+</span><span class='line'>       <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+    
+  </entry>
   
   <entry>
     
