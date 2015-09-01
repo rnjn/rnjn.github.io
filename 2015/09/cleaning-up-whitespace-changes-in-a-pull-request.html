@@ -97,6 +97,16 @@
 <div class="entry-content"><p>Recently a core committer requested me to remove whitespace changes (blame my idea settings that formatted tab spacing etc). Here&rsquo;s an easy way to do this &ndash;</p>
 
 <ul>
+<li>soft reset the commit on your local branch</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git reset --soft HEAD~1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
 <li>create a patch using git-diff requesting it to ignore space changes</li>
 </ul>
 
@@ -113,9 +123,7 @@
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>patch --ignore-whitespace --dry-run ../commit.patch
-</span><span class='line'>
 </span><span class='line'>patch --ignore-whitespace ../commit.patch
 </span></code></pre></td></tr></table></div></figure>
 
@@ -131,7 +139,9 @@
 
 
 <ul>
+<li>manually fix whitespace issues where code changes were made</li>
 <li>force push commit to branch which was used to create the pull request</li>
+<li>suggest using a common code style for the repository</li>
 </ul>
 
 </div>
