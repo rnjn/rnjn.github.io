@@ -4,7 +4,7 @@
   <title><![CDATA[ranjan sakalley]]></title>
   <link href="http://rnjn.github.io/atom.xml" rel="self"/>
   <link href="http://rnjn.github.io/"/>
-  <updated>2015-07-30T14:57:32+05:30</updated>
+  <updated>2015-09-01T15:04:48+05:30</updated>
   <id>http://rnjn.github.io/</id>
   <author>
     <name><![CDATA[rnjn]]></name>
@@ -15,15 +15,65 @@
   
   <entry>
     
+    <title type="html"><![CDATA[Cleaning up whitespace changes in a pull request]]></title>
+    <link href="http://rnjn.github.io/2015/09/cleaning-up-whitespace-changes-in-a-pull-request.html"/>
+    
+    <updated>2015-09-01T14:48:16+05:30</updated>
+    <id>http://rnjn.github.io/2015/09/cleaning-up-whitespace-changes-in-a-pull-request</id>
+    
+    <content type="html"><![CDATA[<p>Recently a core committer requested me to remove whitespace changes (blame my idea settings that formatted tab spacing etc). Here&rsquo;s an easy way to do this &ndash;</p>
+
+<ul>
+<li>create a patch using git-diff requesting it to ignore space changes</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git diff --ignore-all-space --ignore-blank-lines &gt; ../commit.patch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>verify and apply the patch (use patch or git-apply)</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>patch --ignore-whitespace --dry-run ../commit.patch
+</span><span class='line'>
+</span><span class='line'>patch --ignore-whitespace ../commit.patch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>short alternative</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git diff --ignore-all-space --ignore-blank-lines | git apply --reject --cached --ignore-space-change
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>force push commit to branch which was used to create the pull request</li>
+</ul>
+
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
     <title type="html"><![CDATA[On Postels law and managing change]]></title>
     <link href="http://rnjn.github.io/2015/07/on-postels-law-and-managing-change.html"/>
     
     <updated>2015-07-30T13:49:52+05:30</updated>
     <id>http://rnjn.github.io/2015/07/on-postels-law-and-managing-change</id>
     
-    <content type="html"><![CDATA[<h2>On Postel&rsquo;s law and Change</h2>
-
-<p>Postel&rsquo;s law ~1981<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>,</p>
+    <content type="html"><![CDATA[<p>Postel&rsquo;s law ~1981<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>,</p>
 
 <blockquote><p>&ldquo;Be conservative in what you do, be liberal in what you accept from others.&rdquo; (RFC 793)</p></blockquote>
 
@@ -734,7 +784,7 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
     <title type="html"><![CDATA[Simpler emacs setup]]></title>
     <link href="http://rnjn.github.io/2014/02/simpler-emacs-setup.html"/>
     
-    <updated>2014-02-25T11:12:40Z</updated>
+    <updated>2014-02-25T16:42:40+05:30</updated>
     <id>http://rnjn.github.io/2014/02/simpler-emacs-setup</id>
     
     <content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">
@@ -754,7 +804,7 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
     <div>Here&#8217;s a gist which explains (I maintain this setup at <a href="https://github.com/rnjn/dotemacs/">github</a>)
     </div>
     <div><script src='https://gist.github.com/9205481.js'></script>
-<noscript><pre><code>(setq installed-packages &#39;(
+<noscript><pre><code>(setq installed-packages '(
 			   color-theme
 			   color-theme-solarized
 			   yasnippet
@@ -763,7 +813,7 @@ when,where,which,while,who,whom,why,will,with,would,yet,you,your</p></blockquote
 			   ac-js2
 			   ))
 
-(setq package-archives &#39;((&quot;gnu&quot; . &quot;http://elpa.gnu.org/packages/&quot;)
+(setq package-archives '((&quot;gnu&quot; . &quot;http://elpa.gnu.org/packages/&quot;)
 			 (&quot;marmalade&quot; . &quot;http://marmalade-repo.org/packages/&quot;)
 			 (&quot;melpa&quot; . &quot;http://melpa.milkbox.net/packages/&quot;)))
 
