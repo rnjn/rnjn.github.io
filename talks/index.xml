@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Talks on 🏡</title>
-    <link>http://rnjn-2.local/talks/</link>
+    <link>http://ranjansakalley.com/talks/</link>
     <description>Recent content in Talks on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 24 Jun 2019 23:22:59 +0530</lastBuildDate>
     
-	<atom:link href="http://rnjn-2.local/talks/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://ranjansakalley.com/talks/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Scaling</title>
-      <link>http://rnjn-2.local/talks/scaling/</link>
+      <link>http://ranjansakalley.com/talks/scaling/</link>
       <pubDate>Mon, 24 Jun 2019 23:22:59 +0530</pubDate>
       
-      <guid>http://rnjn-2.local/talks/scaling/</guid>
+      <guid>http://ranjansakalley.com/talks/scaling/</guid>
       <description>June 2019
 At an event organised by ThoughtWorks I presented on scaling - tech, teams and processes. The slides by themselves may not paint a complete picture, if you have any questions, do drop me an email, and I will try to get back to you.</description>
     </item>
