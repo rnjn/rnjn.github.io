@@ -1,85 +1,78 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
-    <url>
-        <loc>http://rnjn.github.io/2009/02/is-your-functional-suite-done-right.html</loc>
-        <lastmod>2014-03-25T09:47:30+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2010/12/why-teams-lose-faith-in-their.html</loc>
-        <lastmod>2014-03-25T09:47:30+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2011/01/who-should-write-functional-tests.html</loc>
-        <lastmod>2014-03-25T09:47:30+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2011/08/why-is-test-automation-the-backbone-of.html</loc>
-        <lastmod>2014-03-25T09:47:30+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2011/10/introducing-automation-to-existing.html</loc>
-        <lastmod>2014-03-25T09:47:30+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2014/02/simpler-emacs-setup.html</loc>
-        <lastmod>2015-08-04T00:12:20+05:30</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://rnjn.github.io/2014/03/analysing-semi-structured-text-and-extracting-features.html
-        </loc>
-        <lastmod>2014-04-22T14:27:02+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2014/03/tokenisation-plus-plus.html</loc>
-        <lastmod>2014-04-22T14:29:36+05:30</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://rnjn.github.io/2014/04/building-a-knowledge-base-for-text-segmentation.html
-        </loc>
-        <lastmod>2014-04-22T14:30:11+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2014/04/blocking-and-labelling.html</loc>
-        <lastmod>2014-04-22T14:30:04+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2014/04/building-a-positional-model.html</loc>
-        <lastmod>2014-04-22T14:30:16+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2014/05/pretty-python-list-comprehensions.html</loc>
-        <lastmod>2014-05-12T13:19:42+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/2015/07/on-postels-law-and-managing-change.html</loc>
-        <lastmod>2015-07-30T15:19:28+05:30</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://rnjn.github.io/2015/09/cleaning-up-whitespace-changes-in-a-pull-request.html
-        </loc>
-        <lastmod>2015-09-01T15:23:40+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/about/</loc>
-        <lastmod>2014-03-27T10:20:48+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/blog/archives/</loc>
-        <lastmod>2015-09-01T15:23:40+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/</loc>
-        <lastmod>2015-09-01T15:23:40+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/new-page/</loc>
-        <lastmod>2014-03-27T10:19:53+05:30</lastmod>
-    </url>
-    <url>
-        <loc>http://rnjn.github.io/robots.txt</loc>
-        <lastmod>2014-03-25T09:47:30+05:30</lastmod>
-    </url>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://rnjn-2.local/about/</loc>
+    <lastmod>2020-06-23T23:50:02+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/talks/scaling/</loc>
+    <lastmod>2019-06-24T23:22:59+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/talks/</loc>
+    <lastmod>2019-06-24T23:22:59+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/</loc>
+    <lastmod>2019-06-24T23:22:59+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/</loc>
+    <lastmod>2015-07-30T17:58:57+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/on-postels-law-and-managing-change/</loc>
+    <lastmod>2015-07-30T17:58:57+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/test-page/</loc>
+    <lastmod>2015-07-30T13:49:52+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/pretty-python-list-comprehensions/</loc>
+    <lastmod>2014-05-12T17:52:27+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/introducing-automation-to-large-team/</loc>
+    <lastmod>2011-10-24T17:43:31+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/who-test-automation-is-backbone-of-cd/</loc>
+    <lastmod>2011-08-25T16:13:37+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/who-should-write-functional-tests/</loc>
+    <lastmod>2011-01-03T16:08:19+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/why-teams-lose-faith-in-functional-automation/</loc>
+    <lastmod>2010-12-06T16:03:31+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/articles/is-your-functional-suite-done-right/</loc>
+    <lastmod>2009-02-10T15:59:41+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://rnjn-2.local/tags/</loc>
+  </url>
+  
 </urlset>
