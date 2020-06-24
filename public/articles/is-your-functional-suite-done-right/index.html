@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Is Your Functional Suite Done Right" />
+<meta property="og:site_name" content="🏡" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="http://rnjn-2.local/articles/is-your-functional-suite-done-right/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2009-02-10
+" /> <meta property="article:modified_time" content="2009-02-10
+" />
+
+
+
+
+
+
+    <title>Is Your Functional Suite Done Right</title>
+    <link rel="canonical" href="http://rnjn-2.local/articles/is-your-functional-suite-done-right/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="stylesheet" href="http://rnjn-2.local/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+
+  </head>
+
+
+<body
+  lang="en-us"
+  class="sans-serif w-90 w-60-ns center center-ns mv2 mv5-ns"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a
+    href="http://rnjn-2.local/"
+    class="b bb bw1 pb1 no-underline black"
+    >🏡</a
+  >
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Is Your Functional Suite Done Right</h1>
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <p><em>Feb 10th, 2009</em></p>
+<p>On the last two projects that I have worked on, both being fairly sized in terms of people (40+), I have seen enormous effort being spent on functional testing. The effort, though not completely wasted, hasn’t yielded proportional gains in terms of quality improvements and quicker feedback on a higher integration level. The following list tries to address issues and my take on fixing them.</p>
+<h2 id="separation-of-concerns">Separation of Concerns</h2>
+<p>Functional suites suffer most from a lack of clear directive on what they are written for. Adding view tests (testing windows UI/html output) which cannot be tested by your regular unit tests to your functional suite is a recipe for disaster. View tests do not belong in the function suite. Unfortunately such tests form almost half of the suite. Coupling these not only increases the run time of a suite, it also mandates that the same testing tool is used for both these sets. Think of an ASP.Net website you are developing. A view test suite can be written using the lightening fast NUnitASP toolset, because you wouldn’t need to attack cross browser compatibility issues and integration between your user interface and services, and you can write your functional suite with Selenium or your favorite browser based testing tool. Also, view tests should be a part of the tests that a pair runs before they check-in, while all functional tests might not (teams generally decide on a subset as smoke), so dividing your tests judiciously between view tests and functional tests is of utmost importance.</p>
+<p>Learning: There should be a clear divide between regression functional tests and view tests. Before adding a new test, ask yourself whether you want to test just the view or integration and functionality.</p>
+<h2 id="performance">Performance</h2>
+<p>Functional tests need to be extremely fast. If not, then scalable with or without parallelization. The functional suite has more often than not the longest feedback cycle on any project. The longer running time forces teams to not include this feedback in their primary builds. A functional suite that takes 12 hours to run is not going to help you a lot with continuous integration. It’s not just the wait that hurts, it’s the lack of granularity at the individual check-in level on how new development affects existing functionality.
+If the testing tools you are using are not extremely fast, you must look at creating parallel streams of tests to be run. Continuous Integration tools like Cruise with agent based architectures allow you to divide tests in separate meaningful suites and parallelize their run. For browser based applications, tools like Selenium Grid help you do that a level lower than CI (if you use selenium for your tests), and are an excellent choice for distributing your tests across multiple machines. But before you jump onto this, your suite must be ready to be distributed. A classic example of bad design is when you login with one user’s credentials in all your tests. Most sites/applications don’t allow this and hence you cannot parallelize such tests (this one is easy enough to fix, but the team should be on the lookout for such issues). An idea that I am trying to push within ThoughtWorks is to have a small SeleniumRC cloud, which any developer can use to run their tests, hosting the server on their machine (this can be taken further to have a SETI like “use hardware when idle” approach, but I will be happy with 10 regular boxes dedicated right now). This would make the feedback cycle shorter and probably help include regression tests as a primary test target rather than a nightly build target.</p>
+<p>Learning: Design with parallelization in mind. Keep the suite run-time within a decided time span (like say 20 minutes) and keep analyzing + refactoring the suite to keep this below the limit.</p>
+<h2 id="ownership">Ownership</h2>
+<p>Having all your functional tests in one suite makes it very difficult to divide tests into regression tests and specifications. When this happens, developers and analysts are all involved in writing functional tests which is a mess because developers want refactorable tests, written in their favorite language and analysts want an easy way to specify tests and run, preferably a tool with recording support, which developers don’t like because they are fragile, and hence analysts are forced into complicated object oriented functional suites which takes them away from their primary concern. Fixing tests broken by new functionality is another ownership issue between developers and analysts.
+Ideally, the analysis team and the quality team should specify new behavior for a release using tests written with their choice of tools, and the development team should work towards making these tests green. This suite may not be monitored for failure, but must be monitored for progress. This suite doesn’t need to be highly performant and can be run per iteration. The development team on the other hand should have its own refactorable regression suite, based on the specifications. Failures in this suite must be monitored closely, and this suite should be written with quick feedback in mind.
+Ideals aside, it’s much easier to manage the quality process of a team this way because all suites have their dedicated owners with concrete responsibilities on who runs what, and what runs when. It is easier to track progress, and people who write code are responsible for fixing tests they break by adding new functionality, not just leave them by to be attended to by someone else.
+Learning: Do not hesitate to use different tools for different goals for suites within a team. Have a specification suite and a regression suite to define clear responsibilities.</p>
+<p>The most wonderful thing about functional automation is its fun and easy to do. To write an effective suite, one must treat it as one treats the product it’s supposed to test, with clear design goals and responsibilities, an eye on performance every now and then, and effective reporting on progress. Don’t leave it as the dark side of the project, but as the release mechanism that gives you confidence.</p>
+
+    </article>
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>

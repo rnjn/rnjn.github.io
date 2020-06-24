@@ -1,0 +1,45 @@
+body {
+    -webkit-font-smoothings: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-family: Avenir !important;
+  }
+  h1 {
+      font-family: "Avenir"
+  }
+  h2, h3,
+  h4, h5, h6 {
+      font-family: helvetica neue !important;
+  }
+
+  a {
+      font-family: Avenir !important;
+  }
+
+  
+  code {
+    padding: 2px 4px;
+    font-size: 90%;
+    background-color: #eeeeee;
+    /* border-radius: 4px; */
+  }
+  
+  pre {
+    display: block;
+    padding: 0px;
+    margin: 0 0 10px;
+    line-height: 1.4;
+    word-break: break-all;
+    word-wrap: break-word;
+    border: 0px solid #ccc;
+    /* border-radius: 4px; */
+  }
+  
+  pre,
+  code {
+    font-family: 'Courier New', Courier, monospace;
+    -webkit-font-smoothings: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  

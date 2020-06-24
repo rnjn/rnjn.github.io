@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Why Teams Lose Faith in their Functional Automation suite?" />
+<meta property="og:site_name" content="🏡" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="http://rnjn-2.local/articles/why-teams-lose-faith-in-functional-automation/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2010-12-06
+" /> <meta property="article:modified_time" content="2010-12-06
+" />
+
+
+
+
+
+
+    <title>Why Teams Lose Faith in their Functional Automation suite?</title>
+    <link rel="canonical" href="http://rnjn-2.local/articles/why-teams-lose-faith-in-functional-automation/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="stylesheet" href="http://rnjn-2.local/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+
+  </head>
+
+
+<body
+  lang="en-us"
+  class="sans-serif w-90 w-60-ns center center-ns mv2 mv5-ns"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a
+    href="http://rnjn-2.local/"
+    class="b bb bw1 pb1 no-underline black"
+    >🏡</a
+  >
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Why Teams Lose Faith in their Functional Automation suite?</h1>
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <p><em>DEC 6th, 2010</em></p>
+<p>In my opinion, there are three main reasons why a functional automation suite loses its value (or the respect that a delivery team should pay it). This leads to a variety of problems, but I will save that for a later post.</p>
+<p>The reasons for me are -</p>
+<ul>
+<li>
+<p><strong>Non-deterministic tests</strong> - run the same test again (without changing the code) and the test gives different results.</p>
+<p>This, in my opinion is the least attractive aspect, a true demotivator for a delivery team to believe in its functional test suite. One of the reasons I have seen non-deterministic failures is when the tests run on hardware that’s performance is non-deterministic, for example VMs which share hardware resources, and hence are dependent on how the other VMs on the same host are performing during the test run. Sometimes, tests are non-deterministic when they access external systems which are non-deterministic. Unless testing the robustness of the system under test, stubbing out such external dependencies have worked out well. Another reason is just bad tests, like tests which depend on the time which they are running at (unless functionally driven to), tests which have time-outs which are not well researched and more. Sometimes the tools used to drive tests are non-deterministic (we found a couple of them driving Silverlight tests) which makes it really difficult to believe in the results of the tests you write.
+All non-deterministic tests can and should be fixed, but I have seen the effort to fix these being directly proportional to the amount of customer involvement/value to delivery. People also cite them as “random failures” and ignore them. I believe that every developer who calls a program “random” loses respect by a notch everytime they call it so.</p>
+</li>
+<li>
+<p><strong>Lot of failures in a functional suite</strong> - if there are 50 out of 100 tests failing, the team’s belief dwindles.</p>
+<p>The first question that you ask is how did we end up here? This has a lot to do with the broken window theory. If all tests pass and the next check-in fails some tests, the team immediately works to fix them. If a regular bunch keep failing and are thus ignored, any new failures will become part of the ignored tests. Again, this can be fixed. Reporting and analysing the failed tests, and constant effort improves the state and builds a positive cycle. However, as before, the intent to improve the state depends on how valuable the tests are for delivery/customer.</p>
+</li>
+<li>
+<p><strong>Time taken to run the suite once</strong> - feedback comes in very late.</p>
+<p>If a single run tests a lot of check-ins, it becomes really hard to analyse/debug the failures. If this is coupled with 1 and 2 above, it results in a total loss of faith, as fixing takes a lot of time and frustration levels go up. So even if this might not be a primary reason, coupled with the ones above, it deteriorates the dependency the delivery team has on automated functional tests to certify a good build. One way to fix performance is to distribute tests to a grid infrastructure, where different nodes are responsible for a subset of tests, thus parallelizing the execution and cutting down run time.</p>
+</li>
+</ul>
+<p>The factors listed above can all be fixed, with investigation and investment. My experience has been that the intent to spend time and money on fixing these issues is directly proportional to how much a customer believes in them, and asks the team to be accountable for. Teams can also increase their own accountability by exposing results and analysis. If, for example, a delivery team publishes test results as part of release notes, or publishes/exposes the results in some other way to customers, this creates awareness as well as increases accountability of its work on the suite. That for me is the optimal solution.</p>
+<p>Thanks - to Martin Fowler, Manish Kumar and Chethan V for helping me crystallize my thoughts on this.</p>
+
+    </article>
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>

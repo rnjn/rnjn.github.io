@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Who should write functional tests? - ranjan sakalley</title>
+  <meta name="author" content="rnjn">
+
+  
+  <meta name="description" content="Functional testing code is more often than not treated as a second class citizen. Delivery teams tend to ignore problems with test code over a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rnjn.github.io/2011/01/who-should-write-functional-tests.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ranjan sakalley" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Inconsolata:bold' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-6987805-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/archives">archive</a></li>
+  <!-- <li><a href="/about">About</a></li>  -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Who should write functional tests?</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-03T00:00:00+05:30" pubdate data-updated="true">Jan 3<span>rd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><div class='post'>
+Functional testing code is more often than not treated as a second class citizen. Delivery teams tend to ignore problems with test code over a period of time, and worry more about test results. This leads to poor code quality and bad test architecture, which in turn hurts the maintainability of a test suite. Its this negative feedback cycle that a team should be worried about. In my opinion, treating test code as responsibly as we treat functional code fixes this.<br /><br /><b>Understand the importance</b> - The greatest benefit of a robust automation suite is the ability to deliver quickly, even continuously, with a known state of software quality. Given that business today demands quicker delivery of software to production, it seems quite imperative that teams take the one big block of code that enables them to do so very seriously.<br /><br /><b>Complexity</b> - Lets face it, writing an effective and maintainable automation suite is not an easy job. Just like writing production code, it needs thoughtful design and care. Test infrastructure design is an ongoing process, and just like functional architecture it needs continuous re-design based on functional and non-functional changes. An ill-designed suite is a waste of time and money (no surprises there), it also influences decision makers incorrectly. You should be asking (some of) your best people to work on it.<br /><br /><b>Expertise</b> - There are two parts to a maintainable functional suite, the framework (test infrastructure) which defines a DSL, and then the tests written using that DSL. The drawing below shows what I mean by this division. <br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_E_bGfyPw5O4/TR3K2Uk0hWI/AAAAAAAAB8o/SHJEvnWk3D0/s1600/functionaltests.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="332" src="http://2.bp.blogspot.com/_E_bGfyPw5O4/TR3K2Uk0hWI/AAAAAAAAB8o/SHJEvnWk3D0/s640/functionaltests.png" width="640" /></a></div><br /><br />&nbsp;&nbsp;Dividing coding responsibilities based on the lines above is quite necessary. Developers are your experts when it comes to writing frameworks and maintaining them. Testers are really good at writing intentions and maintaining functional sanity. In fact with this virtual ownership division, testers become customers for developers, which distributes responsibility quite elegantly.<br /><br /><b>Ownership</b> - If developers don&#8217;t write functional tests, its imperative that they are not super-motivated to fix them when they fail as new features are added/amended. Having different owners of different parts of code not only increases cycle time, it also reduces the quality of feedback that the developers get from automation. <br /><br /><b>Work definition and process</b> - When we write functional code, we tend to have well-written narratives, which have acceptance criteria, and are treated well. When writing the framework for the automation suite, or a new functional test, such narratives should be well defined and the same workflow should be maintained. Any work done on functional tests should not become a secondary process for the team. Such treatment&nbsp;de-prioritizes work on functional tests at the outset itself, and should therefore be avoided.<br /><br /><b>Conclusion</b> - My conclusion here is that people who are skilled to write production code should design and write test infrastructure/frameworks, while analysts should write test specifications, as they are best placed to do these. And also, work on functional tests (stories etc.) should be treated as mainstream functional work.</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">rnjn</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-03T00:00:00+05:30" pubdate data-updated="true">Jan 3<span>rd</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://rnjn.github.io/2011/01/who-should-write-functional-tests.html" data-via="rnjn" data-counturl="http://rnjn.github.io/2011/01/who-should-write-functional-tests.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2010/12/why-teams-lose-faith-in-their.html" title="Previous Post: Why teams lose faith in their functional test suite">&laquo; Why teams lose faith in their functional test suite</a>
+      
+      
+        <a class="basic-alignment right" href="/2011/08/why-is-test-automation-the-backbone-of.html" title="Next Post: Why is test automation the backbone of Continuous Delivery?">Why is test automation the backbone of Continuous Delivery? &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/04/building-a-positional-model.html">Building a positional model</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/blocking-and-labelling.html">Blocking and labelling</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/building-a-knowledge-base-for-text-segmentation.html">Building a knowledge base for text segmentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/tokenisation-plus-plus.html">Tokenisation++</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/analysing-semi-structured-text-and-extracting-features.html">Analysing semi-structured text and extracting features</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/02/simpler-emacs-setup.html">Simpler emacs setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/10/introducing-automation-to-existing.html">Introducing automation to an existing large team</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/why-is-test-automation-the-backbone-of.html">Why is test automation the backbone of Continuous Delivery?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/01/who-should-write-functional-tests.html">Who should write functional tests?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/12/why-teams-lose-faith-in-their.html">Why teams lose faith in their functional test suite</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  <!-- Copyright &copy; 2014 - rnjn <br/> -->
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

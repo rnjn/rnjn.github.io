@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Introducing Automation to Large Team" />
+<meta property="og:site_name" content="🏡" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="http://rnjn-2.local/articles/introducing-automation-to-large-team/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2011-10-24
+" /> <meta property="article:modified_time" content="2011-10-24
+" />
+
+
+
+
+
+
+    <title>Introducing Automation to Large Team</title>
+    <link rel="canonical" href="http://rnjn-2.local/articles/introducing-automation-to-large-team/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="stylesheet" href="http://rnjn-2.local/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+
+  </head>
+
+
+<body
+  lang="en-us"
+  class="sans-serif w-90 w-60-ns center center-ns mv2 mv5-ns"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a
+    href="http://rnjn-2.local/"
+    class="b bb bw1 pb1 no-underline black"
+    >🏡</a
+  >
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Introducing Automation to Large Team</h1>
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <p><em>Oct 24th, 2011</em></p>
+<blockquote>
+<p>A reader on my <a href="http://www.infoq.com/articles/test-automation-continuous-delivery">article</a> at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. I plan to write more posts on this topic, have a lot of thoughts, but here’s my immediate answer -</p>
+</blockquote>
+<p>A very strong actionable technique that I have seen work well is that you create a small/minimal smoke test suite for you larger app. You can decide on what comprises a suite of smoke test -</p>
+<ul>
+<li><strong>Basic user actions</strong> - some 4-5 use cases without which a user cannot use your application. (for e.g. on an eCommerce site, my smoke tests would comprise of login, user registration, search, end-to-end purchase and payment).</li>
+<li><strong>Integration points</strong> - choose must-have integrations - like payment gateway (same eCommerce motif), oauth for authentication against Facebook or some such. Write smoke tests that touch these integrations to know if every build that you process is verified for these.</li>
+<li>Attack a <strong>small part/feature of the application</strong>. You can choose the most important, the most buggy etc. Write tests only for this part.</li>
+<li>Concentrate on the <strong>currently “under-development” work</strong>, which will give the team immediate value in terms of coverage. This is a bit counter-intuitive as there would be a lot of changes while you work. But I have seen this work wonders at times, and your team starts worrying about test maintenance from the first step on.</li>
+</ul>
+<p>You can choose more ways according to your project, better still, mix and match. But make sure you choose the <strong>most important 5-10</strong> and not 50-100 test cases for your smoke suite. Your smoke suite shouldn’t take much <strong>time to run aim for &lt; 5 minutes</strong>. The correct way to work with these would be to make these smoke tests as part of your CI process so that the team get immediate benefits out of the smoke tests.</p>
+<p>Your team will start seeing value in automating regression scenarios with this smoke suite in place. From then on, you can expand your suite from smoke upwards, adding more complex or more detailed scenarios. Another thing to note on big complex applications - aim for small tests, get quick wins. Then combine to make bigger ones. This will keep your team involved and constantly working towards covering every possible nook and keep being excited about it. But do make sure everything is part of CI, because if its not, then people lose faith.</p>
+<p>Finally, as ever, keep showing value, make sure the stakeholders understand the importance, you can do this by sending them reports, and talk about gains etc. If your team buys in with the idea, there’s no stopping.</p>
+
+    </article>
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>

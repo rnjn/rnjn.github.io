@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Building a positional model - ranjan sakalley</title>
+  <meta name="author" content="rnjn">
+
+  
+  <meta name="description" content="Part of a series on extracting information from semi-structured text, starts here Introduction Blocking and labelling using known words stored in a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rnjn.github.io/2014/04/building-a-positional-model.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ranjan sakalley" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Inconsolata:bold' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-6987805-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/archives">archive</a></li>
+  <!-- <li><a href="/about">About</a></li>  -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Building a positional model</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-03T12:38:28+05:30" pubdate data-updated="true">Apr 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><em>Part of a series on extracting information from semi-structured text, starts <a href="../03/analysing-semi-structured-text-and-extracting-features.html">here</a></em></p>
+
+<h2>Introduction</h2>
+
+<p>Blocking and labelling using known words stored in a knowledge base lets us extract known information from a document. However, for words that are new to the knowledge base, like a new car brand or model in the example domain, blocking and labelling fails. To be able to categorise or label new words, we take a probabilistic approach. Given a sizeable number of documents, we build a positional model, that helps us find an appropriate label for a new word given its position in the document.</p>
+
+<h2>Preparing data</h2>
+
+<p>Before we start calculating probabilities, we aggregate a sizeable corpus of documents, lets say 50000 or more, and run our blocking and labelling step. We then search for documents which have &ldquo;unknown&rdquo; blocks and remove them from our set. We do this assuming these are &lt; 10% of the corpus. If this is not true, the quality of the knowledge base needs to be improved, and we keep iterating the cycle below</p>
+
+<blockquote><p>improve KB &ndash;> Block and Label > % of documents not labelled completely > improve KB&hellip;</p></blockquote>
+
+<p>till we reach this goal.</p>
+
+<p>Once we pass this step, we move on to building a representative matrix of documents with each cell denoting the position of a label. For a labelled document like below &ndash;</p>
+
+<blockquote><p>[&ldquo;sell&rdquo;, &ldquo;hyundai&rdquo;, &ldquo;santro&rdquo;, &ldquo;2007&rdquo;, &ldquo;green&rdquo;, &ldquo;tyres&rdquo;,  &ldquo;leather&rdquo;, &ldquo;seats&rdquo;, &ldquo;price&rdquo;, &ldquo;300000&rdquo;, &ldquo;contact&rdquo;, &ldquo;91xxxxxxx&rdquo;]</p></blockquote>
+
+<p>the row vector (of labels by position) in the matrix that denotes this document looks like</p>
+
+<blockquote><p>[&ldquo;ad_type&rdquo;, &ldquo;brand&rdquo;, &ldquo;model&rdquo;, &ldquo;year&rdquo;, &ldquo;colour&rdquo;, &ldquo;features&rdquo;, &ldquo;price&rdquo;, &ldquo;contact&rdquo;]</p></blockquote>
+
+<p>Now, to reduce the size of the matrix in memory, we may represent each label by a unique number. and so our representative row vector looks like</p>
+
+<blockquote><p>[2,3,4,5,6,7,8,9]</p></blockquote>
+
+<p>(we reserve 1 for &ldquo;unknown&rdquo;)</p>
+
+<p>The length of each document may differ, so we find the longest document, and we pad all documents with 0&rsquo;s to fit the matrix width. An example matrix of 10 documents across 10 labels may look like &ndash;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">[[</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">6</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">6</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">6</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">7</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">4</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">9</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">10</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">6</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">7</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">3</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">6</span><span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>where each row represents a document and each column represents a position in the document, and numbers denote a label.</p>
+
+<h2>Positional Model</h2>
+
+<p>To build a vector for positional probabilities for a label we follow</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">each</span> <span class="n">label</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">each</span> <span class="n">position</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">probability</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">occurence</span> <span class="n">of</span> <span class="n">this</span> <span class="n">label</span><span class="p">)</span><span class="o">/</span><span class="n">number</span> <span class="n">of</span> <span class="n">documents</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Over 50000 documents and 12 labels, with a maximum size of 150 tokens, traditional looping does not perform well. We turn to the <a href="http://www.numpy.org">numpy</a> python library to help us crunch these numbers faster for us.</p>
+
+<p>First, we derive a matrix for each label, which represents the position of this label only across documents. We call this matrix the label sieve. For the matrix above, choosing label 5, the sieve should look like &ndash;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>where 1 denotes the presence of label 5 in a document, and 0 denotes absence.</p>
+
+<p>The following code does this for us</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">label_sieves</span> <span class="o">=</span> <span class="p">[(</span><span class="n">matrix</span> <span class="o">==</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>numpy matrices can be queried like &ndash;> matrix == n to result in a boolean matrix for the presence of n. the result * 1 just converts this to the above.</p></blockquote>
+
+<p>Now its easy for us to sum all column vectors in the matrix above, where each column represents a position in the document. Again, numpy provides faster calculations, as below</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">label_position_totals</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">label_sieve</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                             <span class="k">for</span> <span class="n">label_sieve</span> <span class="ow">in</span> <span class="n">label_sieves</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and then we just divide by the count of documents.</p>
+
+<p>Our final positional matrix may look like &ndash;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'> <span class="p">[[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.3</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.3</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.4</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.3</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">],</span>
+</span><span class='line'> <span class="p">[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.</span> <span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Extras</h2>
+
+<p>We may derive a different model if we calculate the probability as &ndash;</p>
+
+<blockquote></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">each</span> <span class="n">label</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">each</span> <span class="n">position</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">probability</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">occurence</span> <span class="n">of</span> <span class="n">this</span> <span class="n">label</span><span class="p">)</span><span class="o">/**</span><span class="nb">sum</span><span class="p">(</span><span class="n">occurance</span> <span class="n">of</span> <span class="nb">any</span> <span class="n">label</span> <span class="n">other</span> <span class="n">than</span> <span class="mi">0</span><span class="p">)</span><span class="o">**</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To make this change, we first build a sieve which denotes the presence of all labels, and then sum column-wise to get a denominator vector by position.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="n">sieve</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span>
+</span><span class='line'>    <span class="n">denominators</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sieve</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our final probability calculation looks like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">probabilities</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">label_totals</span><span class="p">,</span> <span class="n">denominators</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">label_totals</span> <span class="ow">in</span> <span class="n">label_position_totals</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>where numpy.divide does an item-wise division.</p>
+
+<p>This calculation produces skewed numbers for a column where the presence labels in the column is very low. To normalise the probabilities in this case, the previous method is better.</p>
+
+<h2>Performance</h2>
+
+<p>Traditional looping method to build this model for around 50000 documents, 14 labels and a maximum size of 144 words (50000 X 144 size matrix), takes around 2 seconds with our modest python skills. Using numpy, as coded above, we could do this in milli-seconds. The added advantage being expressive code.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">rnjn</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-03T12:38:28+05:30" pubdate data-updated="true">Apr 3<span>rd</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://rnjn.github.io/2014/04/building-a-positional-model.html" data-via="rnjn" data-counturl="http://rnjn.github.io/2014/04/building-a-positional-model.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2014/04/blocking-and-labelling.html" title="Previous Post: Blocking and labelling">&laquo; Blocking and labelling</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/04/building-a-positional-model.html">Building a positional model</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/blocking-and-labelling.html">Blocking and labelling</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/building-a-knowledge-base-for-text-segmentation.html">Building a knowledge base for text segmentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/tokenisation-plus-plus.html">Tokenisation++</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/analysing-semi-structured-text-and-extracting-features.html">Analysing semi-structured text and extracting features</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/02/simpler-emacs-setup.html">Simpler emacs setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/10/introducing-automation-to-existing.html">Introducing automation to an existing large team</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/why-is-test-automation-the-backbone-of.html">Why is test automation the backbone of Continuous Delivery?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/01/who-should-write-functional-tests.html">Who should write functional tests?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/12/why-teams-lose-faith-in-their.html">Why teams lose faith in their functional test suite</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  <!-- Copyright &copy; 2014 - rnjn <br/> -->
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Who Should Write Functional Tests?" />
+<meta property="og:site_name" content="🏡" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="http://rnjn-2.local/articles/who-should-write-functional-tests/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2011-01-03
+" /> <meta property="article:modified_time" content="2011-01-03
+" />
+
+
+
+
+
+
+    <title>Who Should Write Functional Tests?</title>
+    <link rel="canonical" href="http://rnjn-2.local/articles/who-should-write-functional-tests/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="stylesheet" href="http://rnjn-2.local/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+
+  </head>
+
+
+<body
+  lang="en-us"
+  class="sans-serif w-90 w-60-ns center center-ns mv2 mv5-ns"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a
+    href="http://rnjn-2.local/"
+    class="b bb bw1 pb1 no-underline black"
+    >🏡</a
+  >
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Who Should Write Functional Tests?</h1>
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <p><em>Jan 3rd, 2011</em></p>
+<p>Functional testing code is more often than not treated as a second class citizen. Delivery teams tend to ignore problems with test code over a period of time, and worry more about test results. This leads to poor code quality and bad test architecture, which in turn hurts the maintainability of a test suite. Its this negative feedback cycle that a team should be worried about. In my opinion, treating test code as responsibly as we treat functional code fixes this.</p>
+<h3 id="understand-the-importance">Understand the importance</h3>
+<p>The greatest benefit of a robust automation suite is the ability to deliver quickly, even continuously, with a known state of software quality. Given that business today demands quicker delivery of software to production, it seems quite imperative that teams take the one big block of code that enables them to do so very seriously.</p>
+<h3 id="complexity">Complexity</h3>
+<p>Lets face it, writing an effective and maintainable automation suite is not an easy job. Just like writing production code, it needs thoughtful design and care. Test infrastructure design is an ongoing process, and just like functional architecture it needs continuous re-design based on functional and non-functional changes. An ill-designed suite is a waste of time and money (no surprises there), it also influences decision makers incorrectly. You should be asking (some of) your best people to work on it.</p>
+<h3 id="expertise">Expertise</h3>
+<p>There are two parts to a maintainable functional suite, the framework (test infrastructure) which defines a DSL, and then the tests written using that DSL. The drawing below shows what I mean by this division.</p>
+<p><img src="http://2.bp.blogspot.com/_E_bGfyPw5O4/TR3K2Uk0hWI/AAAAAAAAB8o/SHJEvnWk3D0/s1600/functionaltests.png" alt="test dsls"></p>
+<p>Dividing coding responsibilities based on the lines above is quite necessary. Developers are your experts when it comes to writing frameworks and maintaining them. Testers are really good at writing intentions and maintaining functional sanity. In fact with this virtual ownership division, testers become customers for developers, which distributes responsibility quite elegantly.</p>
+<h3 id="ownership">Ownership</h3>
+<p>If developers don’t write functional tests, its imperative that they are not super-motivated to fix them when they fail as new features are added/amended. Having different owners of different parts of code not only increases cycle time, it also reduces the quality of feedback that the developers get from automation.</p>
+<h3 id="work-definition-and-process">Work definition and process</h3>
+<p>When we write functional code, we tend to have well-written narratives, which have acceptance criteria, and are treated well. When writing the framework for the automation suite, or a new functional test, such narratives should be well defined and the same workflow should be maintained. Any work done on functional tests should not become a secondary process for the team. Such treatment de-prioritizes work on functional tests at the outset itself, and should therefore be avoided.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>My conclusion here is that people who are skilled to write production code should design and write test infrastructure/frameworks, while analysts should write test specifications, as they are best placed to do these. And also, work on functional tests (stories etc.) should be treated as mainstream functional work.</p>
+
+    </article>
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>

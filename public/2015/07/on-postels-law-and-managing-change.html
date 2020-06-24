@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>On Postels law and managing change - ranjan sakalley</title>
+  <meta name="author" content="rnjn">
+
+  
+  <meta name="description" content="Postel&rsquo;s law ~19811, &ldquo;Be conservative in what you do, be liberal in what you accept from others.&rdquo; (RFC 793) A webservice accepting &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rnjn.github.io/2015/07/on-postels-law-and-managing-change.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ranjan sakalley" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Inconsolata:bold' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-6987805-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/archives">archive</a></li>
+  <!-- <li><a href="/about">About</a></li>  -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">On Postels law and managing change</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-30T13:49:52+05:30" pubdate data-updated="true">Jul 30<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Postel&rsquo;s law ~1981<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>,</p>
+
+<blockquote><p>&ldquo;Be conservative in what you do, be liberal in what you accept from others.&rdquo; (RFC 793)</p></blockquote>
+
+<p>A webservice accepting a message with a defined schema (xml/json/other) may choose to do one of these when it encounters messages with extra nodes/properties &ndash;</p>
+
+<ul>
+<li>be conservative and discard</li>
+<li>be liberal and accept</li>
+</ul>
+
+
+<p>Of the two, there are more proponents for the latter than the former. There are many reasons thrown at the conservatives, one of them that has practical implications is change in schema. Before we go further lets state the obvious &ndash; if there is never ever going to be a change in the schema of a message, being conservative is just the same as being liberal. Except that the &ldquo;never ever&rdquo; <strong>never</strong> really happens, there&rsquo;s always some change in schema. The choice of being liberal or conservative mandates thinking about how you deal with change in schema, and that&rsquo;s a good thing.</p>
+
+<p>Lets talk about change. Producers and consumers of messages agree on a schema and then continue with their business. When a producer decides to change the schema to improve the featureset, it is generally considered a good practice to communicate the change using software versioning, a version being a quantum of change as agreed. If the responsibility on propagating the change lies with the producer: the producer distributes and manages upgrades of the service client, they need not worry about being liberal. This sometimes is true for custom enterprise software produced and consumed internally. However, this is small subset of software produced these days. Most of the services written today, provide an API and a reference library, and allow consumers to write their own clients.</p>
+
+<p>The implication of being conservative about accepting messages then is that all known and unknown clients of a service have to upgrade in tandem or face downtime, when there is just one version of the service up and running. (Strictness doesn&rsquo;t just mean discard messages with additional properties, it also mandates not accepting deficient messages as per the schema). A better way to propagate change may be to host multiple versions of a service, and that just means <strong>we elevated Postel&rsquo;s law from a producer&rsquo;s view of a particular instance of the service, to a consumer oriented view of liberally providing a service</strong>, albeit via conservative instances of different versions of the same service. The question then is, how many versions of a service would you maintain at the same time? With changes big and small, the number of versions quickly proliferate and cost of hosting and maintenance is not cheap.</p>
+
+<p>The choice of tolerant reader<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> design doesn&rsquo;t really much help with big changes, since big changes in schema that are needed to service new features etc. need client updates anyway, and can be designed as above. Also, accepting a string that represents the full message, if you were to take Postel&rsquo;s law to an extreme would require a lot of plumbing and would cost higher to work with and make secure. This design choice shines when it comes to adding smaller changes. Lets take a real example. A service that we have been working on receives messages that contain a Doctor&rsquo;s name along with other patient diagnoses related data. A new feature request from end users that we have to implement immediately is to add phone numbers and other contact information of said doctor so that the doctor can be contacted at a later date, drives a change in schema. If we follow the multiple strict service versions approach, we would probably add a new version for this. The cost of managing different versions very quickly starts affecting the quantum of change released to consumers, and producers start designing big releases instead of multiple smaller changes. A liberal design might help contain hosted service instance proliferation by letting older clients send messages they are used to sending, while upgraded clients can send new information too. At a later date, if we for some reason need to downgrade back to a previous version, we do not need to downgrade all clients. This flexibility helps enormously when managing servers and delivering small changes continuously.</p>
+
+<p>Another thing, being liberal isn&rsquo;t easy. A conservative service assumes that schema validation is enough to avoid runtime errors (this assumption is not entirely correct<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>). A conservative service can assume that it never has to service clients that expect a different version of it. Versions can be deprecated by just not installing them, or removing a server. A service designed to be liberal however can only provide schema guidelines and has to wait to extract all possible information from a message to be able move forward in most cases. Also, a liberal design that enables servicing multiple versions of clients with just one instance of the service needs a lot thought. The producer has to manage change very closely, and since deprecation is a code change, these decisions take more time to production. Its also very hard to keep an eye on how many versions are being supported at the same time. <strong>A combination of a small set of available versions each being liberal to an extent provides a good alternative</strong>. Also, a good way to work on some of the difficulties with liberal reader design are consumer driven contracts.</p>
+
+<p>There is another counterpoint<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> to Postel&rsquo;s law and liberal reader design &ndash; security experts advice us to be conservative in what we accept, contrary to Postel&rsquo;s law. Indiscriminately accepting any message ofcourse has consequences. Yet within the bounds of a sane secure message protocol, a message data schema that allows subelements to be optionally present can be worked with. (Indiscriminately following any advice mostly hurts, including this one).</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://en.wikipedia.org/wiki/Postels_law">Postel&rsquo;s law</a> &ndash; wikipedia<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p>Martin Fowler describes decoupled collaboration <a href="http://martinfowler.com/bliki/TolerantReader.html">Tolerant reader</a><a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+<li id="fn:3">
+<p><a href="http://blog.iancartwright.com/2006/11/schema-validation-offers-false-sense-of.html">Schema validation offers a false sense of security</a> &ndash; Ian Cartwright<a href="#fnref:3" rev="footnote">&#8617;</a></p></li>
+<li id="fn:4">
+<p>Eric Allman&rsquo;s counterpoints to the principle <a href="http://cacm.acm.org/magazines/2011/8/114933-the-robustness-principle-reconsidered/fulltext">The robustness principle reconsidered</a><a href="#fnref:4" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">rnjn</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-30T13:49:52+05:30" pubdate data-updated="true">Jul 30<span>th</span>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://rnjn.github.io/2015/07/on-postels-law-and-managing-change.html" data-via="rnjn" data-counturl="http://rnjn.github.io/2015/07/on-postels-law-and-managing-change.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2014/05/pretty-python-list-comprehensions.html" title="Previous Post: Pretty Python list comprehensions">&laquo; Pretty Python list comprehensions</a>
+      
+      
+        <a class="basic-alignment right" href="/2015/09/cleaning-up-whitespace-changes-in-a-pull-request.html" title="Next Post: Cleaning up whitespace changes in a pull request">Cleaning up whitespace changes in a pull request &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2015/09/cleaning-up-whitespace-changes-in-a-pull-request.html">Cleaning up whitespace changes in a pull request</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/07/on-postels-law-and-managing-change.html">On Postels law and managing change</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/pretty-python-list-comprehensions.html">Pretty Python list comprehensions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/building-a-positional-model.html">Building a positional model</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/blocking-and-labelling.html">Blocking and labelling</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/04/building-a-knowledge-base-for-text-segmentation.html">Building a knowledge base for text segmentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/tokenisation-plus-plus.html">Tokenisation++</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/03/analysing-semi-structured-text-and-extracting-features.html">Analysing semi-structured text and extracting features</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/02/simpler-emacs-setup.html">Simpler emacs setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/10/introducing-automation-to-existing.html">Introducing automation to an existing large team</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  <!-- Copyright &copy; 2015 - rnjn <br/> -->
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
