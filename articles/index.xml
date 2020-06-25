@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Articles on 🏡</title>
-    <link>http://blog.ranjansakalley.com/articles/</link>
+    <link>https://blog.ranjansakalley.com/articles/</link>
     <description>Recent content in Articles on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 30 Jul 2015 17:58:57 +0530</lastBuildDate>
     
-	<atom:link href="http://blog.ranjansakalley.com/articles/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.ranjansakalley.com/articles/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>On Postels Law and Managing Change</title>
-      <link>http://blog.ranjansakalley.com/articles/on-postels-law-and-managing-change/</link>
+      <link>https://blog.ranjansakalley.com/articles/on-postels-law-and-managing-change/</link>
       <pubDate>Thu, 30 Jul 2015 17:58:57 +0530</pubDate>
       
-      <guid>http://blog.ranjansakalley.com/articles/on-postels-law-and-managing-change/</guid>
+      <guid>https://blog.ranjansakalley.com/articles/on-postels-law-and-managing-change/</guid>
       <description>Postel&amp;rsquo;s law ~19811,
  &amp;ldquo;Be conservative in what you do, be liberal in what you accept from others.&amp;rdquo; (RFC 793)
  A webservice accepting a message with a defined schema (xml/json/other) may choose to do one of these when it encounters messages with extra nodes/properties -
@@ -25,10 +25,10 @@
     
     <item>
       <title>Pretty Python List Comprehensions</title>
-      <link>http://blog.ranjansakalley.com/articles/pretty-python-list-comprehensions/</link>
+      <link>https://blog.ranjansakalley.com/articles/pretty-python-list-comprehensions/</link>
       <pubDate>Mon, 12 May 2014 17:52:27 +0530</pubDate>
       
-      <guid>http://blog.ranjansakalley.com/articles/pretty-python-list-comprehensions/</guid>
+      <guid>https://blog.ranjansakalley.com/articles/pretty-python-list-comprehensions/</guid>
       <description>May 12th, 2014
 Python list comprehensions are by far the simplest and most readable loop expressions that I have worked with. Here’s an example where I have a list of lists of lists (corpus –&amp;gt; documents –&amp;gt; sentences) where I need to remove some items (called stop_words here) from the sentences.
 corpus = [[[word for word in sentence if word not in self._stop_words] for sentence in document] for document in corpus] Notice the array brackets added after each for expression so the program retains the same structure.</description>
@@ -36,10 +36,10 @@ corpus = [[[word for word in sentence if word not in self._stop_words] for sente
     
     <item>
       <title>Introducing Automation to Large Team</title>
-      <link>http://blog.ranjansakalley.com/articles/introducing-automation-to-large-team/</link>
+      <link>https://blog.ranjansakalley.com/articles/introducing-automation-to-large-team/</link>
       <pubDate>Mon, 24 Oct 2011 17:43:31 +0530</pubDate>
       
-      <guid>http://blog.ranjansakalley.com/articles/introducing-automation-to-large-team/</guid>
+      <guid>https://blog.ranjansakalley.com/articles/introducing-automation-to-large-team/</guid>
       <description>Oct 24th, 2011
  A reader on my article at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. I plan to write more posts on this topic, have a lot of thoughts, but here’s my immediate answer -
  A very strong actionable technique that I have seen work well is that you create a small/minimal smoke test suite for you larger app.</description>
@@ -47,30 +47,30 @@ corpus = [[[word for word in sentence if word not in self._stop_words] for sente
     
     <item>
       <title>Why is test automation the backbone of Continuous Delivery?</title>
-      <link>http://blog.ranjansakalley.com/articles/who-test-automation-is-backbone-of-cd/</link>
+      <link>https://blog.ranjansakalley.com/articles/who-test-automation-is-backbone-of-cd/</link>
       <pubDate>Thu, 25 Aug 2011 16:13:37 +0530</pubDate>
       
-      <guid>http://blog.ranjansakalley.com/articles/who-test-automation-is-backbone-of-cd/</guid>
+      <guid>https://blog.ranjansakalley.com/articles/who-test-automation-is-backbone-of-cd/</guid>
       <description>Aug 25th, 2011
 Software testing and verification needs a careful and diligent process of impersonating an end user, trying various usages and input scenarios, comparing and asserting expected behaviours. Directly, the words “careful and diligent” invoke the idea of letting a computer program do the job. Automating certain programmable aspects of your test suite thus can help software delivery massively. In most of the projects that I have worked on, there were aspects of testing which could be automated, and then there were some that couldn’t.</description>
     </item>
     
     <item>
       <title>Who Should Write Functional Tests?</title>
-      <link>http://blog.ranjansakalley.com/articles/who-should-write-functional-tests/</link>
+      <link>https://blog.ranjansakalley.com/articles/who-should-write-functional-tests/</link>
       <pubDate>Mon, 03 Jan 2011 16:08:19 +0530</pubDate>
       
-      <guid>http://blog.ranjansakalley.com/articles/who-should-write-functional-tests/</guid>
+      <guid>https://blog.ranjansakalley.com/articles/who-should-write-functional-tests/</guid>
       <description>Jan 3rd, 2011
 Functional testing code is more often than not treated as a second class citizen. Delivery teams tend to ignore problems with test code over a period of time, and worry more about test results. This leads to poor code quality and bad test architecture, which in turn hurts the maintainability of a test suite. Its this negative feedback cycle that a team should be worried about. In my opinion, treating test code as responsibly as we treat functional code fixes this.</description>
     </item>
     
     <item>
       <title>Why Teams Lose Faith in their Functional Automation suite?</title>
-      <link>http://blog.ranjansakalley.com/articles/why-teams-lose-faith-in-functional-automation/</link>
+      <link>https://blog.ranjansakalley.com/articles/why-teams-lose-faith-in-functional-automation/</link>
       <pubDate>Mon, 06 Dec 2010 16:03:31 +0530</pubDate>
       
-      <guid>http://blog.ranjansakalley.com/articles/why-teams-lose-faith-in-functional-automation/</guid>
+      <guid>https://blog.ranjansakalley.com/articles/why-teams-lose-faith-in-functional-automation/</guid>
       <description>DEC 6th, 2010
 In my opinion, there are three main reasons why a functional automation suite loses its value (or the respect that a delivery team should pay it). This leads to a variety of problems, but I will save that for a later post.
 The reasons for me are -
@@ -79,10 +79,10 @@ The reasons for me are -
     
     <item>
       <title>Is Your Functional Suite Done Right</title>
-      <link>http://blog.ranjansakalley.com/articles/is-your-functional-suite-done-right/</link>
+      <link>https://blog.ranjansakalley.com/articles/is-your-functional-suite-done-right/</link>
       <pubDate>Tue, 10 Feb 2009 15:59:41 +0530</pubDate>
       
-      <guid>http://blog.ranjansakalley.com/articles/is-your-functional-suite-done-right/</guid>
+      <guid>https://blog.ranjansakalley.com/articles/is-your-functional-suite-done-right/</guid>
       <description>Feb 10th, 2009
 On the last two projects that I have worked on, both being fairly sized in terms of people (40+), I have seen enormous effort being spent on functional testing. The effort, though not completely wasted, hasn’t yielded proportional gains in terms of quality improvements and quicker feedback on a higher integration level. The following list tries to address issues and my take on fixing them.
 Separation of Concerns Functional suites suffer most from a lack of clear directive on what they are written for.</description>
