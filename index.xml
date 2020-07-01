@@ -6,10 +6,20 @@
     <description>Recent content on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 24 Jun 2019 23:22:59 +0530</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jul 2020 09:39:00 +0530</lastBuildDate>
     
 	<atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Iterative Improvement</title>
+      <link>https://rnjn.in/glossary/iterative-improvement/</link>
+      <pubDate>Wed, 01 Jul 2020 09:39:00 +0530</pubDate>
+      
+      <guid>https://rnjn.in/glossary/iterative-improvement/</guid>
+      <description>1st July 2020
+Iterative improvement is the basis of most modern project management principles (agile/xp/scrum..). It follows the Scientific Method. The steps are simple and intuitive, indeed they follow how we learn most things - by trying and failing and trying again. So in case you have a system that you want to improve -  Experiment - formalise and execute the change you expect to make in the system Observe - Observe the effect(s) of said change Course Correct - From these observations, find out if changes in the experiments are needed, and then make them.</description>
+    </item>
     
     <item>
       <title>About</title>
