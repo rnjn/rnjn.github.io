@@ -6,10 +6,21 @@
     <description>Recent content in Glossaries on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 Jul 2020 09:39:00 +0530</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jul 2020 08:36:09 +0530</lastBuildDate>
     
 	<atom:link href="https://rnjn.in/glossary/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>If It Hurts, Do It More Often</title>
+      <link>https://rnjn.in/glossary/if-it-hurts-do-it-more-often/</link>
+      <pubDate>Thu, 02 Jul 2020 08:36:09 +0530</pubDate>
+      
+      <guid>https://rnjn.in/glossary/if-it-hurts-do-it-more-often/</guid>
+      <description>Oft noted tenet in the world of programming, this principal is the basis of continuous integration and many more things (I tried to dig a bit into the origins, but didn&amp;rsquo;t find much success).
+Remember, &amp;ldquo;often&amp;rdquo; is used here as a relative measure of time, and could be replaced by a unit which makes sense -
+ test integrations on every change (Integrations are hard) standup for 10 minutes everyday instead of an hour at the end of week (Alignments are hard) run performance reviews monthly (Perf reviews are hard) run OKR cadences monthly (Distributed work is hard) break all your user stories to 1 pointers (Estimating big stories is hard) pair program (Code reviews are hard) build and test changes incrementally (Boehm&amp;rsquo;s law)  As you can see, the value of following this tenet is high when complexity grows exponentially with time.</description>
+    </item>
     
     <item>
       <title>Iterative Improvement</title>
