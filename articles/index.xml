@@ -47,10 +47,10 @@ corpus = [[[word for word in sentence if word not in self._stop_words] for sente
     
     <item>
       <title>Why is test automation the backbone of Continuous Delivery?</title>
-      <link>https://rnjn.in/articles/who-test-automation-is-backbone-of-cd/</link>
+      <link>https://rnjn.in/articles/why-test-automation-is-backbone-of-cd/</link>
       <pubDate>Thu, 25 Aug 2011 16:13:37 +0530</pubDate>
       
-      <guid>https://rnjn.in/articles/who-test-automation-is-backbone-of-cd/</guid>
+      <guid>https://rnjn.in/articles/why-test-automation-is-backbone-of-cd/</guid>
       <description>Aug 25th, 2011
 Software testing and verification needs a careful and diligent process of impersonating an end user, trying various usages and input scenarios, comparing and asserting expected behaviours. Directly, the words “careful and diligent” invoke the idea of letting a computer program do the job. Automating certain programmable aspects of your test suite thus can help software delivery massively. In most of the projects that I have worked on, there were aspects of testing which could be automated, and then there were some that couldn’t.</description>
     </item>

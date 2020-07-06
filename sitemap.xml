@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://rnjn.in/glossary/</loc>
-    <lastmod>2020-07-02T08:36:09+05:30</lastmod>
+    <loc>https://rnjn.in/glossary/boehms-law/</loc>
+    <lastmod>2020-07-02T15:35:33+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://rnjn.in/glossary/if-it-hurts-do-it-more-often/</loc>
-    <lastmod>2020-07-02T08:36:09+05:30</lastmod>
+    <loc>https://rnjn.in/glossary/</loc>
+    <lastmod>2020-07-02T15:35:33+05:30</lastmod>
   </url>
   
   <url>
     <loc>https://rnjn.in/</loc>
+    <lastmod>2020-07-02T15:35:33+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rnjn.in/glossary/if-it-hurts-do-it-more-often/</loc>
     <lastmod>2020-07-02T08:36:09+05:30</lastmod>
   </url>
   
@@ -63,7 +68,7 @@
   </url>
   
   <url>
-    <loc>https://rnjn.in/articles/who-test-automation-is-backbone-of-cd/</loc>
+    <loc>https://rnjn.in/articles/why-test-automation-is-backbone-of-cd/</loc>
     <lastmod>2011-08-25T16:13:37+05:30</lastmod>
   </url>
   

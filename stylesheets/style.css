@@ -5,7 +5,7 @@ body {
     font-family: Avenir !important;
   }
   h1 {
-      font-family: "Avenir"
+      font-family: helvetica neue;
   }
   h2, h3,
   h4, h5, h6 {
@@ -43,3 +43,18 @@ body {
   }
   
   
+blockquote {
+  background-color: lightgoldenrodyellow;
+  font-style: italic ;
+}
+
+table {
+  margin-bottom: 1rem;
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid;
+  padding: 0.75rem;
+}
