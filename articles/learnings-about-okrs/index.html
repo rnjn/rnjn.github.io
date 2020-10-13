@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Learnings from implementing OKRs" />
+<meta property="og:site_name" content="🏡" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://rnjn.in/articles/learnings-about-okrs/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2020-10-13
+" /> <meta property="article:modified_time" content="2020-10-13
+" />
+
+
+
+
+
+
+    <title>Learnings from implementing OKRs</title>
+    <link rel="canonical" href="https://rnjn.in/articles/learnings-about-okrs/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="stylesheet" href="https://rnjn.in/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+<script type="application/javascript">
+var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+var doNotTrack = (dnt == "1" || dnt == "yes");
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	if (window.sessionStorage) {
+		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
+		ga('create', 'UA-6987805-2', {
+	    'storage': 'none',
+	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
+	   });
+	   ga(function(tracker) {
+	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
+	   });
+   }
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
+
+  </head>
+
+
+<body
+  lang="en-us"
+  class="avenir w-90 w-60-ns center center-ns mv2 mv5-ns"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a
+    href="https://rnjn.in/"
+    class="b bb bw1 pb1 no-underline black"
+    >🏡</a
+  >
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Learnings from implementing OKRs</h1>
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <p>OKRs are theoretically quite good for planning and communicating organisational goals and checking progress. The ideas are very simple and draw on empirical wisdom from successful companies like intel and google, thus in absence of a pre-existing system and for new companies its very easy to start using the methodology. OKRs also resonate well with teams that have driven progress iteratively. However, there&rsquo;s a distinct lack of literature around failures and learnings to get into a good rhythm of planning and execution using OKRs, the available literature does a good job of selling. I would like to try to bridge this gap here, in this live document. This isn&rsquo;t a primer or an introduction, so it is best if you read a decent text like Doerr&rsquo;s, and then read this as a supplement.</p>
+<h2 id="designing-okrs">Designing OKRs</h2>
+<p>OKRs provide an excellent method of communicating to everyone what the organisation&rsquo;s short and long term priorities are. Here are some learnings/heuristics that help -</p>
+<ul>
+<li>
+<p>A good test for an long running objective is if you could <strong>put them on a billboard that advertises your company to its customers</strong>. First, you are honest, and more importantly, have empathy for customers while building your products. Which of the following makes sense for your teams to choose as an objective and put in hard work ?</p>
+<ul>
+<li>Increase revenues by marketing about customer safety on our (ride sharing) platform</li>
+<li>Be the safest mode of transport for everyone</li>
+</ul>
+<p>Empirically, I have seen the second option bring in better results than the first. Choosing it is a very clear communication to the whole organisation, not just parts, and to its customers, that every employee will focus on the safety of customers.</p>
+</li>
+<li>
+<p>Objectives are mutually exclusive, and they represent areas of focus for the whole organisation, not just the leaders. So by design, <strong>the more the objectives are, the higher the number of focus areas are</strong>. You get spread too thin and less effective as the number of objectives increases. My magic number is 4, yours may be different, but choosing more than 5 objectives sets you up with a very high probability of failure.</p>
+</li>
+<li>
+<p>When choosing measurable Key results, it is very important to <strong>assign quality metrics and real life constraints</strong>. Here are two quarterly KRs, which one do you think makes more sense ?</p>
+<ul>
+<li>Improve number of merchant partners on our platform by 5%</li>
+<li>Improve number of merchant partners on our platform by 5% while keeping spend per transaction &lt; 10c and partner onboarding time &lt; 1 day</li>
+</ul>
+<p>The first one is an unconstrained project and therefore invites, in this context, easier solutions like spending more money to acquire the result. The second, in contrast ensures quality of solution and implementation.</p>
+</li>
+<li>
+<p>OKRs sharpen focus and impose iterative progress to execution &amp; operations, and therefore any mismatch between organisation setup and design and objectives are counterproductive. I recommend <strong>creating a team for each objective</strong>. A group with a responsible leader, all focusing on 1 objective they empathise with is a force of nature. Delivering on more than 1 mutually exclusive objective is an extremely hard proposition, expect the probability of failure to be high.</p>
+</li>
+</ul>
+<ul>
+<li>As above, having a clearly responsible person leading an objective is very important. If there are multiple people or committees who can make decisions, and this is true whether you follow this process or any other, decision making is slow, frustrating and defensive. <strong>One decider per objective almost always trumps over multiple</strong>. This is also very useful for boards and executives - a sponsor for each objective is valuable.</li>
+</ul>
+<h2 id="rhythm-is-everything">Rhythm is everything</h2>
+<p>Like most processes, the enthusiasm towards OKRs fizzles out after 1-2 monthly checks. The most probable reason why orgs lose interest is, just as when forming new habits, lack of instant gratification and high setup costs. Because OKRs sound logical, people assume they are easy to adopt, and then they are surprised that forming new habits need a lot of effort, especially in bigger organisations.</p>
+<ul>
+<li>Ceremonies and rituals work. A monthly check when everyone at all levels comes together is hard to set up but has enormous value. Expect to create the flywheel effect and it will take time, and to do that, disinterest from the leaders of an org isn’t an option.</li>
+<li>Any organisation bigger than 100 people needs <strong>a full time program manager to run the OKR program</strong>. Without a person whose job is to make sure everyone follows the timelines to report progress, it becomes a voluntary change and failure rates are high.</li>
+<li>During the first few months, <strong>the cost of missing reporting timelines is much higher than is expected</strong>. Because of the effort it takes, teams look at peer teams for inspiration - for both following and excuses for failing. Expect unnoticed non-compliance to spread like a disease. A good solution is for a leader to review reports a week before they are published.</li>
+<li><strong>Celebrating improvements</strong> increases the probability of success. The reason for short (monthly or shorter) review cycles is to figure if a team is on the right path and is progressing correctly. Marked with a celebration, this review cycle becomes more effective.</li>
+</ul>
+<h2 id="frequent-changes-are-detrimental">Frequent changes are detrimental</h2>
+<p>Fast growing organisations thrive by making quick decisions, and this agility sometimes comes in the way of operationalising OKRs.</p>
+<ul>
+<li>Frequently shifting objectives and key results beats the purpose of OKRs, which is to bring focus and iterative improvements to execution.</li>
+<li>OKRs document the progress of an organisation. A graveyard of dead initiatives is very demotivating for employees.</li>
+</ul>
+<p>Should startups then adopt OKRs ? Of course they should, and here are some ideas they can try to get the best value.</p>
+<ul>
+<li>First, frequent changes happen most often because of poor OKR design process. <strong>Poorly researched objectives and KRs get changed quite often. Do not rush into setting KRs without due research</strong>.</li>
+<li>Objectives by design should run for years, and ideally represent what an org is building over long term. Shifting objectives causes more damage than shifting KRs. Moving away from an objective should therefore be treated with a lot more ceremony involving the explanations, dialogues with teams and feedback cycles. Same for adding new objectives. Publishing a document on the whys and learnings is a smart choice.</li>
+<li>Marking some objectives and KRs as experimental helps. Because sometimes there isn’t a way to experiment and figure the right KRs, crafting the right KRs becomes even more important. A few quick failures helps hone the skill.</li>
+<li>Shortening the KR timelines is another option that helps reduce the change frequency. Teams and individuals want to succeed and be part of successful projects. Getting a successful result even on a KR that’s abandoned later is far better than not seeing any result at all. This builds execution rhythm. Try setting a month long KR where possible (most of the time this isn’t possible or advisable in larger and less agile groups).</li>
+</ul>
+<p>Poor leaders are often seen unilaterally changing OKRs. Good leaders I have met often recall that it&rsquo;s their job to inspire, and inspiring employees to make changes to their goals frequently isn’t something they aspire to do; they spend time proving their hypothesis and build a well researched argument.</p>
+<hr>
+<h2 id="summary-of-recommendations">Summary of Recommendations</h2>
+<ul>
+<li>Less than 5 objectives</li>
+<li>A good heuristic for an Objective is - are you comfortable putting it on a billboard in front of your customers?</li>
+<li>One leader for each objective</li>
+<li>One team/group for each mutually exclusive objective</li>
+<li>Managing an orgs OKRs is a full time job, hire a Program Manager or become one, full time.</li>
+<li>Monthly OKR ceremony helps to create a flywheel effect.</li>
+<li>Poorly researched objectives and KRs get changed quite often.</li>
+<li>Celebrating improvements increases the probability of success</li>
+</ul>
+
+    </article>
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>

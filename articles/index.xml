@@ -6,10 +6,19 @@
     <description>Recent content in Articles on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Jul 2020 00:13:28 +0530</lastBuildDate>
+    <lastBuildDate>Tue, 13 Oct 2020 13:55:25 +0530</lastBuildDate>
     
 	<atom:link href="https://rnjn.in/articles/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Learnings from implementing OKRs</title>
+      <link>https://rnjn.in/articles/learnings-about-okrs/</link>
+      <pubDate>Tue, 13 Oct 2020 13:55:25 +0530</pubDate>
+      
+      <guid>https://rnjn.in/articles/learnings-about-okrs/</guid>
+      <description>OKRs are theoretically quite good for planning and communicating organisational goals and checking progress. The ideas are very simple and draw on empirical wisdom from successful companies like intel and google, thus in absence of a pre-existing system and for new companies its very easy to start using the methodology. OKRs also resonate well with teams that have driven progress iteratively. However, there&amp;rsquo;s a distinct lack of literature around failures and learnings to get into a good rhythm of planning and execution using OKRs, the available literature does a good job of selling.</description>
+    </item>
     
     <item>
       <title>Getting Back to Work Post Paternity Leave</title>
