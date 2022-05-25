@@ -75,8 +75,8 @@ if (!doNotTrack) {
 
 
 <link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
 
 <link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
 
@@ -85,7 +85,7 @@ if (!doNotTrack) {
 
 <body
   lang="en-us"
-  class="avenir w-90 w-60-ns center center-ns mv2 mv5-ns"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns"
   itemscope
   itemtype="http://schema.org/Article"
 >
@@ -103,18 +103,18 @@ if (!doNotTrack) {
     <article itemprop="articleBody" id="content" class="w-90 lh-copy">
       <p><em>May 12th, 2014</em></p>
 <p>Python list comprehensions are by far the simplest and most readable loop expressions that I have worked with. Here’s an example where I have a list of lists of lists (corpus –&gt; documents –&gt; sentences) where I need to remove some items (called stop_words here) from the sentences.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">corpus <span style="color:#f92672">=</span> [[[word
-            <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> sentence <span style="color:#66d9ef">if</span> word <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>_stop_words]
-         <span style="color:#66d9ef">for</span> sentence <span style="color:#f92672">in</span> document]
-       <span style="color:#66d9ef">for</span> document <span style="color:#f92672">in</span> corpus]
-                                                      
-</code></pre></div><p>Notice the array brackets added after each for expression so the program retains the same structure.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>corpus <span style="color:#f92672">=</span> [[[word
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> sentence <span style="color:#66d9ef">if</span> word <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>_stop_words]
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">for</span> sentence <span style="color:#f92672">in</span> document]
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">for</span> document <span style="color:#f92672">in</span> corpus]
+</span></span><span style="display:flex;"><span>                                                      
+</span></span></code></pre></div><p>Notice the array brackets added after each for expression so the program retains the same structure.</p>
 <p>Another example, if I have to flatten such a deep list-</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">    <span style="color:#66d9ef">return</span> [word
-          <span style="color:#66d9ef">for</span> document <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>_corpus
-         <span style="color:#66d9ef">for</span> sentence <span style="color:#f92672">in</span> document
-       <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> sentence]
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [word
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">for</span> document <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>_corpus
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">for</span> sentence <span style="color:#f92672">in</span> document
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> sentence]
+</span></span></code></pre></div>
     </article>
   </section>
 

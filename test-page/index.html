@@ -75,8 +75,8 @@ if (!doNotTrack) {
 
 
 <link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
 
 <link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
 
@@ -85,7 +85,7 @@ if (!doNotTrack) {
 
 <body
   lang="en-us"
-  class="avenir w-90 w-60-ns center center-ns mv2 mv5-ns"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns"
   itemscope
   itemtype="http://schema.org/Article"
 >
@@ -116,23 +116,23 @@ if (!doNotTrack) {
 <p>The choice of tolerant reader<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> design doesn&rsquo;t really much help with big changes, since big changes in schema that are needed to service new features etc. need client updates anyway, and can be designed as above. Also, accepting a string that represents the full message, if you were to take Postel&rsquo;s law to an extreme would require a lot of plumbing and would cost higher to work with and make secure. This design choice shines when it comes to adding smaller changes. Lets take a real example. A service that we have been working on receives messages that contain a Doctor&rsquo;s name along with other patient diagnoses related data. A new feature request from end users that we have to implement immediately is to add phone numbers and other contact information of said doctor so that the doctor can be contacted at a later date, drives a change in schema. If we follow the multiple strict service versions approach, we would probably add a new version for this. The cost of managing different versions very quickly starts affecting the quantum of change released to consumers, and producers start designing big releases instead of multiple smaller changes. A liberal design might help contain hosted service instance proliferation by letting older clients send messages they are used to sending, while upgraded clients can send new information too. At a later date, if we for some reason need to downgrade back to a previous version, we do not need to downgrade all clients. This flexibility helps enormously when managing servers and delivering small changes continuously.</p>
 <p>Another thing, being liberal isn&rsquo;t easy. A conservative service assumes that schema validation is enough to avoid runtime errors (this assumption is not entirely correct<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>). A conservative service can assume that it never has to service clients that expect a different version of it. Versions can be deprecated by just not installing them, or removing a server. A service designed to be liberal however can only provide schema guidelines and has to wait to extract all possible information from a message to be able move forward in most cases. Also, a liberal design that enables servicing multiple versions of clients with just one instance of the service needs a lot thought. The producer has to manage change very closely, and since deprecation is a code change, these decisions take more time to production. Its also very hard to keep an eye on how many versions are being supported at the same time. <strong>A combination of a small set of available versions each being liberal to an extent provides a good alternative</strong>. Also, a good way to work on some of the difficulties with liberal reader design are consumer driven contracts.</p>
 <p>There is another counterpoint<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> to Postel&rsquo;s law and liberal reader design - security experts advice us to be conservative in what we accept, contrary to Postel&rsquo;s law. Indiscriminately accepting any message ofcourse has consequences. Yet within the bounds of a sane secure message protocol, a message data schema that allows subelements to be optionally present can be worked with. (Indiscriminately following any advice mostly hurts, including this one).</p>
-<section class="footnotes" role="doc-endnotes">
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn:1" role="doc-endnote">
-<p><a href="https://en.wikipedia.org/wiki/Postels_law">Postel&rsquo;s law</a> - wikipedia <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:1">
+<p><a href="https://en.wikipedia.org/wiki/Postels_law">Postel&rsquo;s law</a> - wikipedia&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:2" role="doc-endnote">
-<p>Martin Fowler describes decoupled collaboration <a href="http://martinfowler.com/bliki/TolerantReader.html">Tolerant reader</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:2">
+<p>Martin Fowler describes decoupled collaboration <a href="http://martinfowler.com/bliki/TolerantReader.html">Tolerant reader</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:3" role="doc-endnote">
-<p><a href="http://blog.iancartwright.com/2006/11/schema-validation-offers-false-sense-of.html">Schema validation offers a false sense of security</a> - Ian Cartwright <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:3">
+<p><a href="http://blog.iancartwright.com/2006/11/schema-validation-offers-false-sense-of.html">Schema validation offers a false sense of security</a> - Ian Cartwright&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:4" role="doc-endnote">
-<p>Eric Allman&rsquo;s counterpoints to the principle <a href="http://cacm.acm.org/magazines/2011/8/114933-the-robustness-principle-reconsidered/fulltext">The robustness principle reconsidered</a> <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:4">
+<p>Eric Allman&rsquo;s counterpoints to the principle <a href="http://cacm.acm.org/magazines/2011/8/114933-the-robustness-principle-reconsidered/fulltext">The robustness principle reconsidered</a>&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
-</section>
+</div>
 
     </article>
   </section>

@@ -6,11 +6,7 @@
     <description>Recent content on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Oct 2020 13:55:25 +0530</lastBuildDate>
-    
-	<atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 13 Oct 2020 13:55:25 +0530</lastBuildDate><atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Learnings from implementing OKRs</title>
       <link>https://rnjn.in/articles/learnings-about-okrs/</link>
@@ -81,7 +77,7 @@ In general, employee performance cycles are considered a painful experience for 
       <guid>https://rnjn.in/about/</guid>
       <description>Hullo there!
 My name is Ranjan, I come from the wonderful city of Jabalpur, I moved to Bangalore in 2002 where I live now with my wife Gouri and 2 daughters - Gayatri and Mili, who are both equal parts guilty and innocent. I hope to see them grow up healthy and kind.
-Currently, I work for an Indonesian company called gojek, building a much loved app that tries to remove life&amp;rsquo;s daily frictions.</description>
+Till recently, I managed engineering for an Indian edTech company called Vedantu. Before that, I worked at an Indonesian company called gojek (not GoTo), building a much loved app that tries to remove life&amp;rsquo;s daily frictions.</description>
     </item>
     
     <item>
@@ -137,7 +133,7 @@ At an event organised by ThoughtWorks I presented on scaling - tech, teams and p
       <guid>https://rnjn.in/articles/pretty-python-list-comprehensions/</guid>
       <description>May 12th, 2014
 Python list comprehensions are by far the simplest and most readable loop expressions that I have worked with. Here’s an example where I have a list of lists of lists (corpus –&amp;gt; documents –&amp;gt; sentences) where I need to remove some items (called stop_words here) from the sentences.
-corpus = [[[word for word in sentence if word not in self._stop_words] for sentence in document] for document in corpus] Notice the array brackets added after each for expression so the program retains the same structure.</description>
+corpus = [[[word  for word in sentence if word not in self._stop_words]  for sentence in document]  for document in corpus]  Notice the array brackets added after each for expression so the program retains the same structure.</description>
     </item>
     
     <item>
