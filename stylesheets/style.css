@@ -146,6 +146,7 @@ blockquote {
   font-size: 1.3rem;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 200;
+  font-style: italic;
 }
 
 table {

@@ -6,7 +6,17 @@
     <description>Recent content in Articles on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Oct 2020 13:55:25 +0530</lastBuildDate><atom:link href="https://rnjn.in/articles/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 23 Sep 2022 09:09:50 +0530</lastBuildDate><atom:link href="https://rnjn.in/articles/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Ringelmann Effect</title>
+      <link>https://rnjn.in/articles/the-ringelmann-effect/</link>
+      <pubDate>Fri, 23 Sep 2022 09:09:50 +0530</pubDate>
+      
+      <guid>https://rnjn.in/articles/the-ringelmann-effect/</guid>
+      <description>Sep 23th, 2022
+Lately I have been reading a bit about group dynamics, and I came across something very obvious yet not talked about in simple terms - the effect of group size on individual productivity. Back in 1913, a French agricultural engineer Max Ringelmann discovered what we now know as the Ringelmann Effect - the tendency for individual members of a group to become increasingly less productive as the size of their group increases.</description>
+    </item>
+    
     <item>
       <title>Learnings from implementing OKRs</title>
       <link>https://rnjn.in/articles/learnings-about-okrs/</link>
