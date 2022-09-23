@@ -14,7 +14,7 @@
       
       <guid>https://rnjn.in/glossary/boehms-law/</guid>
       <description>Barry Boehm was a visionary and his research and conclusions laid the foundation of methods (for eg. XP) to build software efficiently. One of his many seminal works is the law that he proved (with data) - The cost of finding and fixing a defect grows exponentially with time Some of the many practices that engineers follow today address the effects of the law -
- Pair programming Continous integration and continuous delivery Automated functional tests  </description>
+Pair programming Continous integration and continuous delivery Automated functional tests </description>
     </item>
     
     <item>
@@ -25,7 +25,7 @@
       <guid>https://rnjn.in/glossary/if-it-hurts-do-it-more-often/</guid>
       <description>Oft noted tenet in the world of programming, this principal is the basis of continuous integration and many more things (I tried to dig a bit into the origins, but didn&amp;rsquo;t find much success).
 Remember, &amp;ldquo;often&amp;rdquo; is used here as a relative measure of time, and could be replaced by a unit which makes sense -
- test integrations on every change (Integrations are hard) standup for 10 minutes everyday instead of an hour at the end of week (Alignments are hard) run performance reviews monthly (Perf reviews are hard) run OKR cadences monthly (Distributed work is hard) break all your user stories to 1 pointers (Estimating big stories is hard) pair program (Code reviews are hard) build and test changes incrementally (Boehm&amp;rsquo;s law)  As you can see, the value of following this tenet is high when complexity grows exponentially with time.</description>
+test integrations on every change (Integrations are hard) standup for 10 minutes everyday instead of an hour at the end of week (Alignments are hard) run performance reviews monthly (Perf reviews are hard) run OKR cadences monthly (Distributed work is hard) break all your user stories to 1 pointers (Estimating big stories is hard) pair program (Code reviews are hard) build and test changes incrementally (Boehm&amp;rsquo;s law) As you can see, the value of following this tenet is high when complexity grows exponentially with time.</description>
     </item>
     
     <item>
@@ -34,7 +34,7 @@ Remember, &amp;ldquo;often&amp;rdquo; is used here as a relative measure of time
       <pubDate>Wed, 01 Jul 2020 09:39:00 +0530</pubDate>
       
       <guid>https://rnjn.in/glossary/iterative-improvement/</guid>
-      <description>Iterative improvement is the basis of most modern project management principles (agile/xp/scrum..). It follows the Scientific Method. The steps are simple and intuitive, indeed they follow how we learn most things - by trying and failing and trying again. So in case you have a system that you want to improve -  Experiment - formalise and execute the change you expect to make in the system Observe - Observe the effect(s) of said change Course Correct - From these observations, find out if changes in the experiments are needed, and then make them.</description>
+      <description>Iterative improvement is the basis of most modern project management principles (agile/xp/scrum..). It follows the Scientific Method. The steps are simple and intuitive, indeed they follow how we learn most things - by trying and failing and trying again. So in case you have a system that you want to improve - Experiment - formalise and execute the change you expect to make in the system Observe - Observe the effect(s) of said change Course Correct - From these observations, find out if changes in the experiments are needed, and then make them.</description>
     </item>
     
   </channel>

@@ -33,8 +33,8 @@ Lately I have been reading a bit about group dynamics, and I came across somethi
       
       <guid>https://rnjn.in/articles/getting-back-to-work-post-paternity-leave/</guid>
       <description>Jul 6th, 2020
- A good friend became a father recently, and wanted to get some free advice about what to expect when he got back to work.
- Hey,
+A good friend became a father recently, and wanted to get some free advice about what to expect when he got back to work.
+Hey,
 If you&amp;rsquo;re reading this because you are getting back to work after your paternity leave, congratulations mate, well done! However, I do not envy you at all, practically speaking. Your life has changed dramatically in the last 2-3 months, you are barely keeping your eyes open, and hoping people around stop advising you on everything and also the opposite.</description>
     </item>
     
@@ -46,7 +46,7 @@ If you&amp;rsquo;re reading this because you are getting back to work after your
       <guid>https://rnjn.in/articles/set-specific-goals-and-iterate/</guid>
       <description>Jul 5th, 2020
 In general, employee performance cycles are considered a painful experience for most participants. There are many reasons for this -
- No expectation setting Generic and high level expectation setting Role definitions and Job descriptions do not encompass everything that an employee does Frequent shifting in expectations Long performance review cycles Lack of accountability of evaluators Lack of documented progress through the cycle Quality of reviewers is not monitored Batching of reviews causes crammed up schedules and reduces individual attention  All these (and more) add up to employees getting surprised during reviews, and builds frustration overall even in organisations that take pride in how they treat their employees.</description>
+No expectation setting Generic and high level expectation setting Role definitions and Job descriptions do not encompass everything that an employee does Frequent shifting in expectations Long performance review cycles Lack of accountability of evaluators Lack of documented progress through the cycle Quality of reviewers is not monitored Batching of reviews causes crammed up schedules and reduces individual attention All these (and more) add up to employees getting surprised during reviews, and builds frustration overall even in organisations that take pride in how they treat their employees.</description>
     </item>
     
     <item>
@@ -56,8 +56,8 @@ In general, employee performance cycles are considered a painful experience for 
       
       <guid>https://rnjn.in/articles/books-that-help-in-team-building/</guid>
       <description>Apr 27th, 2020
- A very dear friend asked me the other day - what is the best book you’ve read about building teams? I thought it best to take time to answer this. I am not an expert at either, reading books or building teams.
- In the last 4-5 years, I have worked and managed teams that have been very productive and have been together even now. None of this is because of a book, or because of me.</description>
+A very dear friend asked me the other day - what is the best book you’ve read about building teams? I thought it best to take time to answer this. I am not an expert at either, reading books or building teams.
+In the last 4-5 years, I have worked and managed teams that have been very productive and have been together even now. None of this is because of a book, or because of me.</description>
     </item>
     
     <item>
@@ -67,9 +67,9 @@ In general, employee performance cycles are considered a painful experience for 
       
       <guid>https://rnjn.in/articles/on-postels-law-and-managing-change/</guid>
       <description>Postel&amp;rsquo;s law ~19811,
- &amp;ldquo;Be conservative in what you do, be liberal in what you accept from others.&amp;rdquo; (RFC 793)
- A webservice accepting a message with a defined schema (xml/json/other) may choose to do one of these when it encounters messages with extra nodes/properties -
- be conservative and discard be liberal and accept  Of the two, there are more proponents for the latter than the former. There are many reasons thrown at the conservatives, one of them that has practical implications is change in schema.</description>
+&amp;ldquo;Be conservative in what you do, be liberal in what you accept from others.&amp;rdquo; (RFC 793)
+A webservice accepting a message with a defined schema (xml/json/other) may choose to do one of these when it encounters messages with extra nodes/properties -
+be conservative and discard be liberal and accept Of the two, there are more proponents for the latter than the former. There are many reasons thrown at the conservatives, one of them that has practical implications is change in schema.</description>
     </item>
     
     <item>
@@ -80,7 +80,7 @@ In general, employee performance cycles are considered a painful experience for 
       <guid>https://rnjn.in/articles/pretty-python-list-comprehensions/</guid>
       <description>May 12th, 2014
 Python list comprehensions are by far the simplest and most readable loop expressions that I have worked with. Here’s an example where I have a list of lists of lists (corpus –&amp;gt; documents –&amp;gt; sentences) where I need to remove some items (called stop_words here) from the sentences.
-corpus = [[[word  for word in sentence if word not in self._stop_words]  for sentence in document]  for document in corpus]  Notice the array brackets added after each for expression so the program retains the same structure.</description>
+corpus = [[[word for word in sentence if word not in self._stop_words] for sentence in document] for document in corpus] Notice the array brackets added after each for expression so the program retains the same structure.</description>
     </item>
     
     <item>
@@ -90,8 +90,8 @@ corpus = [[[word  for word in sentence if word not in self._stop_words]  for sen
       
       <guid>https://rnjn.in/articles/introducing-automation-to-large-team/</guid>
       <description>Oct 24th, 2011
- A reader on my article at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. I plan to write more posts on this topic, have a lot of thoughts, but here’s my immediate answer -
- A very strong actionable technique that I have seen work well is that you create a small/minimal smoke test suite for you larger app.</description>
+A reader on my article at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. I plan to write more posts on this topic, have a lot of thoughts, but here’s my immediate answer -
+A very strong actionable technique that I have seen work well is that you create a small/minimal smoke test suite for you larger app.</description>
     </item>
     
     <item>
@@ -123,7 +123,8 @@ Functional testing code is more often than not treated as a second class citizen
       <description>DEC 6th, 2010
 In my opinion, there are three main reasons why a functional automation suite loses its value (or the respect that a delivery team should pay it). This leads to a variety of problems, but I will save that for a later post.
 The reasons for me are -
-  Non-deterministic tests - run the same test again (without changing the code) and the test gives different results.</description>
+Non-deterministic tests - run the same test again (without changing the code) and the test gives different results.
+This, in my opinion is the least attractive aspect, a true demotivator for a delivery team to believe in its functional test suite.</description>
     </item>
     
     <item>
