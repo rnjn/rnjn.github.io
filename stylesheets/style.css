@@ -40,7 +40,7 @@
 }
 
 html {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 body {
@@ -48,7 +48,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 350;
 }
 
@@ -143,9 +143,9 @@ code {
 blockquote {
   margin-left: 1.5em;
   background-color: #F8F8F8;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-weight: 200;
+  font-weight:normal;
   font-style: italic;
 }
 
@@ -190,7 +190,7 @@ a:link {
 
 
 /* Adds dark mode */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   body {
       background-color: #151515;
       color: #eeeeee;
@@ -215,4 +215,4 @@ a:link {
     color: #eeeeee;
   }
 
-}
+} */
