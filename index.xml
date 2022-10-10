@@ -6,7 +6,17 @@
     <description>Recent content on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Sep 2022 09:09:50 +0530</lastBuildDate><atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Oct 2022 23:15:16 +0530</lastBuildDate><atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Product Engineering TODOs for Series A Leaders</title>
+      <link>https://rnjn.in/articles/product-engineering-todos-for-series-a-leaders/</link>
+      <pubDate>Sun, 09 Oct 2022 23:15:16 +0530</pubDate>
+      
+      <guid>https://rnjn.in/articles/product-engineering-todos-for-series-a-leaders/</guid>
+      <description>Oct 7th, 2022
+Series A funds are generally used to grow business, often to scale as a startup finds a product market fit (PMF). Often times, startups slow down and fail 3-4 years after this stage because of decisions made during this stage, especially when it comes to product engineering. Here are some things I think founders and engineering leaders should care about, and set straight at this stage if they haven&amp;rsquo;t started already.</description>
+    </item>
+    
     <item>
       <title>The Ringelmann Effect</title>
       <link>https://rnjn.in/articles/the-ringelmann-effect/</link>
@@ -86,8 +96,8 @@ No expectation setting Generic and high level expectation setting Role definitio
       
       <guid>https://rnjn.in/about/</guid>
       <description>Hullo there!
-My name is Ranjan, I come from the wonderful city of Jabalpur, I moved to Bangalore in 2002 where I live now with my wife Gouri and 2 daughters - Gayatri and Mili, who are both equal parts guilty and innocent. I hope to see them grow up healthy and kind.
-Till recently, I managed engineering for an Indian edTech company called Vedantu. Before that, I worked at an Indonesian company called gojek (now GoTo), building a much loved app that tries to remove life&amp;rsquo;s daily frictions.</description>
+My name is Ranjan, you may find my work bio here. I am currently on a break from active employment and spending time with kids, reading, roaming around and generally not doing much of anything. During this break, I am helping and coaching some founders and engineering leaders who have found pmf and are aspiring to scale their engineering teams.
+More about me Till recently, I managed engineering for an Indian edTech company called Vedantu.</description>
     </item>
     
     <item>
