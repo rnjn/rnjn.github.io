@@ -6,9 +6,18 @@
     <description>Recent content in Articles on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Oct 2022 23:15:16 +0530</lastBuildDate><atom:link href="https://rnjn.in/articles/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Nov 2022 14:58:44 +0530</lastBuildDate><atom:link href="https://rnjn.in/articles/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Product Engineering TODOs for Series A Leaders</title>
+      <title>How do you (technically) find if you are overstaffed or understaffed? </title>
+      <link>https://rnjn.in/articles/how-to-find-if-you-are-overstaffed-or-understaffed/</link>
+      <pubDate>Mon, 21 Nov 2022 14:58:44 +0530</pubDate>
+      
+      <guid>https://rnjn.in/articles/how-to-find-if-you-are-overstaffed-or-understaffed/</guid>
+      <description>Staffing is relative to expectations. In the growth mood, you may want to build a lot of features and stretch, you may feel understaffed. If you are in the mood for conservation, you would want to maximise on efforts that make you money in the next 3-6 months period, so a lot of work being done may feel redundant and you feel you are overstaffed. Since this is a complex problem, we need to look at the levers.</description>
+    </item>
+    
+    <item>
+      <title>Product Engineering TODOs for Startup Leaders</title>
       <link>https://rnjn.in/articles/product-engineering-todos-for-series-a-leaders/</link>
       <pubDate>Sun, 09 Oct 2022 23:15:16 +0530</pubDate>
       
