@@ -6,7 +6,17 @@
     <description>Recent content in Articles on 🏡</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Nov 2022 14:58:44 +0530</lastBuildDate><atom:link href="https://rnjn.in/articles/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Apr 2023 12:14:42 +0530</lastBuildDate><atom:link href="https://rnjn.in/articles/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Risks of Cross Functional Team Structure</title>
+      <link>https://rnjn.in/articles/risks-of-cross-functional-team-structure/</link>
+      <pubDate>Mon, 10 Apr 2023 12:14:42 +0530</pubDate>
+      
+      <guid>https://rnjn.in/articles/risks-of-cross-functional-team-structure/</guid>
+      <description>A PoD structure enables cross functional teams, that is, teams that comprise of different specialisations like engineer, product manager, data scientist etc to work independently and execute on a business goal without dependencies on other teams. This type of structure increases the execution speed but is not without risks. Some of these that I have encountered are mentioned below -
+Division of work The key to executing fast is independence in decision-making for the area of work, and not having to wait on other teams to complete a team&amp;rsquo;s work.</description>
+    </item>
+    
     <item>
       <title>How do you (technically) find if you are overstaffed or understaffed? </title>
       <link>https://rnjn.in/articles/how-to-find-if-you-are-overstaffed-or-understaffed/</link>
