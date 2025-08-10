@@ -10,7 +10,7 @@
 <meta name="description" content="" />
 <meta name="HandheldFriendly" content="True" />
 <meta name="MobileOptimized" content="320" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 
 <meta name="keywords" content="">
@@ -97,25 +97,46 @@
   itemscope
   itemtype="http://schema.org/Article"
 >
+  <a href="#main" class="skip-link">Skip to main content</a>
   
-  <span class="b">/ </span>
-  <a
-    href="https://rnjn.in/"
-    class="b bb bw1 pb1 no-underline black"
-    >🏡</a
-  >
+  <nav aria-label="Breadcrumb">
+    <span class="b">/ </span>
+    <a
+      href="https://rnjn.in/"
+      class="b bb bw1 pb1 no-underline black"
+      >🏡</a
+    >
+  </nav>
 
-  <section id="main" class="mt5">
+  <main id="main" class="mt5" role="main">
     <h1 itemprop="name" id="title">Observability Theatre</h1>
 
+    
+    <div class="toc">
+      <h3>Contents</h3>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-symptoms">The Symptoms</a></li>
+    <li><a href="#why-organizations-fall-into-observability-theatre">Why Organizations Fall Into Observability Theatre</a></li>
+    <li><a href="#root-cause-analysis--the-mechanisms-at-work">Root Cause Analysis : The Mechanisms at Work</a></li>
+    <li><a href="#observability-as-infrastructure">Observability as Infrastructure</a></li>
+    <li><a href="#the-widening-gap-competition-isnt-waiting">The widening gap: Competition isn&rsquo;t waiting</a></li>
+  </ul>
+</nav>
+    </div>
     
 
     <article itemprop="articleBody" id="content" class="w-90 lh-copy">
       <p><img src="../theatre.png" alt="Theatre"></p>
-<p><strong>the·a·tre</strong> (also the·a·ter) <em>/ˈθiːətər/</em> <em>noun</em></p>
-<p><strong>:</strong> the performance of actions or behaviors for appearance rather than substance; an elaborate pretense that simulates real activity while lacking its essential purpose or outcomes</p>
-<p><em>Example: &ldquo;The company&rsquo;s security theatre gave the illusion of protection without addressing actual vulnerabilities.&rdquo;</em></p>
-<hr>
+<div class="definition-box">
+  <div class="definition-term">the·a·tre (also the·a·ter) /ˈθiːətər/ noun</div>
+  <div class="definition-content"><p>: the performance of actions or behaviors for appearance rather
+than substance; an elaborate pretense that simulates real activity
+while lacking its essential purpose or outcomes</p>
+<p>Example: &ldquo;The company&rsquo;s security theatre gave the illusion of
+protection without addressing actual vulnerabilities.&rdquo;</p>
+</div>
+</div>
 <p>Your organization has invested millions in observability tools. You have dashboards for everything. Your teams dutifully instrument their services. Yet when incidents strike, engineers still spend hours hunting through disparate systems, correlating timestamps manually, and guessing at root causes. When the CEO forwards a customer complaint asking &ldquo;are we down?&rdquo;, that&rsquo;s when the dev team gets to know about incidents.</p>
 <p>You&rsquo;re experiencing observability theatre—the expensive illusion of system visibility without its substance.</p>
 <h2 id="the-symptoms">The Symptoms</h2>
@@ -130,6 +151,7 @@
 <p><strong>Archaeological dig during incidents.</strong> Every incident becomes an hours-long excavation. Engineers share screenshots in Slack because they can&rsquo;t share dashboard links. They manually correlate timestamps across three different tools. Someone always asks &ldquo;which timezone is this log in?&rdquo; The same investigations happen repeatedly because there&rsquo;s no shared context or runbooks.</p>
 <p><strong>Vanity metrics.</strong> Dashboards full of technical measurements that tell you nothing about what matters. Engineers  know CPU is at 80%, memory usage is climbing, p99 latency increased 50ms. Meanwhile, checkout conversion plummeted 30%, revenue is down $100K per hour, and customers are abandoning carts in droves. Observability tracks server health while business bleeds money.</p>
 <p><strong>Reactive-only mode.</strong> Your customers are your monitoring system. They discover bugs before your engineers do. They report outages before your alerts fire. You only look at dashboards after Twitter lights up with complaints or support tickets spike. No proactive monitoring, no SLOs, no error budgets—just perpetual firefighting mode. The CEO forwards a customer complaint asking &ldquo;are we down?&rdquo;, and then you check your dashboards.</p>
+<hr>
 <h2 id="why-organizations-fall-into-observability-theatre">Why Organizations Fall Into Observability Theatre</h2>
 <p>These symptoms don&rsquo;t appear in isolation. They emerge from fundamental organizational patterns and human tendencies that push observability to the margins. Understanding these root causes is the first step toward meaningful change.</p>
 <p><strong>Never anyone&rsquo;s first priority.</strong> Business wants to ship new features. Engineers want to learn new frameworks, design patterns, or distributed systems—not observability tools. It&rsquo;s perpetually someone else&rsquo;s problem. Even in organizations that preach &ldquo;you build it, you run it,&rdquo; observability remains an afterthought.</p>
@@ -139,6 +161,7 @@
 <p><strong>Data silos and fragmentation.</strong> Different teams implement different tools, creating isolated islands of data. Frontend uses one monitoring service, backend another, infrastructure a third. When issues span systems—which they always do—you can&rsquo;t correlate. Each team optimizes locally while system-wide observability degrades.</p>
 <p><strong>No business alignment.</strong> Observability remains a technical exercise divorced from business outcomes. Dashboards track CPU and memory, not customer experience or revenue. Leaders see it as a cost center, not a business enabler. Without clear connection to business value, observability always loses budget battles.</p>
 <p><strong>The magic tool fallacy.</strong> Organizations buy tools expecting them to solve structural problems automatically. Without standards, training, or cultural change, expensive tools become shelfware. Now they have N+1 problems.</p>
+<hr>
 <h2 id="root-cause-analysis--the-mechanisms-at-work">Root Cause Analysis : The Mechanisms at Work</h2>
 <p>Understanding how these root causes transform into symptoms reveals why observability theatre is so persistent. These aren&rsquo;t isolated failures—they&rsquo;re interconnected mechanisms that reinforce each other.</p>
 <h3 id="poor-planning-leads-to-tool-proliferation">Poor planning leads to tool proliferation</h3>
@@ -197,6 +220,7 @@
 <li>Technical debt accumulates until the system is barely functional</li>
 <li>By then, migration seems impossible</li>
 </ul>
+<hr>
 <h2 id="observability-as-infrastructure">Observability as Infrastructure</h2>
 <p>The solution isn&rsquo;t another tool or methodology. It&rsquo;s a fundamental shift in how we think about observability. Stop treating it as an add-on. Start treating it as infrastructure—as fundamental to your systems as your database or load balancer.</p>
 <h3 id="start-with-what-you-already-understand">Start with what you already understand</h3>
@@ -271,14 +295,15 @@
       </tr>
   </tbody>
 </table>
-<h3 id="how-treating-observability-as-infrastructure-transforms-decisions">How treating observability as infrastructure transforms decisions</h3>
+<h3 id="treating-observability-as-infrastructure-transforms-decisions">Treating observability as infrastructure transforms decisions</h3>
 <p>When leadership recognizes observability as infrastructure, everything changes:</p>
 <p><strong>Budgeting:</strong> You allocate observability budget upfront, just like you do for databases or cloud infrastructure. No more scrambling when bills arrive. No more choosing between visibility and cost. You plan for the observability your system scale requires.</p>
 <p><strong>Staffing:</strong> Observability becomes everyone&rsquo;s responsibility. You hire engineers who understand instrumentation. You train existing engineers on observability principles. You don&rsquo;t dump it on a small SRE team—you embed it in your engineering culture.</p>
 <p><strong>Development practices:</strong> Observability requirements appear in every design document. Story tickets include instrumentation acceptance criteria. Code reviews check for proper logging, metrics, and traces. You build observable systems from day one, not bolt on monitoring as an afterthought.</p>
 <p><strong>Tool selection:</strong> You choose tools strategically for the long term, not reactively for immediate fires. You prioritize integration and correlation capabilities over feature lists. You invest in tools that grow with your needs, not fragment your visibility.</p>
 <p><strong>Standards first:</strong> Before the first line of code, you establish instrumentation standards. Log formats. Metric naming. Trace attribution. Alert thresholds. These become as fundamental as your coding standards.</p>
-<h2 id="the-widening-gap-your-competition-isnt-waiting">The widening gap: Your competition isn&rsquo;t waiting</h2>
+<hr>
+<h2 id="the-widening-gap-competition-isnt-waiting">The widening gap: Competition isn&rsquo;t waiting</h2>
 <p>Here&rsquo;s the stark reality: while you&rsquo;re performing observability theatre, your competitors are building genuinely observable systems. The gap compounds daily.</p>
 <table>
   <thead>
@@ -341,7 +366,7 @@
 <p>The choice is stark: evolve or become irrelevant. Your systems will only grow more complex. Customer expectations will only increase. The organizations that can see, understand, and respond to their systems will win. Those performing theatre in the dark will not.</p>
 
     </article>
-  </section>
+  </main>
 
   <footer>
     <div>

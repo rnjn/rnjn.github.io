@@ -55,6 +55,138 @@ body {
 /* Roboto font for article pages */
 body.article-page {
   font-family: 'Roboto', sans-serif;
+  font-size: 1.3rem;
+}
+
+body.article-page li {
+  font-size: 1.3rem;
+}
+
+/* Table styling for article pages */
+body.article-page table {
+  margin: 2rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  border: none;
+}
+
+body.article-page th {
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.5;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  padding: 1rem;
+}
+
+body.article-page th:last-child {
+  border-right: none;
+}
+
+body.article-page td {
+  font-size: 1.3rem;
+  padding: 0.875rem 1rem;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+}
+
+body.article-page td:last-child {
+  border-right: none;
+}
+
+body.article-page tbody tr:last-child td {
+  border-bottom: none;
+}
+
+body.article-page tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Accessibility improvements */
+
+/* Focus styles for keyboard navigation */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+/* Skip link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Improve text selection contrast */
+::selection {
+  background-color: #b3d4fc;
+  text-shadow: none;
+}
+
+/* Ensure minimum touch target size on mobile */
+@media screen and (max-width: 768px) {
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-block;
+    line-height: 44px;
+  }
+  
+  .toc {
+    margin: 1rem 0;
+    padding: 1rem;
+  }
+}
+
+/* Definition box styling */
+.definition-box {
+  background-color: #f8f8f8;
+  border-left: 4px solid #ddd;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.definition-term {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.1em;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.definition-content {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.9em;
+}
+
+.definition-content p {
+  margin: 0.5rem 0;
+}
+
+.definition-content p:first-child {
+  margin-top: 0;
+}
+
+.definition-content p:last-child {
+  margin-bottom: 0;
 }
 
 /* Table of Contents styling */
