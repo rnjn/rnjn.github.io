@@ -6,8 +6,15 @@
     <description>Recent content on 🏡</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 10 Apr 2023 12:14:42 +0530</lastBuildDate>
+    <lastBuildDate>Sun, 10 Aug 2025 19:11:27 +0530</lastBuildDate>
     <atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Observability Theatre</title>
+      <link>https://rnjn.in/articles/observability-theatre/</link>
+      <pubDate>Sun, 10 Aug 2025 19:11:27 +0530</pubDate>
+      <guid>https://rnjn.in/articles/observability-theatre/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;the·a·tre&lt;/strong&gt; (also the·a·ter) &lt;em&gt;/ˈθiːətər/&lt;/em&gt; &lt;em&gt;noun&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;:&lt;/strong&gt; the performance of actions or behaviors for appearance rather than substance; an elaborate pretense that simulates real activity while lacking its essential purpose or outcomes&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Example: &amp;ldquo;The company&amp;rsquo;s security theatre gave the illusion of protection without addressing actual vulnerabilities.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;Your organization has invested millions in observability tools. You have dashboards for everything. Your teams dutifully instrument their services. Yet when incidents strike, engineers still spend hours hunting through disparate systems, correlating timestamps manually, and guessing at root causes. When the CEO forwards a customer complaint asking &amp;ldquo;are we down?&amp;rdquo;, that&amp;rsquo;s when the dev team gets to know about incidents.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Risks of Cross Functional Team Structure</title>
       <link>https://rnjn.in/articles/risks-of-cross-functional-team-structure/</link>

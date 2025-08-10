@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Observability Theatre" />
+<meta property="og:site_name" content="🏡" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://rnjn.in/articles/observability-theatre/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2025-08-10
+" /> <meta property="article:modified_time" content="2025-08-10
+" />
+
+
+
+
+
+
+    <title>Observability Theatre</title>
+    <link rel="canonical" href="https://rnjn.in/articles/observability-theatre/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://rnjn.in/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-3R801NES6J');
+        }
+      </script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3R801NES6J');
+</script>
+
+
+<link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+<link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
+
+  </head>
+
+
+<body
+  lang="en-us"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns article-page"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a
+    href="https://rnjn.in/"
+    class="b bb bw1 pb1 no-underline black"
+    >🏡</a
+  >
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Observability Theatre</h1>
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <p><strong>the·a·tre</strong> (also the·a·ter) <em>/ˈθiːətər/</em> <em>noun</em></p>
+<p><strong>:</strong> the performance of actions or behaviors for appearance rather than substance; an elaborate pretense that simulates real activity while lacking its essential purpose or outcomes</p>
+<p><em>Example: &ldquo;The company&rsquo;s security theatre gave the illusion of protection without addressing actual vulnerabilities.&rdquo;</em></p>
+<hr>
+<p>Your organization has invested millions in observability tools. You have dashboards for everything. Your teams dutifully instrument their services. Yet when incidents strike, engineers still spend hours hunting through disparate systems, correlating timestamps manually, and guessing at root causes. When the CEO forwards a customer complaint asking &ldquo;are we down?&rdquo;, that&rsquo;s when the dev team gets to know about incidents.</p>
+<p>You&rsquo;re experiencing observability theatre—the expensive illusion of system visibility without its substance.</p>
+<h2 id="the-symptoms">The Symptoms</h2>
+<p>Walk into any engineering organization practicing observability theatre and you&rsquo;ll find:</p>
+<p><strong>Tool sprawl.</strong> Different teams have purchased different monitoring solutions—Datadog here, New Relic there, Prometheus over there, ELK stack in the corner. Each tool was bought to solve an immediate problem, creating a patchwork of incompatible systems that cannot correlate data when you need it most.</p>
+<p><strong>Dead dashboards.</strong> Over 90% of dashboards are created once and never viewed again. Engineers build them for specific incidents or projects, then abandon them. Your Grafana instance becomes a graveyard of good intentions, each dashboard a monument to a problem solved months ago.</p>
+<p><strong>Alert noise.</strong> When 90% of your alerts are meaningless, teams adapt by ignoring them all. Slack channels muted. Email filters sending alerts straight to trash.</p>
+<p><strong>Sampling and Rationing.</strong> To manage observability costs, teams sample data down to 50% or less. They keep data for days instead of months. During an incident, you discover you can&rsquo;t analyze the problem because half the relevant data was discarded. That critical trace showing the root cause? It was in the 50% you threw away to save money.</p>
+<p><strong>Fragile self-hosted systems.</strong> The observability stack requires constant nursing. Engineers spend days debugging why Prometheus is dropping metrics, why Jaeger queries timeout, or why Elasticsearch ran out of disk space again. During major incidents—when twenty engineers simultaneously open dashboards—the system slows to a crawl or crashes entirely. The tools meant to help you debug problems become problems themselves.</p>
+<p><strong>Instrumentation chaos.</strong> Debug logs tagged as errors flood your systems with noise. Critical errors buried in info logs go unnoticed. One service emits structured JSON, another prints strings, a third uses a custom format. Service A calls it &ldquo;user_id&rdquo;, Service B uses &ldquo;userId&rdquo;, Service C prefers &ldquo;customer.id&rdquo;. When you need to trace an issue across services, you&rsquo;re comparing apples to jackfruits.</p>
+<p><strong>Uninstrumented code everywhere.</strong> New services ship with zero metrics. Features go live without trace spans. Error handling consists of <code>console.log(&quot;error occurred&quot;)</code>. When incidents happen, you&rsquo;re debugging blind—no metrics to check, no traces to follow, no structured logs to query. Entire microservices are black boxes, visible only through their side effects on other systems.</p>
+<p><strong>Archaeological dig during incidents.</strong> Every incident becomes an hours-long excavation. Engineers share screenshots in Slack because they can&rsquo;t share dashboard links. They manually correlate timestamps across three different tools. Someone always asks &ldquo;which timezone is this log in?&rdquo; The same investigations happen repeatedly because there&rsquo;s no shared context or runbooks.</p>
+<p><strong>Vanity metrics.</strong> Dashboards full of technical measurements that tell you nothing about what matters. Engineers  know CPU is at 80%, memory usage is climbing, p99 latency increased 50ms. Meanwhile, checkout conversion plummeted 30%, revenue is down $100K per hour, and customers are abandoning carts in droves. Observability tracks server health while business bleeds money.</p>
+<p><strong>Reactive-only mode.</strong> Your customers are your monitoring system. They discover bugs before your engineers do. They report outages before your alerts fire. You only look at dashboards after Twitter lights up with complaints or support tickets spike. No proactive monitoring, no SLOs, no error budgets—just perpetual firefighting mode. The CEO forwards a customer complaint asking &ldquo;are we down?&rdquo;, and then you check your dashboards.</p>
+<h2 id="why-organizations-fall-into-observability-theatre">Why Organizations Fall Into Observability Theatre</h2>
+<p>These symptoms don&rsquo;t appear in isolation. They emerge from fundamental organizational patterns and human tendencies that push observability to the margins. Understanding these root causes is the first step toward meaningful change.</p>
+<p><strong>Never anyone&rsquo;s first priority.</strong> Business wants to ship new features. Engineers want to learn new frameworks, design patterns, or distributed systems—not observability tools. It&rsquo;s perpetually someone else&rsquo;s problem. Even in organizations that preach &ldquo;you build it, you run it,&rdquo; observability remains an afterthought.</p>
+<p><strong>No instant karma.</strong> Bad observability practices don’t hurt immediately. Like technical debt, its pain compounds slowly. The engineer who skips instrumentation ships faster and gets praised. By the time poor observability causes a major incident, they&rsquo;ve been promoted or moved on. Without immediate consequences, there&rsquo;s no learning loop.</p>
+<p><strong>Siloed responsibilities.</strong> In most companies, a small SRE team owns observability while hundreds of engineers ship code. This 100:1 ratio guarantees failure. The people building systems aren&rsquo;t responsible for making them observable. No one adds observability to acceptance criteria. It&rsquo;s always someone else&rsquo;s job—until 3 AM when it&rsquo;s suddenly everyone&rsquo;s problem.</p>
+<p><strong>Reactive budgeting.</strong> Observability never gets proactive budget allocation. Teams cobble together tools reactively. Three months later, sticker shock hits. Panicked cost-cutting follows—sampling, shortened retention, tool consolidation. The very capabilities you need during incidents get sacrificed to control costs you never planned for.</p>
+<p><strong>Data silos and fragmentation.</strong> Different teams implement different tools, creating isolated islands of data. Frontend uses one monitoring service, backend another, infrastructure a third. When issues span systems—which they always do—you can&rsquo;t correlate. Each team optimizes locally while system-wide observability degrades.</p>
+<p><strong>No business alignment.</strong> Observability remains a technical exercise divorced from business outcomes. Dashboards track CPU and memory, not customer experience or revenue. Leaders see it as a cost center, not a business enabler. Without clear connection to business value, observability always loses budget battles.</p>
+<p><strong>The magic tool fallacy.</strong> Organizations buy tools expecting them to solve structural problems automatically. Without standards, training, or cultural change, expensive tools become shelfware. Now they have N+1 problems.</p>
+<h2 id="root-cause-analysis--the-mechanisms-at-work">Root Cause Analysis : The Mechanisms at Work</h2>
+<p>Understanding how these root causes transform into symptoms reveals why observability theatre is so persistent. These aren&rsquo;t isolated failures—they&rsquo;re interconnected mechanisms that reinforce each other.</p>
+<h3 id="poor-planning-leads-to-tool-proliferation">Poor planning leads to tool proliferation</h3>
+<p>No upfront observability strategy means each team solves immediate problems with whatever tool seems easiest. Frontend adopts Sentry. Backend chooses Datadog. Infrastructure runs Prometheus. Data science uses something else entirely. Without coordination, you get:</p>
+<ul>
+<li>Multiple overlapping tools with partial coverage</li>
+<li>Inability to correlate issues across system boundaries</li>
+<li>Escalating costs from redundant functionality</li>
+<li>Integration nightmares when trying to build unified views</li>
+</ul>
+<h3 id="cost-cutting-degrades-incident-response">Cost-cutting degrades incident response</h3>
+<p>The cycle is predictable. No budget planning leads to bill shock. Panicked executives demand cost reduction. Teams implement aggressive sampling and short retention. Then:</p>
+<ul>
+<li>Critical data missing during incidents (the error happened in the discarded 50%)</li>
+<li>Can&rsquo;t identify patterns in historical data (it&rsquo;s already deleted)</li>
+<li>Slow-burn issues remain invisible until they explode</li>
+<li>MTTR increases, causing more business impact than the saved tooling costs</li>
+</ul>
+<h3 id="missing-standards-multiply-debugging-time">Missing standards multiply debugging time</h3>
+<p>Without instrumentation guidelines, every service becomes a unique puzzle:</p>
+<ul>
+<li>Inconsistent log formats require custom parsing per service</li>
+<li>Naming conventions vary (is it &ldquo;user_id&rdquo;, &ldquo;userId&rdquo;, or &ldquo;uid&rdquo;?)</li>
+<li>Critical context missing from some services but not others</li>
+<li>Engineers waste hours translating between formats during incidents</li>
+</ul>
+<h3 id="knowledge-loss-perpetuates-bad-practices">Knowledge loss perpetuates bad practices</h3>
+<p>The slow feedback loop creates a vicious cycle:</p>
+<ul>
+<li>Engineers implement quick fixes without understanding long-term impact</li>
+<li>By the time problems manifest (months later), they&rsquo;ve moved to new teams or companies</li>
+<li>New engineers inherit the mess without context</li>
+<li>They make similar decisions, not knowing the history</li>
+<li>Documentation, if it exists, captures what was built, not why it fails</li>
+<li>Each generation repeats the same mistakes</li>
+</ul>
+<h3 id="alert-fatigue-becomes-normalized-dysfunction">Alert fatigue becomes normalized dysfunction</h3>
+<p>The progression is insidious:</p>
+<ul>
+<li>Initial alerts seem reasonable</li>
+<li>Without standards, everyone adds their own &ldquo;important&rdquo; alerts</li>
+<li>Alert volume grows exponentially</li>
+<li>Teams start ignoring non-critical alerts</li>
+<li>Soon they&rsquo;re ignoring all alerts</li>
+<li>Channels get muted, rules send alerts to /dev/null</li>
+<li>Real incidents go unnoticed until customers complain</li>
+</ul>
+<h3 id="the-self-hosted-software-trap-deepens-over-time">The self-hosted software trap deepens over time</h3>
+<p>What starts as cost-saving becomes a resource sink:</p>
+<ul>
+<li>&ldquo;Free&rdquo; OSS tools require dedicated engineering time</li>
+<li>At scale, they need constant tuning, upgrades, capacity planning</li>
+<li>Your best engineers get pulled into observability infrastructure</li>
+<li>The system works fine in steady state but fails under incident load</li>
+<li>Upgrades get deferred (too risky during business hours)</li>
+<li>Technical debt accumulates until the system is barely functional</li>
+<li>By then, migration seems impossible</li>
+</ul>
+<h2 id="observability-as-infrastructure">Observability as Infrastructure</h2>
+<p>The solution isn&rsquo;t another tool or methodology. It&rsquo;s a fundamental shift in how we think about observability. Stop treating it as an add-on. Start treating it as infrastructure—as fundamental to your systems as your database or load balancer.</p>
+<h3 id="start-with-what-you-already-understand">Start with what you already understand</h3>
+<p>You wouldn&rsquo;t run production without:</p>
+<ul>
+<li>Databases to store your data</li>
+<li>Load balancers to distribute traffic</li>
+<li>Security systems to protect assets</li>
+<li>Backup systems to ensure recovery</li>
+<li>Version control to track changes</li>
+</ul>
+<p>Yet many organizations run production without observable systems. Observability isn&rsquo;t optional infrastructure; it&rsquo;s foundational infrastructure. You need it before you need it.</p>
+<h3 id="the-business-case-is-undeniable">The business case is undeniable</h3>
+<p>When observability is foundational infrastructure:</p>
+<ul>
+<li><strong>Incidents resolve 50-70% faster.</strong> Unified tools and standards mean engineers find root causes in minutes, not hours</li>
+<li><strong>False alerts drop by 90%.</strong> Thoughtful instrumentation replaces noise with signal</li>
+<li><strong>Engineering productivity increases.</strong> Less time firefighting, more time building</li>
+<li><strong>Customer experience improves.</strong> You detect issues before customers do</li>
+<li><strong>Costs become predictable.</strong> Planned investment replaces reactive spending</li>
+</ul>
+<p>When observability is theatre:</p>
+<ul>
+<li><strong>Every incident is a marathon.</strong> Hours spent correlating data across tools</li>
+<li><strong>Engineers burn out.</strong> Constant firefighting with broken tools</li>
+<li><strong>Customers find your bugs.</strong> They&rsquo;re your most expensive monitoring system</li>
+<li><strong>Costs spiral unpredictably.</strong> Emergency tool purchases, extended downtime, lost customers</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Metric</th>
+          <th style="text-align: left">Observability Theatre</th>
+          <th style="text-align: left">Observability as Infrastructure</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Incident Resolution</strong></td>
+          <td style="text-align: left">Hours wasted correlating across systems</td>
+          <td style="text-align: left">50-70% faster MTTR with unified tools</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Alert Quality</strong></td>
+          <td style="text-align: left">Noise drowns out real issues</td>
+          <td style="text-align: left">90% reduction in false positives</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Engineering Focus</strong></td>
+          <td style="text-align: left">Constant firefighting and tool debugging</td>
+          <td style="text-align: left">Building features and improving systems</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Issue Detection</strong></td>
+          <td style="text-align: left">Customers report problems first</td>
+          <td style="text-align: left">Proactive detection before customer impact</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Cost Management</strong></td>
+          <td style="text-align: left">Reactive spending and hidden downtime costs</td>
+          <td style="text-align: left">Predictable, planned investment</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Team Health</strong></td>
+          <td style="text-align: left">Burnout from broken tools and processes</td>
+          <td style="text-align: left">Sustainable on-call, clear procedures</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Business Impact</strong></td>
+          <td style="text-align: left">Lost sales, damaged reputation</td>
+          <td style="text-align: left">Protected revenue, better customer trust</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="how-treating-observability-as-infrastructure-transforms-decisions">How treating observability as infrastructure transforms decisions</h3>
+<p>When leadership recognizes observability as infrastructure, everything changes:</p>
+<p><strong>Budgeting:</strong> You allocate observability budget upfront, just like you do for databases or cloud infrastructure. No more scrambling when bills arrive. No more choosing between visibility and cost. You plan for the observability your system scale requires.</p>
+<p><strong>Staffing:</strong> Observability becomes everyone&rsquo;s responsibility. You hire engineers who understand instrumentation. You train existing engineers on observability principles. You don&rsquo;t dump it on a small SRE team—you embed it in your engineering culture.</p>
+<p><strong>Development practices:</strong> Observability requirements appear in every design document. Story tickets include instrumentation acceptance criteria. Code reviews check for proper logging, metrics, and traces. You build observable systems from day one, not bolt on monitoring as an afterthought.</p>
+<p><strong>Tool selection:</strong> You choose tools strategically for the long term, not reactively for immediate fires. You prioritize integration and correlation capabilities over feature lists. You invest in tools that grow with your needs, not fragment your visibility.</p>
+<p><strong>Standards first:</strong> Before the first line of code, you establish instrumentation standards. Log formats. Metric naming. Trace attribution. Alert thresholds. These become as fundamental as your coding standards.</p>
+<h2 id="the-widening-gap-your-competition-isnt-waiting">The widening gap: Your competition isn&rsquo;t waiting</h2>
+<p>Here&rsquo;s the stark reality: while you&rsquo;re performing observability theatre, your competitors are building genuinely observable systems. The gap compounds daily.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Capability</th>
+          <th style="text-align: left">Organizations Stuck in Theatre</th>
+          <th style="text-align: left">Organizations with Observability</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Deployment Velocity</strong></td>
+          <td style="text-align: left">Ship slowly,fearing invisible problems</td>
+          <td style="text-align: left">Ship features faster with confidence</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Incident Management</strong></td>
+          <td style="text-align: left">Learn about problems from customers</td>
+          <td style="text-align: left">Resolve incidents before customers notice</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Technical Decisions</strong></td>
+          <td style="text-align: left">Architecture based on guesses and folklore</td>
+          <td style="text-align: left">Data-driven decisions on architecture and investment</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Talent Retention</strong></td>
+          <td style="text-align: left">Lose engineers tired of broken tooling</td>
+          <td style="text-align: left">Attract top talent who demand proper tools</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Scaling Ability</strong></td>
+          <td style="text-align: left">Hit mysterious walls they can&rsquo;t diagnose</td>
+          <td style="text-align: left">Scale confidently with full visibility</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>On-Call Experience</strong></td>
+          <td style="text-align: left">3 AM debugging sessions with fragmented tools</td>
+          <td style="text-align: left">Efficient resolution with unified observability</td>
+      </tr>
+  </tbody>
+</table>
+<p>Organizations with observability:</p>
+<ul>
+<li>Ship features faster because they trust their visibility</li>
+<li>Resolve incidents before customers notice</li>
+<li>Make data-driven decisions about architecture and investment</li>
+<li>Attract top engineering talent who refuse to work blind</li>
+<li>Scale confidently, knowing they can see what&rsquo;s happening</li>
+</ul>
+<p>Organizations stuck in theatre:</p>
+<ul>
+<li>Ship slowly, fearing what they can&rsquo;t see</li>
+<li>Learn about problems from Twitter and support tickets</li>
+<li>Make architectural decisions based on guesses and folklore</li>
+<li>Lose engineers tired of 3 AM debugging sessions with broken tools</li>
+<li>Hit scaling walls they can&rsquo;t diagnose</li>
+</ul>
+<p>This gap isn&rsquo;t linear—it&rsquo;s exponential. Every month you delay treating observability as infrastructure, your competitors pull further ahead. They&rsquo;re iterating faster, learning quicker, and serving customers better. Your observability theatre isn&rsquo;t just costing money. It&rsquo;s costing market position.</p>
+<p>The choice is stark: evolve or become irrelevant. Your systems will only grow more complex. Customer expectations will only increase. The organizations that can see, understand, and respond to their systems will win. Those performing theatre in the dark will not.</p>
+
+    </article>
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>
