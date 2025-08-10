@@ -44,6 +44,10 @@
   href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
 />
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://rnjn.in/css/style.css" />
 
 <link
@@ -52,27 +56,20 @@
 />
 
 
-<script type="application/javascript">
-var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-var doNotTrack = (dnt == "1" || dnt == "yes");
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	if (window.sessionStorage) {
-		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
-		ga('create', 'G-3R801NES6J', {
-	    'storage': 'none',
-	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
-	   });
-	   ga(function(tracker) {
-	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
-	   });
-   }
-	ga('set', 'anonymizeIp', true);
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-3R801NES6J');
+        }
+      </script>
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
@@ -96,7 +93,7 @@ if (!doNotTrack) {
 
 <body
   lang="en-us"
-  class="w-90 w-60-ns center center-ns mv2 mv5-ns"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns article-page"
   itemscope
   itemtype="http://schema.org/Article"
 >
@@ -130,8 +127,7 @@ if (!doNotTrack) {
 <p>(It may work for you only if you put in the effort to customise it to your work environment)</p>
 <h2 id="clear-expectation-setting">Clear Expectation Setting</h2>
 <blockquote>
-<p>Without clear and crisp expectations and goals, performance reviews become a political dance, and do more harm than help.</p>
-</blockquote>
+<p>Without clear and crisp expectations and goals, performance reviews become a political dance, and do more harm than help.</p></blockquote>
 <p>Start with the most important aspect of performance management - setting expectations. Most organisations have job ladders and high level role definitions; its important that these definitions provide the outlines during the goal setting process. The most important part, oft missed is, personalising the goals for the employee. Role definitions, Job descriptions are deliberately left at a high level and ambiguous by organisations so as to encourage people to not be limited by them, they cannot serve the purpose as goal documents.</p>
 <h3 id="measurable-goals">Measurable goals</h3>
 <p>KPIs and Personal OKRs are both very good ways to set goals; goals should be SMART (mnemonic) -</p>
@@ -158,34 +154,34 @@ if (!doNotTrack) {
 </ul>
 <p>Examples -</p>
 <table>
-<thead>
-<tr>
-<th>Objective</th>
-<th>Example key results to watch</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Implementing at least one feature that helps our customers win</td>
-<td>Increase in active users, order volumes per active user that could be attributed to the feature</td>
-</tr>
-<tr>
-<td>Improve quality of product</td>
-<td>Decreased bugs per release</td>
-</tr>
-<tr>
-<td>I want to be consistent in writing code.</td>
-<td>No. of modular commits to production,  No. of days with at least 5 modular commits</td>
-</tr>
-<tr>
-<td>I want to contribute to the community</td>
-<td>No. of technical blogs ,No. of open source contributions,No. of time spoke at conferences</td>
-</tr>
-<tr>
-<td>I want to read regularly</td>
-<td>No. of books read</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Objective</th>
+          <th>Example key results to watch</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Implementing at least one feature that helps our customers win</td>
+          <td>Increase in active users, order volumes per active user that could be attributed to the feature</td>
+      </tr>
+      <tr>
+          <td>Improve quality of product</td>
+          <td>Decreased bugs per release</td>
+      </tr>
+      <tr>
+          <td>I want to be consistent in writing code.</td>
+          <td>No. of modular commits to production,  No. of days with at least 5 modular commits</td>
+      </tr>
+      <tr>
+          <td>I want to contribute to the community</td>
+          <td>No. of technical blogs ,No. of open source contributions,No. of time spoke at conferences</td>
+      </tr>
+      <tr>
+          <td>I want to read regularly</td>
+          <td>No. of books read</td>
+      </tr>
+  </tbody>
 </table>
 <p>Once the objectives and metrics to watch are decided, the next step is to define achievable targets. Goal setting may have the drawback of inhibiting implicit learning: goal setting may encourage simple focus on an outcome without openness to exploration, understanding, or growth. A solution to this limitation is to set learning goals as well as performance goals, so that learning is expected as part of the process of reaching goals.</p>
 <h3 id="sign-offs">Sign-offs</h3>
@@ -216,38 +212,38 @@ Therefore, once the goals are set, it is important to check in on them at least 
 <h3 id="retrospective">Retrospective</h3>
 <p>This is also a good time to retrospect as a group about how the process went, and build a report card for each team, which hopefully looks like below, for the problems that we started with.</p>
 <table>
-<thead>
-<tr>
-<th>Expectation</th>
-<th>Solved/Handled ?</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Proper expectation setting</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>Generic and Specific expectation setting</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>Well discussed and agreed upon shifting in expectations, if any</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>Clear accountability of evaluators</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>Documented progress through the cycle</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>Individual assessments and no end of cycle rush</td>
-<td>✅</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Expectation</th>
+          <th>Solved/Handled ?</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Proper expectation setting</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Generic and Specific expectation setting</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Well discussed and agreed upon shifting in expectations, if any</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Clear accountability of evaluators</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Documented progress through the cycle</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Individual assessments and no end of cycle rush</td>
+          <td>✅</td>
+      </tr>
+  </tbody>
 </table>
 <p>At this time, you will start seeing different problems; the good part is, by iterating frequently, you should be able to identify, course correct and observe changes faster and reduce the pain.</p>
 <p><img src="https://rnjn.in/glossary/iterative-improvement.png" alt="Iterative Improvement"></p>

@@ -44,6 +44,10 @@
   href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
 />
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://rnjn.in/css/style.css" />
 
 <link
@@ -52,27 +56,20 @@
 />
 
 
-<script type="application/javascript">
-var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-var doNotTrack = (dnt == "1" || dnt == "yes");
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	if (window.sessionStorage) {
-		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
-		ga('create', 'G-3R801NES6J', {
-	    'storage': 'none',
-	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
-	   });
-	   ga(function(tracker) {
-	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
-	   });
-   }
-	ga('set', 'anonymizeIp', true);
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-3R801NES6J');
+        }
+      </script>
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
@@ -96,7 +93,7 @@ if (!doNotTrack) {
 
 <body
   lang="en-us"
-  class="w-90 w-60-ns center center-ns mv2 mv5-ns"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns article-page"
   itemscope
   itemtype="http://schema.org/Article"
 >
@@ -114,8 +111,7 @@ if (!doNotTrack) {
     <article itemprop="articleBody" id="content" class="w-90 lh-copy">
       <p>Postel&rsquo;s law ~1981<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>,</p>
 <blockquote>
-<p>&ldquo;Be conservative in what you do, be liberal in what you accept from others.&rdquo; (RFC 793)</p>
-</blockquote>
+<p>&ldquo;Be conservative in what you do, be liberal in what you accept from others.&rdquo; (RFC 793)</p></blockquote>
 <p>A webservice accepting a message with a defined schema (xml/json/other) may choose to do one of these when it encounters messages with extra nodes/properties -</p>
 <ul>
 <li>be conservative and discard</li>

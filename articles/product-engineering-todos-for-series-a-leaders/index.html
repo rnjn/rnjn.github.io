@@ -44,6 +44,10 @@
   href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
 />
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://rnjn.in/css/style.css" />
 
 <link
@@ -52,27 +56,20 @@
 />
 
 
-<script type="application/javascript">
-var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-var doNotTrack = (dnt == "1" || dnt == "yes");
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	if (window.sessionStorage) {
-		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
-		ga('create', 'G-3R801NES6J', {
-	    'storage': 'none',
-	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
-	   });
-	   ga(function(tracker) {
-	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
-	   });
-   }
-	ga('set', 'anonymizeIp', true);
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-3R801NES6J');
+        }
+      </script>
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
@@ -96,7 +93,7 @@ if (!doNotTrack) {
 
 <body
   lang="en-us"
-  class="w-90 w-60-ns center center-ns mv2 mv5-ns"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns article-page"
   itemscope
   itemtype="http://schema.org/Article"
 >
@@ -115,8 +112,7 @@ if (!doNotTrack) {
       <p><em>Oct 7th, 2022</em></p>
 <p>Series A funds are generally used to grow business, often to scale as a startup finds a product market fit (PMF). Often times, startups slow down and fail 3-4 years after this stage because of decisions made during this stage, especially when it comes to product engineering. Here are some things I think  founders and engineering leaders should care about, and set straight at this stage if they haven&rsquo;t started already. The cost of fixing things grows with time, akin to <a href="../../glossary/boehms-law"><em>Boehm&rsquo;s law</em></a>.</p>
 <blockquote>
-<p>When I say <strong>mistakes</strong>, below, it doesn&rsquo;t mean things won&rsquo;t work, it just means that the probability of long term success lowers, or the cost of fixing problems goes high, with such actions.</p>
-</blockquote>
+<p>When I say <strong>mistakes</strong>, below, it doesn&rsquo;t mean things won&rsquo;t work, it just means that the probability of long term success lowers, or the cost of fixing problems goes high, with such actions.</p></blockquote>
 <h3 id="setting-the-right-product-engineering-culture-and-practices">Setting the right product engineering culture and practices</h3>
 <p>Investment in the right practices at this stage reaps oversized benefits in future, and not investing makes companies often becoming very slow in building products and features, and get easily outcompeted by a faster peer. This is the right time to push teams to be disciplined about code quality, continuous delivery, high unit test coverage, automated functional tests, infrastructure automation, observability, product instrumentation, well written stories with acceptance criteria etc.</p>
 <p>Cost of doing this later is quite steep and has wide ranging affects, including high attrition, low morale, costly rewrites and firebreaks, lethargic teams and of course buggy and slow development in a year or two, right when you need it to be otherwise.</p>
@@ -172,8 +168,7 @@ if (!doNotTrack) {
 <p>Thanks for reading.</p>
 <blockquote>
 <p>Acknowledgements - Thanks to Puneet Goyal for reading and adding the note on Org Culture, those are his wise words.<br>
-And Pete Hodgeson, Alex Belovs and Keith Morris for reading an early draft and giving valuable and actionable inputs.</p>
-</blockquote>
+And Pete Hodgeson, Alex Belovs and Keith Morris for reading an early draft and giving valuable and actionable inputs.</p></blockquote>
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>

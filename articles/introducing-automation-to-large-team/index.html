@@ -44,6 +44,10 @@
   href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
 />
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://rnjn.in/css/style.css" />
 
 <link
@@ -52,27 +56,20 @@
 />
 
 
-<script type="application/javascript">
-var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-var doNotTrack = (dnt == "1" || dnt == "yes");
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	if (window.sessionStorage) {
-		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
-		ga('create', 'G-3R801NES6J', {
-	    'storage': 'none',
-	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
-	   });
-	   ga(function(tracker) {
-	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
-	   });
-   }
-	ga('set', 'anonymizeIp', true);
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-3R801NES6J');
+        }
+      </script>
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
@@ -96,7 +93,7 @@ if (!doNotTrack) {
 
 <body
   lang="en-us"
-  class="w-90 w-60-ns center center-ns mv2 mv5-ns"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns article-page"
   itemscope
   itemtype="http://schema.org/Article"
 >
@@ -114,8 +111,7 @@ if (!doNotTrack) {
     <article itemprop="articleBody" id="content" class="w-90 lh-copy">
       <p><em>Oct 24th, 2011</em></p>
 <blockquote>
-<p>A reader on my <a href="http://www.infoq.com/articles/test-automation-continuous-delivery">article</a> at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. I plan to write more posts on this topic, have a lot of thoughts, but here’s my immediate answer -</p>
-</blockquote>
+<p>A reader on my <a href="http://www.infoq.com/articles/test-automation-continuous-delivery">article</a> at infoq asked an interesting question - introducing automation to a big project which has been worked on for some time. I plan to write more posts on this topic, have a lot of thoughts, but here’s my immediate answer -</p></blockquote>
 <p>A very strong actionable technique that I have seen work well is that you create a small/minimal smoke test suite for you larger app. You can decide on what comprises a suite of smoke test -</p>
 <ul>
 <li><strong>Basic user actions</strong> - some 4-5 use cases without which a user cannot use your application. (for e.g. on an eCommerce site, my smoke tests would comprise of login, user registration, search, end-to-end purchase and payment).</li>
