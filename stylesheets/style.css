@@ -93,6 +93,14 @@ body.article-page td {
   border-bottom: 1px solid #e9ecef;
 }
 
+/* Article image styling */
+body.article-page img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2rem auto;
+}
+
 body.article-page td:last-child {
   border-right: none;
 }
@@ -151,6 +159,61 @@ select:focus {
   .toc {
     margin: 1rem 0;
     padding: 1rem;
+  }
+}
+
+/* Two-column layout styling */
+.two-column-layout {
+  column-count: 2;
+  column-gap: 2rem;
+  column-rule: 1px solid #e0e0e0;
+  text-align: justify;
+  hyphens: auto;
+  margin: 2rem 0;
+}
+
+.two-column-layout h1,
+.two-column-layout h2,
+.two-column-layout h3,
+.two-column-layout h4 {
+  column-span: all;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.two-column-layout h1:first-child,
+.two-column-layout h2:first-child,
+.two-column-layout h3:first-child,
+.two-column-layout h4:first-child {
+  margin-top: 0;
+}
+
+.two-column-layout p {
+  margin-bottom: 1rem;
+}
+
+.two-column-layout blockquote {
+  column-span: all;
+  margin: 2rem 0;
+}
+
+.two-column-layout img,
+.two-column-layout figure {
+  column-span: all;
+  margin: 2rem 0;
+}
+
+.two-column-layout table {
+  column-span: all;
+  margin: 2rem 0;
+}
+
+/* Mobile override for two-column layout */
+@media screen and (max-width: 768px) {
+  .two-column-layout {
+    column-count: 1;
+    column-rule: none;
+    text-align: left;
   }
 }
 

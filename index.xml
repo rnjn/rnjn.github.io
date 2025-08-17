@@ -6,8 +6,15 @@
     <description>Recent content on 🏡</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 10 Aug 2025 19:11:27 +0530</lastBuildDate>
+    <lastBuildDate>Sun, 17 Aug 2025 12:41:34 +0530</lastBuildDate>
     <atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>On Unified Observability</title>
+      <link>https://rnjn.in/articles/unified-observability/</link>
+      <pubDate>Sun, 17 Aug 2025 12:41:34 +0530</pubDate>
+      <guid>https://rnjn.in/articles/unified-observability/</guid>
+      <description>&lt;p&gt;Last month, I watched a senior engineer spend three hours debugging what should have been a fifteen-minute problem. The issue wasn&amp;rsquo;t complexity—it was context switching between four different monitoring tools, correlating timestamps manually, and losing their train of thought every time they had to log into yet another dashboard. If this sounds familiar, you&amp;rsquo;re not alone. This is the hidden tax most engineering teams pay without realizing there&amp;rsquo;s a better way.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Observability Theatre</title>
       <link>https://rnjn.in/articles/observability-theatre/</link>
