@@ -6,8 +6,15 @@
     <description>Recent content on 🏡</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Nov 2025 18:36:46 +0530</lastBuildDate>
+    <lastBuildDate>Thu, 20 Nov 2025 09:22:12 +0530</lastBuildDate>
     <atom:link href="https://rnjn.in/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Make Certificate Expiry Boring</title>
+      <link>https://rnjn.in/articles/make-certificate-expiry-boring/</link>
+      <pubDate>Thu, 20 Nov 2025 09:22:12 +0530</pubDate>
+      <guid>https://rnjn.in/articles/make-certificate-expiry-boring/</guid>
+      <description>&lt;figure&gt;&lt;img src=&#34;../cert-expiry.png&#34;&#xA;    alt=&#34;SSL Certificate Expiry&#34; width=&#34;50%&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;On 18 November 2025, GitHub had an hour-long outage that affected the heart of their product: Git operations. The post-incident &lt;a href=&#34;https://www.githubstatus.com/incidents/5q7nmlxz30sk&#34;&gt;summary&lt;/a&gt; was brief and honest - the outage was triggered by an internal TLS certificate that had quietly expired, blocking service-to-service communication inside their platform. It’s the kind of issue every engineering team knows &lt;em&gt;can&lt;/em&gt; happen, yet it still slips through because certificates live in odd corners of a system, often far from where we normally look.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Guardrails Over Governance</title>
       <link>https://rnjn.in/articles/guardrails-over-governance/</link>

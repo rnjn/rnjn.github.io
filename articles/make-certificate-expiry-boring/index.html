@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+
+<meta name="keywords" content="">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Make Certificate Expiry Boring" />
+<meta property="og:site_name" content="🏡" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://rnjn.in/articles/make-certificate-expiry-boring/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2025-11-20
+" /> <meta property="article:modified_time" content="2025-11-20
+" />
+
+
+
+
+
+
+    <title>Make Certificate Expiry Boring</title>
+    <link rel="canonical" href="https://rnjn.in/articles/make-certificate-expiry-boring/" />
+
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css"
+/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://rnjn.in/css/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-3R801NES6J');
+        }
+      </script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3R801NES6J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3R801NES6J');
+</script>
+
+
+<link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+<link rel="stylesheet" href="https://rnjn.in/stylesheets/style.css">
+
+  </head>
+
+
+<body
+  lang="en-us"
+  class="w-90 w-60-ns center center-ns mv2 mv5-ns article-page"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  
+  <nav aria-label="Breadcrumb">
+    <span class="b">/ </span>
+    <a
+      href="https://rnjn.in/"
+      class="b bb bw1 pb1 no-underline black"
+      >🏡</a
+    >
+  </nav>
+
+  <main id="main" class="mt5" role="main">
+    <h1 itemprop="name" id="title">Make Certificate Expiry Boring</h1>
+
+    
+
+    <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+      <figure><img src="../cert-expiry.png"
+    alt="SSL Certificate Expiry" width="50%">
+</figure>
+
+<p>On 18 November 2025, GitHub had an hour-long outage that affected the heart of their product: Git operations. The post-incident <a href="https://www.githubstatus.com/incidents/5q7nmlxz30sk">summary</a> was brief and honest - the outage was triggered by an internal TLS certificate that had quietly expired, blocking service-to-service communication inside their platform. It’s the kind of issue every engineering team knows <em>can</em> happen, yet it still slips through because certificates live in odd corners of a system, often far from where we normally look.</p>
+<p>What struck me about this incident wasn’t that GitHub “missed something.” If anything, it reminded me how easy it is, even for well-run, highly mature engineering orgs, to overlook certificate expiry in their observability and alerting posture. We monitor CPU, memory, latency, error rates, queue depth, request volume - but a certificate that’s about to expire rarely shows up as a first-class signal. It doesn’t scream. It doesn’t gradually degrade. It just keeps working… until it doesn’t.</p>
+<p>And that’s why these failures feel unfair. They’re fully preventable, but only if you treat certificates as operational assets, not just security artefacts. This article is about building that mindset: how to surface certificate expiry as a real reliability concern, how to detect issues early, and how to ensure a single date on a single file never brings down an entire system.</p>
+<h3 id="why-certificate-expiry-outages-happen">Why certificate-expiry outages happen</h3>
+<p>Most outages have a shape: a graph that starts bending the wrong way, an error budget that begins to evaporate, a queue that grows faster than it drains. Teams get early signals. They get a chance to react.</p>
+<p>Certificate expiry is different. It behaves more like a trapdoor.
+Everything works perfectly… until the moment it doesn&rsquo;t.</p>
+<p>And because certificates sit at the intersection of security and infrastructure, ownership is often ambiguous. One team issues them, another deploys them, a third operates the service that depends on them. Over time, as systems evolve, certificates accumulate in places no one remembers - a legacy load balancer here, a forgotten internal endpoint there, an old mutual-TLS handshake powering a background job that hasn’t been touched in years. Each one quietly counts down to a date that may not exist anywhere in your dashboards.</p>
+<p>It’s not that engineering teams are careless. It’s that distributed systems create <em>distributed responsibilities</em>. And unless expiry is treated as an operational metric - something you can alert on, page on, and practice recovering from - it becomes a blind spot.</p>
+<p>The GitHub incident is just a recent reminder of a pattern most of us have seen in some form: the system isn’t failing, but our visibility into its prerequisites is.</p>
+<p>That&rsquo;s what we&rsquo;ll fix next.</p>
+<h3 id="where-certificates-actually-live-in-a-modern-system">Where certificates actually live in a modern system</h3>
+<p>Before we talk about detection and automation, it helps to map the terrain. Certificates don’t sit in one place; they&rsquo;re spread across a system the same way responsibilities do. And when teams are busy shipping features, it’s easy to forget how many places depend on a valid chain of trust.</p>
+<p>A few common patterns:</p>
+<p><strong>1. Public entry points</strong><br>
+These are the obvious ones - the certificates on your API gateway, load balancers, reverse proxies, or CDN. They’re usually tracked because they’re customer-facing. But even here, expiry can slip through if ownership rotates or if the renewal mechanism silently fails.</p>
+<p><strong>2. Internal service-to-service communication</strong><br>
+Modern systems often use mTLS internally. That means each service, sidecar, or pod may hold its own certificate, usually short-lived and automatically rotated. The catch: these automation pipelines need monitoring too. When they fail, the failure is often invisible until the cert expires.</p>
+<p><strong>3. Databases, message brokers, and internal control planes</strong><br>
+Many teams enable TLS for PostgreSQL, MongoDB, Kafka, Redis, or internal admin endpoints - and then forget about those certs entirely. These can be some of the hardest outages to debug because the components are not exposed externally and failures manifest as connection resets or handshake errors deep inside a dependency chain.</p>
+<p><strong>4. Cloud-managed infrastructure</strong><br>
+AWS ALBs, GCP Certificate Manager, Azure Key Vault, CloudFront, IoT gateways - each keeps its own certificate store. These systems usually help with automation, but they don’t always alert when renewal fails, and they certainly don’t alert when your <em>usage</em> patterns change.</p>
+<p><strong>5. Legacy or security-adjacent components</strong><br>
+Some of the most outage-prone certificates sit in places we rarely revisit:</p>
+<ul>
+<li>VPN servers</li>
+<li>old NGINX or HAProxy nodes</li>
+<li>staging environments</li>
+<li>batch jobs calling external APIs</li>
+<li>IoT devices or firmware-level certs</li>
+<li>integrations with third-party partners</li>
+</ul>
+<p>If even one of these expires, the blast radius can be surprisingly wide.</p>
+<p>What all of this shows is that certificate expiry isn’t a single-problem problem - it’s an inventory problem. You can’t secure or monitor what you don’t know exists. And you can’t rely on tribal memory to keep track of everything.</p>
+<p>The next step, naturally, is stitching visibility back into the system: turning this scattered landscape into something observable, alertable, and resilient.</p>
+<h3 id="detecting-certificate-expiry-across-different-environments">Detecting certificate expiry across different environments</h3>
+<p>Once you understand where certificates tend to hide, the next question becomes: <em>how do we surface their expiry in a way that fits naturally into our observability stack?</em><br>
+The good news is that we don’t need anything exotic. We just need a reliable way to extract expiry information and feed it into whatever monitoring and alerting system we already trust.</p>
+<p>The exact approach varies by environment, but the principle stays the same: <strong>expiry should show up as a first-class metric</strong> - just like latency, errors, or disk space.</p>
+<p>Let’s break this down across the most common setups.</p>
+<h4 id="1-kubernetes-with-cert-manager"><strong>1. Kubernetes (with cert-manager)</strong></h4>
+<p>If you’re using cert-manager, you already have expiry information available - it’s just a matter of surfacing it.</p>
+<p>Cert-manager stores certificate metadata in the Kubernetes API, including <code>status.notAfter</code>. Expose that through:</p>
+<ul>
+<li>cert-manager’s built-in metrics</li>
+<li>a Kubernetes metadata exporter</li>
+<li>or a lightweight custom controller if you prefer tighter control</li>
+</ul>
+<p>Once the metric is flowing into Prometheus or Datadog, you can build straightforward alerts:</p>
+<ul>
+<li>30 days → warning</li>
+<li>14 days → urgent</li>
+<li>7 days → critical</li>
+</ul>
+<p>This handles most cluster-level certificates, especially ingress TLS and ACME-issued certs.</p>
+<h4 id="2-kubernetes-without-cert-manager"><strong>2. Kubernetes (without cert-manager)</strong></h4>
+<p>Many clusters use:</p>
+<ul>
+<li>TLS secrets created manually</li>
+<li>certificates provisioned by CI/CD</li>
+<li>certificates embedded inside service mesh CA infrastructure</li>
+<li>or certificates uploaded to cloud load balancers</li>
+</ul>
+<p>In these cases, you can extract expiry from:</p>
+<ul>
+<li>the <code>tls.crt</code> in Kubernetes Secrets</li>
+<li>mesh control plane metrics (e.g., Istio’s CA exposes rotation details)</li>
+<li>endpoint probes from blackbox exporters</li>
+<li>cloud provider API calls that list certificate metadata</li>
+</ul>
+<p>The pattern stays the same: gather expiry → convert to a metric → alert early.</p>
+<h4 id="3-virtual-machines-bare-metal-or-traditional-workloads"><strong>3. Virtual machines, bare metal, or traditional workloads</strong></h4>
+<p>This is where certificate expiry issues happen the most, often because the monitoring setup predates the current system complexity.</p>
+<p>Your options here are simple and effective:</p>
+<ul>
+<li>Run a small cron job that calls <code>openssl</code> against known endpoints</li>
+<li>Parse certificates from local files or keystores</li>
+<li>Use a Prometheus blackbox exporter to probe TLS endpoints</li>
+<li>Query cloud APIs for LB or certificate manager expiry</li>
+<li>Forward results as metrics or events into your observability system</li>
+</ul>
+<p>Nearly every major outage caused by certificate expiry outside Kubernetes happens in these environments - mostly because there’s no single place where certificates live, so no single tool naturally monitors them. A tiny script with a 30-second probe loop can save hours of downtime.</p>
+<h4 id="4-cloud-managed-ecosystems"><strong>4. Cloud-managed ecosystems</strong></h4>
+<p>AWS, GCP, and Azure all provide mature certificate stores:</p>
+<ul>
+<li><strong>AWS ACM</strong>, <strong>CloudFront</strong>, <strong>API Gateway</strong></li>
+<li><strong>GCP Certificate Manager</strong>, <strong>Load Balancing</strong></li>
+<li><strong>Azure Key Vault</strong>, <strong>App Gateway</strong></li>
+</ul>
+<p>They usually renew automatically, but renewals can fail silently for reasons like:</p>
+<ul>
+<li>unnecessary domain validation retries</li>
+<li>DNS misconfigurations</li>
+<li>permissions regressions</li>
+<li>quota limits</li>
+<li>or expired upstream intermediates</li>
+</ul>
+<p>The fix: poll these APIs on a schedule and compare expiry timestamps with your policy thresholds. Treat those just like metrics from a node or pod.</p>
+<h4 id="5-the-hard-to-see-corners"><strong>5. The hard-to-see corners</strong></h4>
+<p>No matter how modern your architecture is, you’ll find certificates in:</p>
+<ul>
+<li>internal admin endpoints</li>
+<li>Kafka, RabbitMQ, or PostgreSQL TLS configs</li>
+<li>legacy VPN boxes</li>
+<li>IoT gateways</li>
+<li>partner API integrations</li>
+<li>staging environments that don’t receive the same scrutiny</li>
+</ul>
+<p>These deserve monitoring too, and the process is no different: probe, parse, publish.</p>
+<h4 id="focus-on-expiry-as-a-metric">Focus on expiry as a metric</h4>
+<p>When certificate expiry becomes just another number that your dashboards understand - a timestamp that can be plotted, queried, alerted on - the problem changes shape. It stops being a last-minute surprise and becomes part of your normal operational rhythm.</p>
+<p>The next question, then, is how to automate renewals and rotations so that even when alerts happen, they’re nothing more than a nudge.</p>
+<h3 id="automating-certificate-renewal-and-rotation">Automating certificate renewal and rotation</h3>
+<p>Detecting certificates before they expire is necessary, but it’s not the end goal. The real win is when expiry becomes uninteresting - when certificates rotate quietly in the background, without paging anyone, and without becoming a stress point before every major release.</p>
+<p>Most organisations get stuck on renewals for one of two reasons:</p>
+<ol>
+<li>They assume automation is risky.</li>
+<li>Their infrastructure is too fragmented for a single renewal flow.</li>
+</ol>
+<p>But automation doesn&rsquo;t have to be fragile. It just has to be explicit.</p>
+<p>Here are the most reliable patterns that work across environments.</p>
+<h4 id="1-acme-based-automation-lets-encrypt-and-internal-acme-servers"><strong>1. ACME-based automation (Let’s Encrypt and internal ACME servers)</strong></h4>
+<p>If your certificates can be issued via ACME, life becomes dramatically simpler. ACME clients - whether cert-manager inside Kubernetes or acme.sh / lego on a traditional VM - handle the full cycle:</p>
+<ul>
+<li>request</li>
+<li>validation</li>
+<li>issuance</li>
+<li>renewal</li>
+<li>rotation</li>
+</ul>
+<p>And because ACME certificates are intentionally short-lived, your system gets frequent practice, making renewal failures visible long before a real expiry.</p>
+<p>For internal systems, tools like <strong>Smallstep</strong>, <strong>HashiCorp Vault</strong> (ACME mode), or <strong>Pebble</strong> can act as internal ACME CAs, giving you automatic rotation without public DNS hoops.</p>
+<h4 id="2-renewal-via-internal-ca-vault-pki-venafi-active-directory-ca"><strong>2. Renewal via internal CA (Vault PKI, Venafi, Active Directory CA)</strong></h4>
+<p>Some environments need tighter control than ACME allows. In those cases:</p>
+<ul>
+<li>Vault’s PKI engine can issue short-lived certs on demand</li>
+<li>Venafi integrates with enterprise workflows and HSM-backed keys</li>
+<li>Active Directory Certificate Services can automate internal certs for Windows-heavy stacks</li>
+</ul>
+<p>The trick is to treat issuance and renewal as API-driven processes - not as manual handoffs.</p>
+<p>The pipeline should be able to:</p>
+<ul>
+<li>generate or reuse keys</li>
+<li>request a new certificate</li>
+<li>store it securely</li>
+<li>trigger a reload or rotation</li>
+<li>validate that clients accept the new chain</li>
+</ul>
+<p>Once this flow exists, adding observability around it is straightforward.</p>
+<h4 id="3-automating-the"><strong>3. Automating the <em>distribution</em> step</strong></h4>
+<p>Most certificate outages happen <em>after</em> renewal succeeds - when the new certificate exists but hasn’t been rolled out cleanly.</p>
+<p>To make rotation safe and predictable:</p>
+<ul>
+<li>Upload the new certificate <em>alongside</em> the old one</li>
+<li>Switch your service or load balancer to the new certificate atomically</li>
+<li>Gracefully reload instead of restarting</li>
+<li>Keep the old cert around for a short overlap window</li>
+<li>Validate that clients, proxies, and edge layers all trust the new chain</li>
+</ul>
+<p>This overlap pattern avoids the &ldquo;everything broke because we reloaded too aggressively&rdquo; class of outages, which is surprisingly common.</p>
+<h4 id="4-cloud-managed-rotation"><strong>4. Cloud-managed rotation</strong></h4>
+<p>Cloud providers do a decent job of renewing certificates automatically, but they won&rsquo;t validate your whole deployment chain. That&rsquo;s on you.</p>
+<p>The safe pattern:</p>
+<ul>
+<li>Let the cloud provider renew</li>
+<li>Poll for renewal events</li>
+<li>Verify that listeners, API gateways, and CDN distributions have <em>updated attachments</em></li>
+<li>Validate downstream systems that import or pin certificates</li>
+<li>Raise alerts if anything gets stuck on an older version</li>
+</ul>
+<p>This closes the gap between &ldquo;cert renewed&rdquo; and &ldquo;cert in use.&rdquo;</p>
+<h4 id="5-rotation-in-service-meshes-and-sidecar-based-systems"><strong>5. Rotation in service meshes and sidecar-based systems</strong></h4>
+<p>Istio, Linkerd, Consul Connect, and similar meshes issue short-lived certificates to workloads and rotate them frequently. This is excellent for security - but only if rotation stays healthy.</p>
+<p>You want to monitor:</p>
+<ul>
+<li>workload certificate rotation age</li>
+<li>control-plane CA expiry</li>
+<li>sidecar rotation errors</li>
+<li>issuance backoff or throttling</li>
+</ul>
+<p>If rotation falls behind, it should be alerted on long before expiry.</p>
+<h4 id="the-goal-is-predictability-not-cleverness">The goal is predictability, not cleverness</h4>
+<p>A good renewal system doesn’t try to be “smart.”<br>
+It tries to be <strong>boring</strong> - predictable, transparent, observable, and easy to test.</p>
+<p>The next step is tying this predictability into your alerting strategy: you want enough signal to catch problems early, but not so much noise that expiry becomes background static.</p>
+<h3 id="alerting-strategies-that-actually-prevent-downtime">Alerting strategies that actually prevent downtime</h3>
+<p>Once certificates are visible in your monitoring system, the next challenge is deciding <em>when</em> to alert and <em>how loudly</em>. Expiry isn’t like latency or saturation - it doesn’t fluctuate minute-to-minute. It moves slowly, predictably, and without drama. That means your alerts should feel the same: calm, early, and useful.</p>
+<p>A good alert for certificate expiry does two things:</p>
+<ol>
+<li>It tells you early enough that the fix is routine.</li>
+<li>It doesn’t page the team unless the system is genuinely at risk.</li>
+</ol>
+<p>Taking the risk and being prescriptive, here&rsquo;s how to design that balance.</p>
+<h4 id="1-use-long-staggered-alert-windows"><strong>1. Use long, staggered alert windows</strong></h4>
+<p>A 90-day certificate doesn&rsquo;t need a red alert at day 89.
+But it also shouldn&rsquo;t wait until day 3.</p>
+<p>A common, reliable pattern is:</p>
+<ul>
+<li><strong>30 days</strong> → warning (non-paging)</li>
+<li><strong>14 days</strong> → urgent (may page depending on environment)</li>
+<li><strong>7 days</strong> → critical (should page)</li>
+</ul>
+<p>This staggered approach ensures:</p>
+<ul>
+<li>your team has multiple chances to notice</li>
+<li>you can distinguish “renewal hasn’t happened yet” from “renewal failed”</li>
+<li>you avoid last-minute firefighting, especially around holidays or weekends</li>
+</ul>
+<p>The goal is to turn expiry into a background piece of operational hygiene - not an adrenaline spike.</p>
+<h4 id="2-alert-on-renewal-failures-not-just-expiry"><strong>2. Alert on renewal failures, not just expiry</strong></h4>
+<p>A certificate expiring is usually a <em>symptom</em>.<br>
+The real problem is that the renewal automation stopped working.</p>
+<p>So your monitoring should include:</p>
+<ul>
+<li>ACME failures (DNS, HTTP-01/ALPN-01 challenges failing)</li>
+<li>mesh-sidecar rotation failures</li>
+<li>Vault or CA issuance errors</li>
+<li>permissions regressions (role can no longer request or upload certs)</li>
+<li>cloud-provider renewal stuck in “pending validation”</li>
+</ul>
+<p>These alerts often matter more than the expiry date itself.</p>
+<h4 id="3-detect-chain-issues-and-intermediate-expiries"><strong>3. Detect chain issues and intermediate expiries</strong></h4>
+<p>Sometimes the leaf certificate is fine - but an intermediate in the chain is not.  Many teams miss this, because they only check the surface-level cert.</p>
+<p>Your probes should validate the <em>full</em> chain:</p>
+<ul>
+<li>intermediate expiry</li>
+<li>missing intermediates</li>
+<li>mismatched issuer</li>
+<li>unexpected CA</li>
+<li>weak algorithms</li>
+</ul>
+<p>Broken chains can create outages that look like TLS handshake mysteries, even when the leaf cert is fresh.</p>
+<h4 id="4-surface-expiry-as-a-metric-your-dashboards-understand"><strong>4. Surface expiry as a metric your dashboards understand</strong></h4>
+<p>A certificate’s expiry date is just a timestamp.  Expose it like any other metric:</p>
+<ul>
+<li><code>ssl_not_after_seconds</code></li>
+<li><code>cert_expiry_timestamp</code></li>
+<li><code>x509_validity_seconds</code></li>
+</ul>
+<p>Once it’s a metric:</p>
+<ul>
+<li>you can plot trends</li>
+<li>you can compare environments</li>
+<li>you can find components with unusually short or long TTLs</li>
+<li>you can build SLOs around the rotation process</li>
+</ul>
+<p>It becomes part of your observability ecosystem, not an afterthought.</p>
+<h4 id="5-don"><strong>5. Don&rsquo;t rely on humans to remember edge cases</strong></h4>
+<p>If your alerts depend on tribal knowledge - someone remembering that “there’s an old VPN gateway in staging with a cert that expires in March” - then you don’t have an alerting strategy, you have a memory test that your team <strong>will</strong> fail.</p>
+<p>Every certificate, in every environment, should be:</p>
+<ul>
+<li>discoverable</li>
+<li>monitored</li>
+<li>alertable</li>
+</ul>
+<p>The moment monitoring depends on someone remembering “that one place we keep certs,” you’re back to hoping instead of observing.</p>
+<h4 id="alerting-should-create-confidence-not-anxiety">Alerting should create confidence, not anxiety</h4>
+<p>Good alerts help teams sleep better. They remove uncertainty and allow engineers to trust that the system will tell them when something important is off. Certificate expiry should fall squarely into this camp - predictable, early, and boring.</p>
+<p>With detection and alerting covered, the next piece is ensuring the system behaves safely when certificates actually rotate: how to design zero-downtime deployment patterns so rotation never becomes an outage event.</p>
+<h3 id="zero-downtime-rotation-patterns">Zero-downtime rotation patterns</h3>
+<p>Even with good monitoring and robust automation, certificate renewals can still cause trouble if the rotation process itself is fragile. A surprising number of certificate-related outages happen <em>after</em> a new certificate has already been issued - during the switch-over phase where services, load balancers, or sidecars pick up the new credentials.</p>
+<p>Zero-downtime rotation isn’t complicated, but it does require deliberate patterns. Most of these boil down to one principle:</p>
+<p>| <strong>Never replace a certificate in a way that surprises the system.</strong></p>
+<p>Here are the patterns that make rotation predictable and safe.</p>
+<h4 id="1-overlap-the-old-and-new-certificates"><strong>1. Overlap the old and new certificates</strong></h4>
+<p>A simple but powerful rule:<br>
+<strong>Always have a window where both the old and new certificates are valid and deployed.</strong></p>
+<p>This overlap ensures:</p>
+<ul>
+<li>long-lived clients can finish their sessions</li>
+<li>short-lived clients pick up the new cert seamlessly</li>
+<li>you avoid “half the system has the new cert, half has the old one” situations</li>
+</ul>
+<p>In practice, this can mean:</p>
+<ul>
+<li>adding the new certificate as a second chain in a load balancer</li>
+<li>rotating the private key but temporarily supporting both versions</li>
+<li>waiting for a full deployment cycle before removing the old cert</li>
+</ul>
+<p>Overlap is your safety net.</p>
+<h4 id="2-use-atomic-attachment-for-load-balancers-and-gateways"><strong>2. Use atomic attachment for load balancers and gateways</strong></h4>
+<p>Cloud load balancers usually support:</p>
+<ul>
+<li>uploading a new certificate</li>
+<li>switching the listener to the new certificate in a single update</li>
+</ul>
+<p>This is vastly safer than:</p>
+<ul>
+<li>deleting and re-adding</li>
+<li>reloading configuration mid-traffic</li>
+<li>relying on an external script to get timing right</li>
+</ul>
+<p>Atomic attachment ensures that the traffic shift is instantaneous and consistent.</p>
+<h4 id="3-prefer-graceful-reloads-over-restarts"><strong>3. Prefer graceful reloads over restarts</strong></h4>
+<p>Some services pick up new certificates on reload, others need restarts. Where you can, choose the reload path.</p>
+<p>Graceful reloads:</p>
+<ul>
+<li>avoid dropping connections</li>
+<li>preserve in-flight requests</li>
+<li>avoid spikes in error rates and latency</li>
+<li>allow blue-green or rolling processes inside Kubernetes, Nomad, or VMs</li>
+</ul>
+<p>If a service truly cannot reload (rare today), wrap rotation in a:</p>
+<ul>
+<li>rolling restart</li>
+<li>node-by-node drain</li>
+<li>health-checked deployment sequence</li>
+</ul>
+<p>The idea is the same: no hard cuts.</p>
+<h4 id="4-validate-after-rotation---not-just-before"><strong>4. Validate after rotation - not just before</strong></h4>
+<p>Many teams validate certificates before they rotate:</p>
+<ul>
+<li>subject, issuer</li>
+<li>SAN list</li>
+<li>expiry date</li>
+<li>chain</li>
+<li>signature</li>
+</ul>
+<p>All good - but not enough.</p>
+<p>You also need <strong>post-rotation validation</strong>:</p>
+<ul>
+<li>do clients still trust the chain?</li>
+<li>is OCSP/CRL working?</li>
+<li>did any pinned-certificate clients break?</li>
+<li>did any intermediate certificates unexpectedly change?</li>
+<li>did the system propagate the new certificate everywhere?</li>
+</ul>
+<p>Treat rotation as a deployment, not a file update.</p>
+<h4 id="5-treat-service-meshes-as-first-class-rotation-systems"><strong>5. Treat service meshes as first-class rotation systems</strong></h4>
+<p>Sidecar-based meshes like Istio or Linkerd already rotate certificates frequently. But the control-plane CA certificates still need careful handling.</p>
+<p>When rotating a CA certificate in a mesh:</p>
+<ul>
+<li>introduce the new root or intermediate</li>
+<li>allow both chains temporarily</li>
+<li>ensure workloads are receiving new leaf certs under the new CA</li>
+<li>only retire the old CA when no workload depends on it</li>
+</ul>
+<p>Skipping these steps can break mTLS cluster-wide.</p>
+<h4 id="6-keep-rotation-logs---they"><strong>6. Keep rotation logs - they&rsquo;re your only breadcrumb trail</strong></h4>
+<p>Certificate rotation has a habit of failing silently.<br>
+Most debugging sessions start with, “Did the certificate get picked up?” and end in grepping logs or diffing secrets.</p>
+<p>A good rotation system records:</p>
+<ul>
+<li>when certificates were requested</li>
+<li>when they were issued</li>
+<li>where they were distributed</li>
+<li>when services reloaded/restarted</li>
+<li>which version is currently active</li>
+</ul>
+<p>This is invaluable during an incident, and equally helpful for audits or compliance. Drop it into the #release or #deployment slack channel so others can debug faster when things go bad.</p>
+<h4 id="rotation-should-feel-like-any-other-deploy">Rotation should feel like any other deploy</h4>
+<p>The most reliable teams treat certificate rotation exactly like they treat code deployment:</p>
+<ul>
+<li>staged</li>
+<li>observable</li>
+<li>reversible</li>
+<li>tested</li>
+<li>boring</li>
+</ul>
+<p>When a certificate rotation feels as uninteresting as a config push or a canary rollout, you’ve reached operational maturity in this area.</p>
+<h3 id="building-organisation-wide-guardrails-around-certificate-management">Building organisation-wide guardrails around certificate management</h3>
+<p>Everything we’ve covered so far - inventory, monitoring, renewal, rotation - solves the <em>technical</em> side of certificate expiry. But outages rarely happen because of a missing script or exporter. They happen because systems grow, responsibilities shift, and operational assumptions slowly drift out of sync with reality.</p>
+<p>Preventing certificate-expiry outages at scale requires more than good automation. It needs <strong>guardrails</strong>: lightweight, durable structures that support engineers without slowing them down. This isn’t governance, and it isn’t process for process’ sake. It’s giving teams the clarity and safety they need so certificates don’t become an invisible failure mode.</p>
+<p>Some if not all of these guardrails aren&rsquo;t needed if you have a single well known and automated way of dealing with certificates. Sometimes that&rsquo;s not the case, and that&rsquo;s where you need guardrails. Here are guardrails that have helped me manage the complexity of manual certificate lifecycle.</p>
+<h4 id="1-make-ownership-explicit---for-every-certificate"><strong>1. Make ownership explicit - for every certificate</strong></h4>
+<p>Every certificate in your system should have:</p>
+<ul>
+<li>an owner</li>
+<li>a renewal mechanism</li>
+<li>a rotation mechanism</li>
+<li>a monitoring hook</li>
+<li>an escalation path</li>
+</ul>
+<p>This sounds formal, but it can be as simple as three fields in an internal inventory:</p>
+<ul>
+<li><em>Service name</em></li>
+<li><em>Team</em></li>
+<li><em>Contact channel</em></li>
+</ul>
+<p>When ownership is clear, expiry becomes a maintenance task, not a detective story.</p>
+<h4 id="2-set-policy-but-keep-it-lightweight"><strong>2. Set policy, but keep it lightweight</strong></h4>
+<p>Certificate policies often fail because they become too rigid or too verbose. A practical policy should answer only the essentials:</p>
+<ul>
+<li>What is the recommended TTL?</li>
+<li>Which CAs are approved?</li>
+<li>How should private keys be stored?</li>
+<li>What is the expected rotation pattern?</li>
+</ul>
+<h4 id="3-use-the-same-observability-channels-you-use-for-everything-else"><strong>3. Use the same observability channels you use for everything else</strong></h4>
+<p>A certificate expiring should appear in:</p>
+<ul>
+<li>the same dashboard</li>
+<li>the same alerting system</li>
+<li>the same on-call rotation</li>
+<li>the same incident workflow</li>
+</ul>
+<p>If you need a separate tool or a second inbox to monitor certificates, you&rsquo;ve already created inefficiencies and you are going to add more to the confusion. The best guardrail is simply: &ldquo;This is part of our normal operational metrics.&rdquo;</p>
+<h4 id="4-run-periodic"><strong>4. Run periodic &ldquo;expiry audits&rdquo; without blame</strong></h4>
+<p>Once or twice a year, do a small audit:</p>
+<ul>
+<li>list certificates expiring within N days</li>
+<li>identify certificates with missing owners</li>
+<li>catch stray certs on forgotten hosts</li>
+<li>verify mesh CA rotations</li>
+<li>clean up unused secrets</li>
+</ul>
+<p>The best option is to automate this audit.</p>
+<h4 id="5-practice-a-certificate-rotation-drill"><strong>5. Practice a certificate-rotation drill</strong></h4>
+<p>Just like fire drills, rotation drills can build confidence by exposing vulnerabilities and gaps.
+Pick a non-critical service once a quarter:</p>
+<ul>
+<li>issue a new certificate</li>
+<li>rotate it using your recommended method</li>
+<li>validate behaviour</li>
+<li>document any rough edges</li>
+</ul>
+<p>This helps teams become comfortable with rotations, and uncovers issues that only show up during real renewals - mismatched trust stores, pinned clients, stale intermediates, or forgotten nodes. Better still, do it in production for a service.</p>
+<h4 id="6-encourage-teams-to-prefer-automation-over-manual-fixes"><strong>6. Encourage teams to prefer automation over manual fixes</strong></h4>
+<p>When a certificate is close to expiring, the fastest fix is often manual: generate a cert, upload it, restart a service - thank your sir.</p>
+<p>It works in the moment, but creates a hidden cost: the automation is bypassed, and the system drifts.</p>
+<p>Guardrails help by making the automated path the default:</p>
+<ul>
+<li>CI pipelines that issue certs consistently</li>
+<li>templates that enforce expiry monitoring</li>
+<li>runbooks that always reference the automated flow</li>
+<li>dashboards that show rotation health</li>
+</ul>
+<h4 id="guardrails-keep-engineering-energy-focused-where-it-matters">Guardrails keep engineering energy focused where it matters</h4>
+<p>Good guardrails don’t feel heavy. They feel like support structures - the kind that keep important details visible even when everyone is moving fast. They reduce cognitive load, eliminate invisible traps, and give teams a shared mental model for how certificates behave in their environment.</p>
+<p>When these guardrails are in place, certificate expiry stops being a background anxiety. It becomes just another part of the system that’s well understood, continuously monitored, and quietly maintained.</p>
+<h3 id="bringing-it-all-together---from-trapdoor-failures-to-predictable-operations">Bringing it all together - from trapdoor failures to predictable operations</h3>
+<p>Certificate-expiry outages feel disproportionate. They don’t arise from a complex scaling limit or an unexpected dependency interaction. They come from a single date embedded in a file - a detail that quietly counts down while everything else appears healthy. And when that date finally arrives, the failure is abrupt. No slow burn, no early symptoms. Just a trapdoor.</p>
+<p>But it doesn’t need to be this way.<br>
+Expiry is one of the few reliability risks that is both entirely predictable and entirely preventable.</p>
+<p>When we treat certificates as operational assets - things we can inventory, observe, rotate, and practice with - the problem changes shape. Instead of scrambling during an incident, teams build a steady rhythm around expiry:</p>
+<ul>
+<li>certificates are visible as metrics</li>
+<li>renewals happen automatically</li>
+<li>rotations are safe and boring</li>
+<li>alerts arrive early and calmly</li>
+<li>ownership is clear</li>
+<li>guardrails carry the organisational weight</li>
+</ul>
+<p>And the result is a system that behaves the way resilient systems should: not because people remembered every corner, but because the structure makes forgetting impossible.</p>
+<p>The GitHub outage was a reminder, not a criticism. It showed that even the most sophisticated engineering organisations can be caught off-guard by something small and silent. But it also demonstrated why it’s worth building a culture - and a set of practices - where small and silent things are surfaced early.</p>
+<p>If your team can get certificate expiry out of the class of “we hope this doesn’t bite us” and into the class of “this is a well-managed part of our infrastructure,” you’ve eliminated an entire category of avoidable outages.</p>
+<p>That’s the goal. Not perfect governance. Just clear guardrails, steady habits, and a system you can trust - even on the days when nothing looks wrong.</p>
+
+    </article>
+  </main>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+
+  </body>
+</html>
